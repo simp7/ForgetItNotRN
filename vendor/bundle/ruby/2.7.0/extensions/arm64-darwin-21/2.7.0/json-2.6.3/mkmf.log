@@ -90,7 +90,7 @@ checked program was:
 "clang -o conftest -I/Users/gopher/.rbenv/versions/2.7.5/include/ruby-2.7.0/arm64-darwin21 -I/Users/gopher/.rbenv/versions/2.7.5/include/ruby-2.7.0/ruby/backward -I/Users/gopher/.rbenv/versions/2.7.5/include/ruby-2.7.0 -I. -I/Users/gopher/.rbenv/versions/2.7.5/include  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE -D_DARWIN_UNLIMITED_SELECT -D_REENTRANT   -g -O2 -fno-common -pipe conftest.c  -L. -L/Users/gopher/.rbenv/versions/2.7.5/lib -L. -L/Users/gopher/.rbenv/versions/2.7.5/lib  -fstack-protector-strong  -m64   -lruby.2.7   "
 Undefined symbols for architecture arm64:
   "_rb_enc_interned_str", referenced from:
-      _t in conftest-a143c5.o
+      _t in conftest-18c368.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 checked program was:
