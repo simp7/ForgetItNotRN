@@ -1,6 +1,3 @@
-import { DefaultTheme } from 'styled-components';
-
-
 export const color = {
   white: '#f3f3f3',
   black: '#000000',
@@ -10,16 +7,24 @@ interface Colors {
   background: string;
 }
 
-export const LightTheme: Colors = {
+const LightColors: Colors = {
   background: color.white,
 };
 
-export const DarkTheme: Colors = {
+const DarkColors: Colors = {
   background: color.black,
 };
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    colors: Colors;
+    color: Colors;
   }
 }
+
+export const LightTheme = {
+  color: LightColors,
+};
+
+export const DarkTheme = {
+  color: DarkColors,
+};
