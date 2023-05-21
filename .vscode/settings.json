@@ -1,12 +1,14 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll": true
-    },
-    "java.compile.nullAnalysis.mode": "automatic",
-    "eslint.packageManager": "yarn",
-    "eslint.validate": [
-        "javascript"
-    ],
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "editor.tabSize": 2
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true
+	},
+	"java.compile.nullAnalysis.mode": "automatic",
+	"eslint.packageManager": "yarn",
+	"eslint.validate": [
+		"javascript"
+	],
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"editor.tabSize": 2,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
 }

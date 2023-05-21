@@ -3,7 +3,7 @@ import React from 'react';
 import { useColorScheme, View } from 'react-native';
 import styled, { ThemeProvider } from 'styled-components';
 
-import { DarkTheme, LightTheme } from './source/theme';
+import { DarkTheme, LightTheme } from './source/model/theme';
 import { Navigator } from './source/view/Navigator';
 
 const Container = styled(View)`
@@ -17,18 +17,10 @@ const Container = styled(View)`
 const App = () => {
 	const isDarkMode = useColorScheme() === 'dark';
 
-	// const backgroundStyle = {
-	// 	backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-	// };
-
 	return (
 		<NavigationContainer>
 			<ThemeProvider theme={isDarkMode ? DarkTheme : LightTheme}>
 				<Container>
-					{/* <StatusBar
-						barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-						backgroundColor={backgroundStyle.backgroundColor}
-					/> */}
 					<Navigator />
 				</Container>
 			</ThemeProvider>
