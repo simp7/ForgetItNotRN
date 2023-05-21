@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { SCREEN_WIDTH } from "../model/constant";
@@ -15,17 +16,20 @@ const CardContainer = styled(View) <{ wrong?: boolean }>`
 `;
 
 const QuestionText = styled(PlainText)`
-	font-size: 17px;
+	text-align: center;
 `;
 
 interface QuestionCardProps {
 	question: string;
 }
+
 export const QuestionCard = (props: QuestionCardProps) => {
 	const { question } = props;
 	return (
-		<CardContainer>
-			<QuestionText>{question}</QuestionText>
-		</CardContainer>
+		<Shadow distance={3} style={{ borderRadius: 10 }} offset={[0, 1]}>
+			<CardContainer>
+				<QuestionText>{question}</QuestionText>
+			</CardContainer>
+		</Shadow>
 	);
 };

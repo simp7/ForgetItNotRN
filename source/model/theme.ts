@@ -6,7 +6,8 @@ export const color = {
 	lightGray: '#F0F0F0',
 	lime: '#6FFF57',
 	grapefruit: '#FF6969',
-	darkGray: '#333333',
+	darkGray: '#484848',
+	lightBlack: '#181818',
 	gray: '#A4A4A4',
 	semiDarkGray: '#666666',
 	redGray: '#F0E0E0',
@@ -22,13 +23,15 @@ const LightColors = {
 	background: color.white,
 	card: color.lightGray,
 	wrong: color.redGray,
+	cardText: color.black,
 };
 
 const DarkColors: Colors = {
 	...CommonColors,
-	background: color.black,
+	background: color.lightBlack,
 	card: color.darkGray,
 	wrong: color.redGray,
+	cardText: color.white,
 };
 
 export type Colors = typeof LightColors;
