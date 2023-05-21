@@ -30,6 +30,7 @@ module.exports = {
 	},
 	rules: {
 		curly: ['error', 'multi-line'],
+		'indent': ['error', 'tab'],
 		'jsx-quotes': ['error', 'prefer-double'],
 		'object-property-newline': [
 		  'error',
