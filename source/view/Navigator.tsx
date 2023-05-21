@@ -2,13 +2,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { useTheme } from "styled-components";
 
+import { MainView } from "./MainView";
+
 const Stack = createStackNavigator();
 
 export enum Route {
-  Main = 'Main'
+	Main = 'Main'
 }
 
-const Navigator = () => {
+export const Navigator = () => {
 
 	const { colors } = useTheme();
 
@@ -19,7 +21,7 @@ const Navigator = () => {
 				cardStyle: { backgroundColor: colors.background },
 			}}
 		>
-			<Stack.Screen name={Route.Main} />
+			<Stack.Screen name={Route.Main} component={MainView} />
 		</Stack.Navigator>
 	);
 };

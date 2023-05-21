@@ -29,6 +29,7 @@ module.exports = {
 		},
 	},
 	rules: {
+		"prettier/prettier": 0,
 		curly: ['error', 'multi-line'],
 		'indent': ['error', 'tab'],
 		'jsx-quotes': ['error', 'prefer-double'],
