@@ -11,6 +11,7 @@
 		"version": "react-native-version"
 	},
 	"dependencies": {
+		"@react-native-async-storage/async-storage": "^1.18.1",
 		"@react-navigation/native": "^6.1.6",
 		"@react-navigation/native-stack": "^6.9.12",
 		"@react-navigation/stack": "^6.3.16",
