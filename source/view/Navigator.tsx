@@ -1,4 +1,4 @@
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { TouchableOpacityProps } from "react-native";
 import { useTheme } from "styled-components";
@@ -9,8 +9,6 @@ import { AddView } from "./AddView";
 import { ChartView } from "./ChartView";
 import { MainView } from "./MainView";
 import { SettingView } from "./SettingView";
-
-const Stack = createStackNavigator();
 
 export enum Route {
 	Main = 'Main',
@@ -42,7 +40,7 @@ const ChartButton = (props: TouchableOpacityProps) => {
 	);
 };
 
-type NavProps = StackScreenProps<ParamList, Route.Main>;
+const Stack = createStackNavigator<ParamList>();
 
 export const Navigator = () => {
 	const { colors } = useTheme();
@@ -53,8 +51,8 @@ export const Navigator = () => {
 			screenOptions={{
 				cardStyle: { backgroundColor: colors.background },
 				headerStyle: { backgroundColor: colors.background },
-				headerLeftContainerStyle: { paddingHorizontal: 30 },
-				headerRightContainerStyle: { paddingHorizontal: 30 },
+				headerLeftContainerStyle: { paddingHorizontal: 35 },
+				headerRightContainerStyle: { paddingHorizontal: 35 },
 				headerTransparent: true,
 				headerShadowVisible: false,
 				gestureEnabled: false,
@@ -75,11 +73,17 @@ export const Navigator = () => {
 				name={Route.Setting}
 				component={SettingView}
 				options={{
-					gestureDirection: "horizontal-inverted",
+					gestureDirection: 'horizontal-inverted',
 				}}
 			/>
 			<Stack.Screen name={Route.Chart} component={ChartView} />
-			<Stack.Screen name={Route.Add} component={AddView} />
+			<Stack.Screen
+				name={Route.Add}
+				component={AddView}
+				options={{
+					gestureDirection: 'vertical-inverted',
+				}}
+			/>
 		</Stack.Navigator>
 	);
 };

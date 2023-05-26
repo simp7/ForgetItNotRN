@@ -1,5 +1,11 @@
 import * as React from "react";
-import Svg, { ClipPath, Defs, G, Path } from "react-native-svg";
+import Svg, {
+	Circle,
+	ClipPath,
+	Defs,
+	G,
+	Path,
+} from "react-native-svg";
 import { useTheme } from "styled-components";
 
 interface IconProps {
@@ -59,11 +65,30 @@ export const IconBack = (props: IconProps) => {
 					fill={tint}
 				/>
 			</G>
-			<Defs>
-				<ClipPath id="zyy5unjroa">
-					<Path fill="#fff" d="M0 0h40v40H0z" />
-				</ClipPath>
-			</Defs>
+		</Svg>
+	);
+};
+
+export const IconAdd = (props: IconProps) => {
+	const { colors } = useTheme();
+	const { size = 60, tint = colors.tint } = props;
+	return (
+		<Svg
+			width={size}
+			height={size}
+			viewBox="0 0 60 60"
+			fill="none"
+		>
+			<Circle
+				cx={size / 2}
+				cy={size / 2}
+				r={size / 2}
+				fill={tint}
+			/>
+			<Path
+				d="M27.5 28h-13a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h13a.5.5 0 0 1 .5.5v13a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 1 .5-.5h13a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-13a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v13a.5.5 0 0 1-.5.5z"
+				fill={colors.background}
+			/>
 		</Svg>
 	);
 };

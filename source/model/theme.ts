@@ -36,6 +36,7 @@ const DarkColors: Colors = {
 	wrong: color.redGray,
 	cardText: color.white,
 	placeHolder: color.gray,
+	tint: color.forgetMeNotDark,
 };
 
 export type Colors = typeof LightColors;

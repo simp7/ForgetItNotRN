@@ -31,6 +31,7 @@ const CardContainer = (props: CardContainerProps) => {
 
 const QuestionText = styled(PlainText)`
 	text-align: center;
+	font-size: 25px;
 `;
 
 interface QuestionCardProps {
