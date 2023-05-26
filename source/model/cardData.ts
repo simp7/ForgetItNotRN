@@ -10,6 +10,7 @@ export interface Data {
 
 export interface CardData {
 	question: Data;
-	answer: Data;
+	answer?: Data;
 	repeat: number;
+	lastReviewed: Date;
 }

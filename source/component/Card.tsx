@@ -1,12 +1,18 @@
 import React from "react";
+import { ViewProps } from "react-native";
 import { View } from "react-native";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
+import { CardData } from "../model/cardData";
 import { SCREEN_WIDTH } from "../model/constant";
-import { PlainText } from "./Basic";
+import { PlainText, PlainTextInput } from "./Basic";
 
-const CardContainer = styled(View) <{ wrong?: boolean }>`
+interface CardContainerProps extends ViewProps {
+	wrong?: boolean;
+}
+
+const Container = styled(View) <CardContainerProps>`
   background-color: ${p => p.wrong ? p.theme.colors.wrong : p.theme.colors.card};
 	align-items: center;
 	justify-content: center;
@@ -15,21 +21,40 @@ const CardContainer = styled(View) <{ wrong?: boolean }>`
 	border-radius: 10px;
 `;
 
+const CardContainer = (props: CardContainerProps) => {
+	return (
+		<Shadow distance={3} style={{ borderRadius: 10 }} offset={[0, 1]}>
+			<Container {...props} />
+		</Shadow>
+	);
+};
+
 const QuestionText = styled(PlainText)`
 	text-align: center;
 `;
 
 interface QuestionCardProps {
-	question: string;
+	cardData: CardData;
 }
 
 export const QuestionCard = (props: QuestionCardProps) => {
-	const { question } = props;
+	const { cardData: data } = props;
 	return (
-		<Shadow distance={3} style={{ borderRadius: 10 }} offset={[0, 1]}>
-			<CardContainer>
-				<QuestionText>{question}</QuestionText>
-			</CardContainer>
-		</Shadow>
+		<CardContainer>
+			<QuestionText>{data.question.data}</QuestionText>
+		</CardContainer>
+	);
+};
+
+interface QuestionCardInputProps {
+	setData: (data: string) => void;
+}
+
+export const QuestionInputCard = (props: QuestionCardInputProps) => {
+	const { setData } = props;
+	return (
+		<CardContainer>
+			<PlainTextInput size={17} onChangeText={setData} />
+		</CardContainer>
 	);
 };

@@ -1,9 +1,13 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
-  "compilerOptions": {
-    "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "lib": [
-      "es6"
-    ],
-  },
+	"extends": "@tsconfig/react-native/tsconfig.json",
+	"compilerOptions": {
+		"module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
+		"lib": [
+			"es6"
+		],
+		"types": [
+			"jest",
+			"@types/styled-components-react-native"
+		]
+	},
 }

@@ -8,11 +8,11 @@ import { Navigator } from './source/view/Navigator';
 
 const App = () => {
 	const isDarkMode = useColorScheme() === 'dark';
-	const theme = isDarkMode ? DarkTheme : LightTheme;
+	const theme = LightTheme;
 
 	return (
 		<NavigationContainer>
-			<ThemeProvider theme={LightTheme}>
+			<ThemeProvider theme={theme}>
 				<Navigator />
 				<StatusBar hidden />
 			</ThemeProvider>
