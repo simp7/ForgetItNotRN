@@ -93,6 +93,32 @@ export const IconAdd = (props: IconProps) => {
 	);
 };
 
+export const IconCheck = (props: IconProps) => {
+	const { colors } = useTheme();
+	const { size = 30, tint = colors.white } = props;
+	return (
+		<Svg
+			width={size}
+			height={size}
+			viewBox="0 0 30 30"
+			fill="none"
+			{...props}
+		>
+			<G clipPath="url(#oy3ae4sy3a)">
+				<Path
+					d="M29.303 4.903a2.38 2.38 0 0 0-3.365 0L10.794 20.048l-6.732-6.73a2.38 2.38 0 1 0-3.365 3.365l8.413 8.413a2.372 2.372 0 0 0 1.683.698c.609 0 1.219-.233 1.683-.698L29.303 8.27a2.38 2.38 0 0 0 0-3.366z"
+					fill={tint}
+				/>
+			</G>
+			<Defs>
+				<ClipPath id="oy3ae4sy3a">
+					<Path fill={tint} d="M0 0h30v30H0z" />
+				</ClipPath>
+			</Defs>
+		</Svg>
+	);
+};
+
 const Icon = (props: IconProps) => {
 	const { colors } = useTheme();
 	const { size = 40, tint = colors.tint } = props;

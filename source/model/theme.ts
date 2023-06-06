@@ -15,9 +15,9 @@ export const color = {
 };
 
 const CommonColors = {
+	...color,
 	tint: color.forgetMeNot,
 	highlight: color.forgetMeNotDark,
-
 };
 
 const LightColors = {
@@ -27,6 +27,7 @@ const LightColors = {
 	wrong: color.redGray,
 	cardText: color.black,
 	placeHolder: color.gray5,
+	blockText: color.white,
 };
 
 const DarkColors: Colors = {
@@ -37,6 +38,7 @@ const DarkColors: Colors = {
 	cardText: color.white,
 	placeHolder: color.gray,
 	tint: color.forgetMeNotDark,
+	blockText: color.white,
 };
 
 export type Colors = typeof LightColors;

@@ -7,14 +7,21 @@ interface TextProps {
 	size?: number;
 }
 
-export const PlainText = styled(Text) <TextProps>`
+const TextBase = styled(Text) <TextProps>`
 	font-size: ${p => p.size ?? 17}px;
-	font-family: 'NanumGothic';
 	font-weight: ${p => p.bold ? 'bold' : 'normal'};
+	font-family: 'NanumGothic';
+`;
+
+export const CardText = styled(TextBase)`
 	color: ${p => p.theme.colors.cardText};
 `;
 
-export const PlainTextInput = styled.TextInput.attrs(props => ({
+export const BlockText = styled(TextBase)`
+	color: ${p => p.theme.colors.blockText};
+`;
+
+export const CardTextInput = styled.TextInput.attrs(props => ({
 	placeholderTextColor: props.theme.colors.placeHolder,
 })) <TextProps>`
 	font-size: ${p => p.size ?? 17}px;

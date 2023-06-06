@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import { CardData } from "../model/cardData";
 import { SCREEN_WIDTH } from "../model/constant";
-import { PlainText, PlainTextInput } from "./Basic";
+import { CardText, CardTextInput } from "./Basic";
 
 interface CardContainerProps extends ViewProps {
 	wrong?: boolean;
@@ -29,7 +29,7 @@ const CardContainer = (props: CardContainerProps) => {
 	);
 };
 
-const QuestionText = styled(PlainText)`
+const QuestionText = styled(CardText)`
 	text-align: center;
 	font-size: 25px;
 `;
@@ -55,7 +55,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 	const { setData } = props;
 	return (
 		<CardContainer>
-			<PlainTextInput size={17} onChangeText={setData} />
+			<CardTextInput size={17} onChangeText={setData} />
 		</CardContainer>
 	);
 };
