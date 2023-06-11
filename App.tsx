@@ -1,9 +1,10 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
-import { RecoilRoot } from 'recoil';
+import { LogBox, StatusBar, useColorScheme } from 'react-native';
+import { RecoilRoot, useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
+import { rstDarkMode } from './source/model/setting';
 import { DarkTheme, LightTheme } from './source/model/theme';
 import { now } from './source/util/date';
 import { loadLastOpenedDate } from './source/util/storage';
@@ -19,25 +20,23 @@ const initialize = async () => {
 	}
 };
 
-const App = () => {
-	const isDarkMode = useColorScheme() === 'dark';
-	// const theme = isDarkMode ? DarkTheme : LightTheme;
-	const theme = LightTheme;
-	useEffect(() => {
-		initialize();
-		StatusBar.setBackgroundColor('transparent');
-		StatusBar.setTranslucent(true);
-		StatusBar.setBarStyle("dark-content");
-	}, []);
+const AppUI = () => {
+	const isDarkMode = useRecoilValueLoadable(rstDarkMode);
+	const theme = isDarkMode.contents ? DarkTheme : LightTheme;
 
+	return (
+		<ThemeProvider theme={theme}>
+			<Navigator />
+			<StatusBar hidden />
+		</ThemeProvider>
+	);
+};
+
+const App = () => {
 	return (
 		<RecoilRoot>
 			<NavigationContainer>
-				<ThemeProvider theme={theme}>
-					<StatusBar backgroundColor={theme.colors.background} />
-					<Navigator />
-					<StatusBar hidden />
-				</ThemeProvider>
+				<AppUI />
 			</NavigationContainer>
 		</RecoilRoot>
 	);
