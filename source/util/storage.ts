@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { DEFAULT_SETTING } from "../constant";
 import { CardData } from "../model/cardData";
 import { Setting } from "../model/setting";
 import { now } from "./date";
@@ -19,11 +20,7 @@ export const saveLastOpenedDate = async () => {
 
 export const loadSetting = async () => {
 	const raw = await AsyncStorage.getItem(StorageKey.setting) ?? "";
-	const setting: Setting = !!raw ?  JSON.parse(raw) : {
-		targetRate: 75,
-		darkMode: false,
-		notification: false,
-	};
+	const setting: Setting = !!raw ?  JSON.parse(raw) : DEFAULT_SETTING;
 	return setting;
 };
 
