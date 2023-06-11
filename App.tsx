@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import { LogBox, StatusBar, useColorScheme } from 'react-native';
-import { RecoilRoot, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { RecoilRoot, useRecoilValueLoadable } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 
 import { rstDarkMode } from './source/model/setting';
