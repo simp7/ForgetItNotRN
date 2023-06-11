@@ -9,30 +9,35 @@ enum StorageKey {
 	setting = 'SETTING',
 }
 
-export const getLastOpenedDate = async () => {
+export const loadLastOpenedDate = async () => {
 	return AsyncStorage.getItem(StorageKey.lastOpened) ?? "";
 };
 
-export const setLastOpenedDate = async () => {
+export const saveLastOpenedDate = async () => {
 	return AsyncStorage.setItem(StorageKey.lastOpened, now());
 };
 
-export const getSetting = async () => {
+export const loadSetting = async () => {
 	const raw = await AsyncStorage.getItem(StorageKey.setting) ?? "";
-	return JSON.parse(raw) as Setting;
+	const setting: Setting = !!raw ?  JSON.parse(raw) : {
+		targetRate: 75,
+		darkMode: false,
+		notification: false,
+	};
+	return setting;
 };
 
-export const setSetting = async (setting: Setting) => {
+export const saveSetting = async (setting: Setting) => {
 	return AsyncStorage.setItem(StorageKey.setting, JSON.stringify(setting));
 };
 
-export const getItem = async (date: string) => {
+export const loadItem = async (date: string) => {
 	const raw = await AsyncStorage.getItem(date);
 	const result: CardData[] = raw ? JSON.parse(raw) : [];
 	return result;
 };
 
-export const addItem = async (item: CardData) => {
-	const previous = await getItem(now());
+export const saveItem = async (item: CardData) => {
+	const previous = await loadItem(now());
 	return AsyncStorage.setItem(now(), JSON.stringify([...previous, item]));
 };

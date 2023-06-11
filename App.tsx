@@ -6,11 +6,11 @@ import { ThemeProvider } from 'styled-components';
 
 import { DarkTheme, LightTheme } from './source/model/theme';
 import { now } from './source/util/date';
-import { getLastOpenedDate } from './source/util/storage';
+import { loadLastOpenedDate } from './source/util/storage';
 import { Navigator } from './source/view/Navigator';
 
 const initialize = async () => {
-	const date = await getLastOpenedDate();
+	const date = await loadLastOpenedDate();
 	if (date === "") {
 		return;
 	}

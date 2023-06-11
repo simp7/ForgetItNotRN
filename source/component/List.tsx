@@ -97,7 +97,6 @@ export const TargetRateListItem = (props: TargetRateListItemProps) => {
 					value={tmp}
 					onValueChange={(a) => {
 						setTmp(a[0]);
-						console.log(a);
 					}}
 					minimumValue={60}
 					maximumValue={95}

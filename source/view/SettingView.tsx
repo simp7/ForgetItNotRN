@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { SpacerHeight } from "../component/Basic";
 import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
 import { BOTTOM_SAFE_HEIGHT } from "../model/constant";
+import { rstDarkMode, rstNotification, rstTargetRate } from "../model/setting";
 
 const Container = styled(View)`
 	padding-top: 130px;
@@ -15,9 +17,10 @@ const Container = styled(View)`
 `;
 
 export const SettingView = () => {
-	const [rate, setRate] = useState<number>(75);
-	const [dark, setDark] = useState<boolean>(false);
-	const [notify, setNotify] = useState<boolean>(false);
+	const [rate, setRate] = useRecoilState(rstTargetRate);
+	const [dark, setDark] = useRecoilState(rstDarkMode);
+	const [notify, setNotify] = useRecoilState(rstNotification);
+
 	return (
 		<Container>
 			<TargetRateListItem rate={rate} setRate={setRate} />
