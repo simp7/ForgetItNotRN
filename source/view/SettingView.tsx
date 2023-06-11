@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
+import styled from "styled-components";
+
+import { SpacerHeight } from "../component/Basic";
+import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
+import { BOTTOM_SAFE_HEIGHT } from "../model/constant";
+
+const Container = styled(View)`
+	padding-top: 130px;
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	padding-bottom: ${BOTTOM_SAFE_HEIGHT}px;
+`;
 
 export const SettingView = () => {
+	const [rate, setRate] = useState<number>(75);
+	const [dark, setDark] = useState<boolean>(false);
+	const [notify, setNotify] = useState<boolean>(false);
 	return (
-		<View />
+		<Container>
+			<TargetRateListItem rate={rate} setRate={setRate} />
+			<SpacerHeight size={20} />
+			<SwitchListItem title={'다크 모드'} value={dark} setValue={setDark} />
+			<SpacerHeight size={20} />
+			<SwitchListItem title={'알림'} value={notify} setValue={setNotify} />
+			<SpacerHeight size={20} />
+			<StandardListItem title={'버전'} content={'1.0.0'} />
+		</Container>
 	);
 };

@@ -17,6 +17,7 @@ export const color = {
 const CommonColors = {
 	...color,
 	tint: color.forgetMeNot,
+	subTint: color.forgetMeNotDark,
 	highlight: color.forgetMeNotDark,
 };
 
@@ -38,6 +39,7 @@ const DarkColors: Colors = {
 	cardText: color.white,
 	placeHolder: color.gray,
 	tint: color.forgetMeNotDark,
+	subTint: color.forgetMeNot,
 	blockText: color.white,
 };
 

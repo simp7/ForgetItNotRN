@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
 import styled from "styled-components/native";
 
 interface TextProps {
@@ -38,3 +38,11 @@ export const BasicButton = (props: TouchableOpacityProps) => {
 		/>
 	);
 };
+
+export const SpacerHeight = styled(View) <{ size: number }>`
+	height: ${p => p.size}px;
+`;
+
+export const SpacerWidth = styled(View) <{ size: number }>`
+	width: ${p => p.size}px;
+`;

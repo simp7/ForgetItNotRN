@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import {
-	Animated,
-	Easing,
-	SwitchProps,
-	View,
-	ViewProps,
-} from 'react-native';
-import { Shadow } from 'react-native-shadow-2';
-import { useTheme } from 'styled-components';
+import { Animated, Easing, SwitchProps, View } from 'react-native';
+import styled from 'styled-components';
 
 import { BasicButton } from './Basic';
 
@@ -16,16 +9,31 @@ interface Props extends SwitchProps {
 	value?: boolean;
 	disabled?: boolean;
 }
+const ThumbBase = styled(Animated.View)`
+	height: 30px;
+	width: 30px;
+	border-radius: 15px;
+	background-color: ${p => p.theme.colors.white};
+`;
+
+const Place = styled(View) <{ isOn?: boolean }>`
+	height: 32px;
+	width: 64px;
+	border-radius: 16px;
+	flex-direction: row;
+	align-items: center;
+	align-content: center;
+	background-color: ${p => p.isOn ? p.theme.colors.subTint : p.theme.colors.gray};
+`;
 
 export const Switch = (props: Props) => {
 	const { onValueChange, value = false, disabled = false } = props;
 
-	const theme = useTheme();
 	const [aniValue] = useState(new Animated.Value(0));
 
 	const moveSwitchToggle = aniValue.interpolate({
 		inputRange: [0, 1],
-		outputRange: [2, 32],
+		outputRange: [1, 33],
 	});
 
 	Animated.timing(aniValue, {
@@ -39,56 +47,11 @@ export const Switch = (props: Props) => {
 		onValueChange(value);
 	};
 
-	const WhiteCircle = () => {
-		const { colors } = useTheme();
-		return (
-			<Shadow
-				style={{
-					shadowColor: colors.black,
-					shadowOpacity: 0.3,
-					shadowRadius: 5,
-				}}
-			>
-				<Animated.View
-					style={{
-						height: 24,
-						width: 24,
-						borderRadius: 12,
-						backgroundColor: theme.colors.white,
-						transform: [{ translateX: moveSwitchToggle }],
-					}}
-				/>
-			</Shadow>
-		);
-	};
-
-	const Place = (props: ViewProps) => {
-		return (
-			<View
-				style={{
-					height: 30,
-					width: 64,
-					borderRadius: 15,
-					flexDirection: 'row',
-					alignItems: 'center',
-					alignContent: 'center',
-					backgroundColor: value
-						? theme.colors.forgetMeNotDark
-						: theme.colors.gray,
-				}}
-			>
-				{props.children}
-			</View>
-		);
-	};
-
 	return (
 		<BasicButton onPress={onPress} disabled={disabled}>
-			<View style={{ flexDirection: 'row' }}>
-				<Place>
-					<WhiteCircle />
-				</Place>
-			</View>
+			<Place isOn={value}>
+				<ThumbBase style={{ transform: [{ translateX: moveSwitchToggle }] }} />
+			</Place>
 		</BasicButton>
 	);
 };

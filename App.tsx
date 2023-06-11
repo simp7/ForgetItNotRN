@@ -21,15 +21,20 @@ const initialize = async () => {
 
 const App = () => {
 	const isDarkMode = useColorScheme() === 'dark';
+	// const theme = isDarkMode ? DarkTheme : LightTheme;
 	const theme = LightTheme;
 	useEffect(() => {
 		initialize();
+		StatusBar.setBackgroundColor('transparent');
+		StatusBar.setTranslucent(true);
+		StatusBar.setBarStyle("dark-content");
 	}, []);
 
 	return (
 		<RecoilRoot>
 			<NavigationContainer>
 				<ThemeProvider theme={theme}>
+					<StatusBar backgroundColor={theme.colors.background} />
 					<Navigator />
 					<StatusBar hidden />
 				</ThemeProvider>

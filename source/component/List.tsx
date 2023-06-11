@@ -1,3 +1,4 @@
+import { Slider } from "@miblanchard/react-native-slider";
 import React, { useState } from "react";
 import { View } from "react-native";
 import styled, { useTheme } from "styled-components";
@@ -33,10 +34,10 @@ export const StandardListItem = (props: StandardListItemProps) => {
 	const { title, content } = props;
 	return (
 		<StandardContainer>
-			<BlockText size={20}>
+			<BlockText size={20} bold>
 				{title}
 			</BlockText>
-			<BlockText size={20}>
+			<BlockText size={20} bold>
 				{content}
 			</BlockText>
 		</StandardContainer>
@@ -52,21 +53,25 @@ export const SwitchListItem = (props: SwitchListItemProps) => {
 	const { title, value, setValue } = props;
 	return (
 		<StandardContainer>
-			<BlockText size={20}>
+			<BlockText size={20} bold>
 				{title}
 			</BlockText>
-			<Switch value={value} onValueChange={setValue} />
+			<Switch value={value} onValueChange={(value) => setValue(!value)} />
 		</StandardContainer>
 	);
 };
 
 const TargetRateContainer = styled(ContainerBase)`
 	height: 120px;
+	padding-top: 27.5px;
+	padding-bottom: 12px;
+	justify-content: space-between;
 `;
 
 const SpaceAround = styled(View)`
 	flex-direction: row;
 	justify-content: space-between;
+	padding: 0 20px;
 `;
 
 interface TargetRateListItemProps {
@@ -84,12 +89,27 @@ export const TargetRateListItem = (props: TargetRateListItemProps) => {
 	return (
 		<TargetRateContainer>
 			<SpaceAround>
-				<BlockText>{'목표 성취율'}</BlockText>
-				<BlockText>{`${tmp}%`}</BlockText>
+				<BlockText size={20} bold>{'목표 성취율'}</BlockText>
+				<BlockText size={20} bold>{`${tmp}%`}</BlockText>
 			</SpaceAround>
 			<SpaceAround>
-				<BasicButton onPress={() => setRate(tmp)} disabled={disabled}>
-					<IconCheck tint={disabled ? colors.gray : colors.white} />
+				<Slider
+					value={tmp}
+					onValueChange={(a) => {
+						setTmp(a[0]);
+						console.log(a);
+					}}
+					minimumValue={60}
+					maximumValue={95}
+					step={5}
+					thumbTintColor={colors.white}
+					maximumTrackTintColor={colors.gray}
+					minimumTrackTintColor={colors.subTint}
+					trackStyle={{ width: 250, height: 9, borderRadius: 4 }}
+					thumbStyle={{ width: 30, height: 30, borderRadius: 15 }}
+				/>
+				<BasicButton onPress={() => setRate(tmp)} disabled={disabled} style={{ paddingRight: 5 }}>
+					<IconCheck tint={disabled ? colors.gray : colors.subTint} />
 				</BasicButton>
 			</SpaceAround>
 		</TargetRateContainer>
