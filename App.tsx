@@ -6,16 +6,16 @@ import { ThemeProvider } from 'styled-components';
 
 import { rstDarkMode } from './source/model/setting';
 import { DarkTheme, LightTheme } from './source/model/theme';
-import { now } from './source/util/date';
+import { formatDate, now } from './source/util/date';
 import { loadLastOpenedDate } from './source/util/storage';
 import { Navigator } from './source/view/Navigator';
 
 const initialize = async () => {
 	const date = await loadLastOpenedDate();
-	if (date === "") {
+	if (!!date) {
 		return;
 	}
-	if (date !== now()) {
+	if (date !== formatDate(now())) {
 		return;
 	}
 };

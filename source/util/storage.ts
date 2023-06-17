@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Dayjs } from "dayjs";
 
 import { DEFAULT_SETTING } from "../constant";
 import { CardData, Core } from "../model/cardData";
 import { Setting } from "../model/setting";
-import { now } from "./date";
+import { formatDate, now } from "./date";
 
 enum StorageKey {
 	lastOpened = 'LAST_OPENED',
@@ -16,11 +17,24 @@ export const loadLastOpenedDate = async () => {
 };
 
 export const saveLastOpenedDate = async () => {
-	return AsyncStorage.setItem(StorageKey.lastOpened, now());
+	return AsyncStorage.setItem(StorageKey.lastOpened, formatDate(now()));
+};
+
+const getCardKey = (date: Dayjs) => 'card' + formatDate(date);
+
+export const loadCardData = async (date: Dayjs) => {
+	const raw = await AsyncStorage.getItem(getCardKey(date)) ?? "";
+	return JSON.parse(raw) as CardData[];
+};
+
+export const saveCardData = async (date: Dayjs, data: CardData[]) => {
+	return AsyncStorage.setItem(getCardKey(date), JSON.stringify(data));
 };
 
 // TODO: implement this.
 export const loadCore = async () => {
+	const raw = await AsyncStorage.getItem(StorageKey.core) ?? "";
+
 	return JSON.parse(await AsyncStorage.getItem(StorageKey.core) ?? "") as Core;
 };
 
@@ -46,6 +60,6 @@ export const loadItem = async (date: string) => {
 };
 
 export const saveItem = async (item: CardData) => {
-	const previous = await loadItem(now());
-	return AsyncStorage.setItem(now(), JSON.stringify([...previous, item]));
+	const previous = await formatDate(now());
+	return AsyncStorage.setItem(formatDate(now()), JSON.stringify([...previous, item]));
 };

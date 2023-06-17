@@ -1,4 +1,10 @@
+import dayjs from 'dayjs';
+
+export const formatDate = (date: dayjs.Dayjs) => {
+	return date.format('YYYY-MM-DD');
+};
+
 export const now = () => {
-	const date = new Date(Date.now());
-	return date.toDateString();
+	const date = dayjs();
+	return date;
 };
