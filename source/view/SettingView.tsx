@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { SpacerHeight } from "../component/Basic";
 import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
-import { BOTTOM_SAFE_HEIGHT } from "../model/constant";
+import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { rstDarkMode, rstNotification, rstTargetRate } from "../model/setting";
 
 const Container = styled(View)`

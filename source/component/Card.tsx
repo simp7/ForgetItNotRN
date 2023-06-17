@@ -5,7 +5,7 @@ import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { CardData } from "../model/cardData";
-import { SCREEN_WIDTH } from "../model/constant";
+import { SCREEN_WIDTH } from "../constant";
 import { CardText, CardTextInput } from "./Basic";
 
 interface CardContainerProps extends ViewProps {

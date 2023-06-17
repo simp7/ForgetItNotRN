@@ -4,7 +4,7 @@ import { View } from "react-native";
 import styled, { useTheme } from "styled-components";
 
 import { IconCheck } from "../asset/icon";
-import { SCREEN_WIDTH } from "../model/constant";
+import { SCREEN_WIDTH } from "../constant";
 import { BasicButton, BlockText } from "./Basic";
 import { Switch } from "./Switch";
 
