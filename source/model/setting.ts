@@ -16,12 +16,12 @@ enum key {
 	notification = 'SettingNotification',
 }
 
-export const rstDefaultSetting = selector<Setting>({
+const rstDefaultSetting = selector<Setting>({
 	key: key.default,
 	get: loadSetting,
 });
 
-export const rstSetting = atom<Setting>({
+const rstSetting = atom<Setting>({
 	key: key.object,
 	default: rstDefaultSetting,
 	effects: [({ onSet }) => onSet(saveSetting)],

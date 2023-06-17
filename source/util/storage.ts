@@ -1,12 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { DEFAULT_SETTING } from "../constant";
-import { CardData } from "../model/cardData";
+import { CardData, Core } from "../model/cardData";
 import { Setting } from "../model/setting";
 import { now } from "./date";
 
 enum StorageKey {
 	lastOpened = 'LAST_OPENED',
+	core = 'CORE',
 	setting = 'SETTING',
 }
 
@@ -16,6 +17,16 @@ export const loadLastOpenedDate = async () => {
 
 export const saveLastOpenedDate = async () => {
 	return AsyncStorage.setItem(StorageKey.lastOpened, now());
+};
+
+// TODO: implement this.
+export const loadCore = async () => {
+	return JSON.parse(await AsyncStorage.getItem(StorageKey.core) ?? "") as Core;
+};
+
+// TODO: implement this.
+export const saveCore = async () => {
+
 };
 
 export const loadSetting = async () => {
