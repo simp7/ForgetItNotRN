@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Keyboard, TouchableOpacityProps, TouchableWithoutFeedback, View } from "react-native";
 import styled from "styled-components";
 
+import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { QuestionInputCard } from "../component/Card";
 import { CardData, InputType } from "../model/cardData";
@@ -16,6 +17,8 @@ const Container = styled(View)`
 
 const Button = styled(BasicButton) <{ height?: number }>`
 	background-color: ${p => p.theme.colors.tint};
+	justify-content: center;
+	align-items: center;
 	height: 80px;
 	width: 140px;
 	border-radius: 10px;
@@ -24,6 +27,7 @@ const Button = styled(BasicButton) <{ height?: number }>`
 const CameraButton = (props: TouchableOpacityProps) => {
 	return (
 		<Button {...props}>
+			<CameraIcon />
 		</Button>
 	);
 };
@@ -31,6 +35,7 @@ const CameraButton = (props: TouchableOpacityProps) => {
 const GalleryButton = (props: TouchableOpacityProps) => {
 	return (
 		<Button {...props}>
+			<GalleryIcon />
 		</Button>
 	);
 

@@ -35,7 +35,6 @@ export const CardTextInput = styled(TextInput).attrs(p => ({
 	font-size: ${p => p.size ?? 17}px;
 	font-family: 'NanumGothic';
 	font-weight: ${p => p.bold ? 'bold' : 'normal'};
-	padding: 10px 10px;
 	color: ${p => p.theme.colors.cardText};
 `;
 

@@ -119,6 +119,55 @@ export const IconCheck = (props: IconProps) => {
 	);
 };
 
+export const CameraIcon = (props: IconProps) => {
+	const { colors } = useTheme();
+	const { size = 50, tint = colors.white } = props;
+	return (
+		<Svg
+			width={size}
+			height={size}
+			viewBox="0 0 50 50"
+			fill={'none'}
+		>
+			<G clipPath="url(#jbfuqitqsa)">
+				<Path
+					d="M33.064 28.374c0 4.447-3.617 8.064-8.064 8.064s-8.062-3.617-8.062-8.064S20.553 20.31 25 20.31c4.447 0 8.064 3.619 8.064 8.064zM50 16.924v22.903a5.528 5.528 0 0 1-5.529 5.529H5.53A5.529 5.529 0 0 1 0 39.827V16.924a5.529 5.529 0 0 1 5.529-5.53h6.8V9.483a4.838 4.838 0 0 1 4.838-4.838h15.666a4.838 4.838 0 0 1 4.838 4.838v1.912h6.8A5.531 5.531 0 0 1 50 16.924zm-12.79 11.45c0-6.733-5.477-12.21-12.21-12.21-6.731 0-12.209 5.477-12.209 12.21 0 6.733 5.478 12.21 12.209 12.21 6.733 0 12.21-5.477 12.21-12.21z"
+					fill={tint}
+				/>
+			</G>
+			<Defs>
+				<ClipPath id="jbfuqitqsa">
+					<Path fill={tint} d="M0 0h50v50H0z" />
+				</ClipPath>
+			</Defs>
+		</Svg>
+	);
+};
+
+export const GalleryIcon = (props: IconProps) => {
+	const { colors } = useTheme();
+	const { size = 50, tint = colors.white } = props;
+	return (
+		<Svg
+			width={size}
+			height={size}
+			viewBox="0 0 50 50"
+			fill={'none'}
+		>
+			<G clipPath="url(#fn0kwny9ba)" fill={tint}>
+				<Path d="M25.904 39.536a6.325 6.325 0 0 1-3.97-1.48l-7.332-6.458a3.229 3.229 0 0 0-4.171-.202L.004 39.065v4.978a2.422 2.422 0 0 0 2.489 2.556h36.932c1.48 0 2.96-1.076 2.96-2.556v-13.05L29.133 38.66a6.122 6.122 0 0 1-3.23.875zM25.366 26.485a2.96 2.96 0 1 0 0-5.92 2.96 2.96 0 0 0 0 5.92z" />
+				<Path d="M49.382 8.658a2.49 2.49 0 0 0-1.817-1.01L10.902 3.412a3.094 3.094 0 0 0-2.018.538 3.094 3.094 0 0 0-1.01 1.749l-.605 5.247h32.157a5.785 5.785 0 0 1 5.65 5.584v23.747c0-.135.606-.27.875-.538a2.288 2.288 0 0 0 .874-1.817l3.162-27.312a2.625 2.625 0 0 0-.605-1.951z" />
+				<Path d="M39.425 13.636H2.493c-1.48 0-2.49 1.413-2.49 2.893V35.7l8.88-6.458a5.92 5.92 0 0 1 7.468.336l7.4 6.459a3.43 3.43 0 0 0 3.969.336l14.665-8.544V16.53a3.094 3.094 0 0 0-2.96-2.893zm-14.06 15.54a5.65 5.65 0 1 1 0-11.302 5.65 5.65 0 0 1 0 11.302z" />
+			</G>
+			<Defs>
+				<ClipPath id="fn0kwny9ba">
+					<Path fill={tint} d="M0 0h50v50H0z" />
+				</ClipPath>
+			</Defs>
+		</Svg>
+	);
+};
+
 const Icon = (props: IconProps) => {
 	const { colors } = useTheme();
 	const { size = 40, tint = colors.tint } = props;

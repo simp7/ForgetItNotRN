@@ -59,7 +59,8 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 				size={17}
 				onChangeText={setData}
 				multiline
-				textAlign={'left'}
+				textAlign={'center'}
+				verticalAlign={'middle'}
 			/>
 		</CardContainer>
 	);
