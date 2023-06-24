@@ -81,7 +81,7 @@ export const Navigator = () => {
 				name={Route.Add}
 				component={AddView}
 				options={{
-					gestureDirection: 'vertical-inverted',
+					gestureDirection: 'vertical',
 				}}
 			/>
 		</Stack.Navigator>

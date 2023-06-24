@@ -30,9 +30,12 @@ export const BlockText = styled(TextBase)`
 export const CardTextInput = styled(TextInput).attrs(p => ({
 	placeholderTextColor: p.theme.colors.placeHolder,
 })) <TextProps>`
+	flex: 1;
+	align-self: stretch;
 	font-size: ${p => p.size ?? 17}px;
 	font-family: 'NanumGothic';
 	font-weight: ${p => p.bold ? 'bold' : 'normal'};
+	padding: 10px 10px;
 	color: ${p => p.theme.colors.cardText};
 `;
 

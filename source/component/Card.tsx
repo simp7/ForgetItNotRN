@@ -55,7 +55,12 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 	const { setData } = props;
 	return (
 		<CardContainer>
-			<CardTextInput size={17} onChangeText={setData} />
+			<CardTextInput
+				size={17}
+				onChangeText={setData}
+				multiline
+				textAlign={'left'}
+			/>
 		</CardContainer>
 	);
 };
