@@ -1,12 +1,8 @@
 module.exports = {
-	env: {
-		es6: true,
-		node: true,
-		jest: true,
-	},
+	root: true,
 	extends: [
-		'plugin:react/recommended',
 		'plugin:react-hooks/recommended',
+		'plugin:react/recommended',
 		'plugin:@typescript-eslint/recommended',
 	],
 	parser: "@typescript-eslint/parser",
