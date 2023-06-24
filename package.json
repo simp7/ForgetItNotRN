@@ -8,7 +8,8 @@
 		"lint": "eslint .",
 		"start": "react-native start",
 		"test": "jest",
-		"version": "react-native-version"
+		"version": "react-native-version",
+		"pod": "cd ios && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install"
 	},
 	"dependencies": {
 		"@miblanchard/react-native-slider": "^2.3.1",
