@@ -1090,6 +1090,14 @@ PODS:
     - React-Codegen
     - React-RCTFabric
     - ReactCommon/turbomodule/core
+  - RNPermissions (3.8.0):
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-Codegen
+    - React-RCTFabric
+    - ReactCommon/turbomodule/core
   - RNReanimated (3.3.0):
     - DoubleConversion
     - FBLazyVector
@@ -1229,6 +1237,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -1341,6 +1350,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1407,6 +1418,7 @@ SPEC CHECKSUMS:
   ReactCommon: 517b45ed311ba9146aa8b55a8ef6617425f7448e
   RNCAsyncStorage: ddc4ee162bfd41b0d2c68bf2d95acd81dd7f1f93
   RNGestureHandler: d8224aad6d7081834ae6e6cf925397059485b69e
+  RNPermissions: 455f744d120197e178602f7a69a1bd7c7de345a7
   RNReanimated: 3ce2aec600ad2ef47a5927abf2742329d7a190e9
   RNScreens: 9d61ea7595ba14c8ef38c010e1e918bcc51fc5c3
   RNSVG: a9204714b832d82b483b0cbaee9e675646426b8d
