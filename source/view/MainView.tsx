@@ -7,7 +7,7 @@ import { IconAdd } from "../asset/icon";
 import { BasicButton } from "../component/Basic";
 import { QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
-import { InputType } from "../model/cardData";
+import { CardData, InputType } from "../model/cardData";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -27,16 +27,18 @@ const AddButtonContainer = styled(BasicButton)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
+	const data: CardData = {
+		question: {
+			type: InputType.Text,
+			data: "ok",
+		},
+		repeat: 1,
+		lastReviewed: '',
+	};
 	return (
 		<Container>
 			<QuestionCard
-				cardData={{
-					question: {
-						type: InputType.Text, data: "ok",
-					},
-					repeat: 1,
-					lastReviewed: new Date(Date.now()),
-				}}
+				cardData={data}
 			/>
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />

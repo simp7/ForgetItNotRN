@@ -1,6 +1,12 @@
 import React from "react";
-import { Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
-import styled from "styled-components/native";
+import {
+	Text,
+	TextInput,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	View,
+} from "react-native";
+import styled from "styled-components";
 
 interface TextProps {
 	bold?: boolean;
@@ -21,8 +27,8 @@ export const BlockText = styled(TextBase)`
 	color: ${p => p.theme.colors.blockText};
 `;
 
-export const CardTextInput = styled.TextInput.attrs(props => ({
-	placeholderTextColor: props.theme.colors.placeHolder,
+export const CardTextInput = styled(TextInput).attrs(p => ({
+	placeholderTextColor: p.theme.colors.placeHolder,
 })) <TextProps>`
 	font-size: ${p => p.size ?? 17}px;
 	font-family: 'NanumGothic';
@@ -45,4 +51,8 @@ export const SpacerHeight = styled(View) <{ size: number }>`
 
 export const SpacerWidth = styled(View) <{ size: number }>`
 	width: ${p => p.size}px;
+`;
+
+export const Spacer = styled(View)`
+	flex: 1;
 `;

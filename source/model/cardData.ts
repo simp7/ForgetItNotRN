@@ -16,11 +16,10 @@ export interface CardData {
 	question: Data;
 	answer?: Data;
 	repeat: number;
-	lastReviewed: Date;
+	lastReviewed: string;
 }
 
 export interface Core {
-	lastOpenedDate?: Date;
 	period: number[];
 	remained: Data[];
 	wrong: Data[];
