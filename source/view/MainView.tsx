@@ -6,8 +6,8 @@ import styled from "styled-components";
 import { IconAdd } from "../asset/icon";
 import { BasicButton } from "../component/Basic";
 import { QuestionCard } from "../component/Card";
-import { InputType } from "../model/cardData";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
+import { InputType } from "../model/cardData";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`

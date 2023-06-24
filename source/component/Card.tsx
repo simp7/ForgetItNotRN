@@ -4,8 +4,8 @@ import { View } from "react-native";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
-import { CardData } from "../model/cardData";
 import { SCREEN_WIDTH } from "../constant";
+import { CardData } from "../model/cardData";
 import { CardText, CardTextInput } from "./Basic";
 
 interface CardContainerProps extends ViewProps {

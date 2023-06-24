@@ -13,7 +13,7 @@
 	},
 	"dependencies": {
 		"@miblanchard/react-native-slider": "^2.3.1",
-		"@react-native-async-storage/async-storage": "^1.18.1",
+		"@react-native-async-storage/async-storage": "^1.18.2",
 		"@react-navigation/native": "^6.1.6",
 		"@react-navigation/native-stack": "^6.9.12",
 		"@react-navigation/stack": "^6.3.16",
@@ -36,7 +36,7 @@
 		"@babel/runtime": "^7.20.0",
 		"@react-native/eslint-config": "^0.72.2",
 		"@react-native/metro-config": "^0.72.6",
-		"@tsconfig/react-native": "^2.0.2",
+		"@tsconfig/react-native": "^3.0.0",
 		"@types/metro-config": "^0.76.3",
 		"@types/react": "^18.0.24",
 		"@types/react-test-renderer": "^18.0.0",
