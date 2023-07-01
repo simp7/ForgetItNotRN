@@ -61,8 +61,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-  <string>YOUR TEXT</string>
+	<string>Use for putting question data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-  <string>YOUR TEXT</string>
+	<string>Use for putting question data</string>
 </dict>
 </plist>

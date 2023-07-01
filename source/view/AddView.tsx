@@ -7,6 +7,7 @@ import { BasicButton, SpacerHeight } from "../component/Basic";
 import { QuestionInputCard } from "../component/Card";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
+import { pictureFromCamera, pictureFromGallery } from "../util/image";
 
 const Container = styled(View)`
 	flex: 1;
@@ -66,8 +67,8 @@ export const AddView = () => {
 				/>
 				<SpacerHeight size={40} />
 				<ButtonRow>
-					<CameraButton />
-					<GalleryButton />
+					<CameraButton onPress={pictureFromCamera} />
+					<GalleryButton onPress={pictureFromGallery} />
 				</ButtonRow>
 			</Container>
 		</TouchableWithoutFeedback>

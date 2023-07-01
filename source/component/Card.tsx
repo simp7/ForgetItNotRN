@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
-import { SCREEN_WIDTH } from "../constant";
+import { CARD_HEIGHT, CARD_WIDTH } from "../constant";
 import { CardData } from "../model/cardData";
 import { CardText, CardTextInput } from "./Basic";
 
@@ -16,8 +16,8 @@ const Container = styled(View) <CardContainerProps>`
   background-color: ${p => p.wrong ? p.theme.colors.wrong : p.theme.colors.card};
 	align-items: center;
 	justify-content: center;
-	width: ${SCREEN_WIDTH - 2 * 30}px;
-	height: 500px;
+	width: ${CARD_WIDTH}px;
+	height: ${CARD_HEIGHT}px;
 	border-radius: 10px;
 `;
 
