@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs';
 import { ImageOrVideo, openCamera, openPicker, Options } from "react-native-image-crop-picker";
 
-import { CARD_HEIGHT, CARD_WIDTH, IMAGE_QUALITY, isIOS } from "../constant";
+import { CARD_HEIGHT, CARD_WIDTH, IMAGE_QUALITY } from "../constant";
 import { now } from './date';
 import { getCameraPermission, getGalleryPermission } from "./permission";
 
@@ -28,11 +28,7 @@ const getImageFromGallery = async () => {
 export const saveLocalFs = async (image: ImageOrVideo) => {
 	const path = `${RNFS.DocumentDirectoryPath}/${now().unix()}.jpg`.replace(/:/g, '-');
 	try {
-		if (isIOS) {
-			await RNFS.moveFile(image.path, path);
-		} else {
-			await RNFS.copyFileAssets(image.path, path);
-		}
+		await RNFS.moveFile(image.path, path);
 		return path;
 	} catch {
 		console.error('error in file system');

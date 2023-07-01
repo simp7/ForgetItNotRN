@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { QuestionInputCard } from "../component/Card";
+import { DEFAULT_CARD_DATA } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
 import { pictureFromCamera, pictureFromGallery } from "../util/image";
@@ -66,14 +67,7 @@ const ButtonRow = styled(View)`
 `;
 
 export const AddView = () => {
-	const [data, setData] = useState<CardData>({
-		repeat: 0,
-		lastReviewed: formatDate(now()),
-		question: {
-			type: InputType.Text,
-			data: '',
-		},
-	});
+	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
 
 	const setImage = (url: string) => {
 		setData({

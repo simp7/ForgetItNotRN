@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
+import Animated from "react-native-reanimated";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
@@ -70,8 +71,6 @@ interface QuestionCardInputProps {
 export const QuestionInputCard = (props: QuestionCardInputProps) => {
 	const { data, setData } = props;
 	const ref = useRef<TextInput>(null);
-	console.log(ref?.current?.isFocused());
-	console.log(ref?.current?.focus());
 
 	return (
 		<CardContainer onPress={() => ref?.current?.focus()}>

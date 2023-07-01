@@ -1,10 +1,12 @@
 import React from "react";
 import { View } from "react-native";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { SpacerHeight } from "../component/Basic";
 import { StandardListItem } from "../component/List";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
+import { rstCore } from "../model/cardData";
 
 const Container = styled(View)`
 	padding-top: 130px;
@@ -15,6 +17,7 @@ const Container = styled(View)`
 `;
 
 export const ChartView = () => {
+	const core = useRecoilValue(rstCore);
 	return (
 		<Container>
 			<StandardListItem title={'현재 성취율'} content={'1.0.0'} />
@@ -23,7 +26,7 @@ export const ChartView = () => {
 			<SpacerHeight size={20} />
 			<StandardListItem title={'최장 연속 기록'} content={'1.0.0'} />
 			<SpacerHeight size={20} />
-			<StandardListItem title={'주기'} content={'1.0.0'} />
+			<StandardListItem title={'주기'} content={core.period.join(', ')} />
 		</Container>
 	);
 };

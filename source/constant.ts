@@ -1,6 +1,6 @@
 import { Dimensions, Platform } from "react-native";
 
-import { Core } from "./model/cardData";
+import { CardData, Core, InputType } from "./model/cardData";
 import { Setting } from "./model/setting";
 
 export const isIOS = Platform.OS === 'ios';
@@ -26,4 +26,13 @@ export const DEFAULT_SETTING: Setting = {
 	targetRate: 75,
 	darkMode: false,
 	notification: false,
+};
+
+export const DEFAULT_CARD_DATA: CardData = {
+	question: {
+		type: InputType.Text,
+		data: '',
+	},
+	repeat: 0,
+	lastReviewed: '',
 };
