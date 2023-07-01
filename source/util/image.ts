@@ -5,7 +5,7 @@ import { CARD_HEIGHT, CARD_WIDTH, IMAGE_QUALITY, isIOS } from "../constant";
 import { now } from './date';
 import { getCameraPermission, getGalleryPermission } from "./permission";
 
-const pictureFrom = (openner: (options: Options) => Promise<ImageOrVideo>) => {
+const getImageBy = (openner: (options: Options) => Promise<ImageOrVideo>) => {
 	return openner({ 
 		mediaType: 'any', 
 		cropping: true,
@@ -17,25 +17,19 @@ const pictureFrom = (openner: (options: Options) => Promise<ImageOrVideo>) => {
 
 const getImageFromCamera = async () => {
 	await getCameraPermission();
-	return pictureFrom(openCamera);
+	return getImageBy(openCamera);
 };
 
 const getImageFromGallery = async () => {
 	await getGalleryPermission();
-	return pictureFrom(openPicker);
+	return getImageBy(openPicker);
 };
 
 export const saveLocalFs = async (image: ImageOrVideo) => {
-	const path = `${RNFS.DocumentDirectoryPath}/${now().toISOString()}.jpg`.replace(/:/g, '-');
+	const path = `${RNFS.DocumentDirectoryPath}/${now().unix()}.jpg`.replace(/:/g, '-');
 	try {
 		if (isIOS) {
-			if (image.mime.startsWith('image')) {
-				await RNFS.copyAssetsFileIOS(
-					image.path, path, IMAGE_QUALITY * CARD_WIDTH, IMAGE_QUALITY * CARD_HEIGHT,
-				);
-			} else {
-				await RNFS.copyAssetsVideoIOS(image.path, path);
-			}
+			await RNFS.moveFile(image.path, path);
 		} else {
 			await RNFS.copyFileAssets(image.path, path);
 		}

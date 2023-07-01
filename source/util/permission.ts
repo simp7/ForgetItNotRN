@@ -12,12 +12,11 @@ const checkAndRequest = async (permission: Permission) => {
 	return check(permission).then(async result => {
 		switch (result) {
 		case RESULTS.DENIED:
-			console.log(
-				'The permission has not been requested / is denied but requestable',
-			);
+			console.log('The permission has not been requested / is denied but requestable');
 			return request(permission);
 		case RESULTS.GRANTED:
 			console.log('The permission is granted');
+			break;
 		case RESULTS.UNAVAILABLE:
 			console.log(
 				'This feature is not available (on this device / in this context)',
