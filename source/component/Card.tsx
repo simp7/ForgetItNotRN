@@ -1,12 +1,19 @@
 import React, { useRef } from "react";
 import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
 import { View } from "react-native";
+import FastImage from "react-native-fast-image";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { CARD_HEIGHT, CARD_WIDTH } from "../constant";
-import { CardData } from "../model/cardData";
+import { CardData, InputType } from "../model/cardData";
 import { CardText, CardTextInput } from "./Basic";
+
+const CardImage = styled(FastImage)`
+	width: ${CARD_WIDTH}px;
+	height: ${CARD_HEIGHT}px;
+	border-radius: 10px;
+`;
 
 interface CardContainerProps extends ViewProps {
 	wrong?: boolean;
@@ -48,32 +55,38 @@ export const QuestionCard = (props: QuestionCardProps) => {
 	const { cardData: data } = props;
 	return (
 		<CardContainer>
-			<QuestionText>{data.question.data}</QuestionText>
+			{data.question.type === InputType.Text ? <QuestionText>{data.question.data}</QuestionText> : (
+				<CardImage source={{ uri: data.question.data }} />
+			)}
 		</CardContainer>
 	);
 };
 
 interface QuestionCardInputProps {
+	data: CardData;
 	setData: (data: string) => void;
 }
 
 export const QuestionInputCard = (props: QuestionCardInputProps) => {
-	const { setData } = props;
+	const { data, setData } = props;
 	const ref = useRef<TextInput>(null);
 	console.log(ref?.current?.isFocused());
 	console.log(ref?.current?.focus());
 
 	return (
 		<CardContainer onPress={() => ref?.current?.focus()}>
-			<CardTextInput
-				ref={ref}
-				size={17}
-				onChangeText={setData}
-				multiline
-				textAlign={'center'}
-				verticalAlign={'middle'}
-				placeholder={'텍스트를 입력해주세요.'}
-			/>
+			{data.question.type === InputType.Text ? (
+				<CardTextInput
+					ref={ref}
+					size={17}
+					onChangeText={setData}
+					multiline
+					textAlign={'center'}
+					verticalAlign={'middle'}
+					placeholder={'텍스트를 입력해주세요.'}
+				/>
+			) : <QuestionCard cardData={data} />
+			}
 		</CardContainer>
 	);
 };

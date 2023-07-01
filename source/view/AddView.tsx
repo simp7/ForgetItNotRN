@@ -66,7 +66,14 @@ const ButtonRow = styled(View)`
 `;
 
 export const AddView = () => {
-	const [data, setData] = useState<CardData>();
+	const [data, setData] = useState<CardData>({
+		repeat: 0,
+		lastReviewed: formatDate(now()),
+		question: {
+			type: InputType.Text,
+			data: '',
+		},
+	});
 
 	const setImage = (url: string) => {
 		setData({
@@ -93,7 +100,7 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<QuestionInputCard setData={setText} />
+				<QuestionInputCard data={data} setData={setText} />
 				<SpacerHeight size={40} />
 				<ButtonRow>
 					<CameraButton setImage={setImage} />

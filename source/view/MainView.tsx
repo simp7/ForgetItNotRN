@@ -37,9 +37,7 @@ export const MainView = (props: NavProps) => {
 	};
 	return (
 		<Container>
-			<QuestionCard
-				cardData={data}
-			/>
+			<QuestionCard cardData={data} />
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
