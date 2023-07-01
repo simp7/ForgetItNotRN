@@ -10,6 +10,8 @@ export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
 export const BOTTOM_SAFE_HEIGHT = isIOS ? 34 : 0;
 
+export const IMAGE_QUALITY = 4;
+
 export const CARD_WIDTH = 330;
 export const CARD_HEIGHT = 500;
 

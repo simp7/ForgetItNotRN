@@ -15,12 +15,9 @@ const checkAndRequest = async (permission: Permission) => {
 			console.log(
 				'The permission has not been requested / is denied but requestable',
 			);
-			return request(permission).then(result => {
-				return (result === RESULTS.GRANTED);
-			});
+			return request(permission);
 		case RESULTS.GRANTED:
 			console.log('The permission is granted');
-			return true;
 		case RESULTS.UNAVAILABLE:
 			console.log(
 				'This feature is not available (on this device / in this context)',
@@ -34,7 +31,6 @@ const checkAndRequest = async (permission: Permission) => {
 			break;
 		}
 		console.log('Unspecified permission error');
-		return false;
 	});
 };
 

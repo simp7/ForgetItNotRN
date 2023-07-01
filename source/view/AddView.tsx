@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Keyboard, TouchableOpacityProps, TouchableWithoutFeedback, View } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
@@ -25,21 +25,38 @@ const Button = styled(BasicButton) <{ height?: number }>`
 	border-radius: 10px;
 `;
 
-const CameraButton = (props: TouchableOpacityProps) => {
+interface ImageSetterProps {
+	setImage: (url: string) => void;
+}
+
+const CameraButton = (props: ImageSetterProps) => {
+	const { setImage } = props;
+	const onPress = async () => {
+		const url = await pictureFromCamera();
+		if (!!url) {
+			setImage(url);
+		}
+	};
 	return (
-		<Button {...props}>
+		<Button onPress={onPress}>
 			<CameraIcon />
 		</Button>
 	);
 };
 
-const GalleryButton = (props: TouchableOpacityProps) => {
+const GalleryButton = (props: ImageSetterProps) => {
+	const { setImage } = props;
+	const onPress = async () => {
+		const url = await pictureFromGallery();
+		if (!!url) {
+			setImage(url);
+		}
+	};
 	return (
-		<Button {...props}>
+		<Button onPress={onPress}>
 			<GalleryIcon />
 		</Button>
 	);
-
 };
 
 const ButtonRow = styled(View)`
@@ -50,25 +67,37 @@ const ButtonRow = styled(View)`
 
 export const AddView = () => {
 	const [data, setData] = useState<CardData>();
+
+	const setImage = (url: string) => {
+		setData({
+			repeat: 0,
+			lastReviewed: formatDate(now()),
+			question: {
+				type: InputType.Image,
+				data: url,
+			},
+		});
+	};
+
+	const setText = (text: string) => {
+		setData({
+			repeat: 0,
+			lastReviewed: formatDate(now()),
+			question: {
+				type: InputType.Text,
+				data: text,
+			},
+		});
+	};
+
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<QuestionInputCard
-					setData={(text: string) => {
-						setData({
-							repeat: 0,
-							lastReviewed: formatDate(now()),
-							question: {
-								type: InputType.Image,
-								data: text,
-							},
-						});
-					}}
-				/>
+				<QuestionInputCard setData={setText} />
 				<SpacerHeight size={40} />
 				<ButtonRow>
-					<CameraButton onPress={pictureFromCamera} />
-					<GalleryButton onPress={pictureFromGallery} />
+					<CameraButton setImage={setImage} />
+					<GalleryButton setImage={setImage} />
 				</ButtonRow>
 			</Container>
 		</TouchableWithoutFeedback>

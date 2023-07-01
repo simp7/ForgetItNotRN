@@ -1,34 +1,49 @@
+import RNFS from 'react-native-fs';
 import { ImageOrVideo, openCamera, openPicker, Options } from "react-native-image-crop-picker";
 
-import { CARD_HEIGHT, CARD_WIDTH } from "../constant";
+import { CARD_HEIGHT, CARD_WIDTH, IMAGE_QUALITY, isIOS } from "../constant";
+import { now } from './date';
 import { getCameraPermission, getGalleryPermission } from "./permission";
 
 const pictureFrom = (openner: (options: Options) => Promise<ImageOrVideo>) => {
-	const quality = 4;
 	return openner({ 
 		mediaType: 'any', 
 		cropping: true,
 		compressVideoPreset: 'MediumQuality',
-		width: quality * CARD_WIDTH,
-		height: quality * CARD_HEIGHT,
+		width: IMAGE_QUALITY * CARD_WIDTH,
+		height: IMAGE_QUALITY * CARD_HEIGHT,
 	});
 };
 
-export const pictureFromCamera = async () => {
-	const permitted = await getCameraPermission();
-	if (permitted) {
-		return pictureFrom(openCamera);
-	}
-	return null;
+const getImageFromCamera = async () => {
+	await getCameraPermission();
+	return pictureFrom(openCamera);
 };
 
-export const pictureFromGallery = async () => {
-	const permitted = await getGalleryPermission();
-	if (permitted) {
-		return pictureFrom(openPicker);
-	}
-	return null;
+const getImageFromGallery = async () => {
+	await getGalleryPermission();
+	return pictureFrom(openPicker);
 };
 
-export const saveLocally = (image: ImageOrVideo) => {
+export const saveLocalFs = async (image: ImageOrVideo) => {
+	const path = `${RNFS.DocumentDirectoryPath}/${now().toISOString()}.jpg`.replace(/:/g, '-');
+	try {
+		if (isIOS) {
+			if (image.mime.startsWith('image')) {
+				await RNFS.copyAssetsFileIOS(
+					image.path, path, IMAGE_QUALITY * CARD_WIDTH, IMAGE_QUALITY * CARD_HEIGHT,
+				);
+			} else {
+				await RNFS.copyAssetsVideoIOS(image.path, path);
+			}
+		} else {
+			await RNFS.copyFileAssets(image.path, path);
+		}
+		return path;
+	} catch {
+		console.error('error in file system');
+	}
 };
+
+export const pictureFromCamera = () => getImageFromCamera().then(saveLocalFs);
+export const pictureFromGallery = () => getImageFromGallery().then(saveLocalFs);

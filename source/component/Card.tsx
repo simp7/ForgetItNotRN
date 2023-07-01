@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
 import { View } from "react-native";
 import { Shadow } from 'react-native-shadow-2';
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 
 import { CARD_HEIGHT, CARD_WIDTH } from "../constant";
 import { CardData } from "../model/cardData";
@@ -64,11 +64,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 	console.log(ref?.current?.focus());
 
 	return (
-		<CardContainer onPress={() => {
-			console.log('got it');
-			ref?.current?.focus();
-		}}
-		>
+		<CardContainer onPress={() => ref?.current?.focus()}>
 			<CardTextInput
 				ref={ref}
 				size={17}
