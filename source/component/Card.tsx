@@ -1,12 +1,22 @@
 import React, { useRef } from "react";
-import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
+import { TextInput, TouchableWithoutFeedback, ViewProps, ViewStyle } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
-import Animated from "react-native-reanimated";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+	AnimatedStyleProp,
+	Easing,
+	Extrapolation,
+	interpolate,
+	useAnimatedStyle,
+	useSharedValue,
+	useWorkletCallback,
+	withTiming,
+} from "react-native-reanimated";
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
-import { CARD_HEIGHT, CARD_WIDTH } from "../constant";
+import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { CardText, CardTextInput } from "./Basic";
 
@@ -87,5 +97,86 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 			) : <QuestionCard cardData={data} />
 			}
 		</CardContainer>
+	);
+};
+
+const CardHandlerContainer = styled(Animated.View)`
+	justify-content: center;
+`;
+
+interface HandlerProps extends ViewProps {
+	onSwipeLeft: () => void;
+	onSwipeRight: () => void;
+}
+
+export const CardHandler = (props: HandlerProps) => {
+	const { onSwipeLeft, onSwipeRight, ...viewProps } = props;
+
+	const x = useSharedValue(0);
+	const opacity = useSharedValue(1);
+
+	const cardStyle = useAnimatedStyle<AnimatedStyleProp<ViewStyle>>(() => {
+		const rotate = interpolate(x.value, [-100, 100], [-CARD_TILT_ANGLE, CARD_TILT_ANGLE], {
+			extrapolateLeft: Extrapolation.CLAMP,
+			extrapolateRight: Extrapolation.CLAMP,
+		});
+
+		return {
+			transform: [{
+				rotateZ: `${rotate}(deg)`,
+			}, {
+				translateX: x.value,
+			}],
+			opacity: opacity.value,
+		};
+	});
+
+	const newCardAnimation = useWorkletCallback(() => {
+		x.value = 0;
+		opacity.value = 0;
+		opacity.value = withTiming(1, {
+			duration: 200,
+			easing: Easing.cubic,
+		});
+	});
+
+	const gesture = Gesture.Pan().runOnJS(true).onChange((event) => {
+
+		x.value = event.translationX;
+
+	}).onEnd(() => {
+
+		console.log(x.value);
+		if (x.value < -200) {
+			x.value = withTiming(-1000, {
+				duration: 300,
+				easing: Easing.cubic,
+			}, newCardAnimation);
+			onSwipeLeft();
+			return;
+		}
+		if (x.value > 200) {
+			x.value = withTiming(1000, {
+				duration: 300,
+				easing: Easing.cubic,
+			}, newCardAnimation);
+			onSwipeRight();
+			return;
+		}
+		x.value = withTiming(0, {
+			duration: 200,
+			easing: Easing.circle,
+		});
+	});
+
+	return (
+		<GestureDetector gesture={gesture}>
+			<CardHandlerContainer
+				{...viewProps}
+				style={[
+					cardStyle,
+				]}
+			/>
+		</GestureDetector>
 	);
 };

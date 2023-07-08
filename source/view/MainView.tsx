@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
 import { BasicButton } from "../component/Basic";
-import { QuestionCard } from "../component/Card";
+import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { ParamList, Route } from "./Navigator";
@@ -37,7 +37,9 @@ export const MainView = (props: NavProps) => {
 	};
 	return (
 		<Container>
-			<QuestionCard cardData={data} />
+			<CardHandler onSwipeRight={() => { }} onSwipeLeft={() => { }}>
+				<QuestionCard cardData={data} />
+			</CardHandler>
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
