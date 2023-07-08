@@ -86,6 +86,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 		<CardContainer onPress={() => ref?.current?.focus()}>
 			{data.question.type === InputType.Text ? (
 				<CardTextInput
+					value={data.question.data}
 					ref={ref}
 					size={17}
 					onChangeText={setData}
@@ -141,12 +142,9 @@ export const CardHandler = (props: HandlerProps) => {
 	});
 
 	const gesture = Gesture.Pan().runOnJS(true).onChange((event) => {
-
 		x.value = event.translationX;
-
 	}).onEnd(() => {
 
-		console.log(x.value);
 		if (x.value < -200) {
 			x.value = withTiming(-1000, {
 				duration: 300,

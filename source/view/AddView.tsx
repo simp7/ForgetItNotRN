@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
-import { QuestionInputCard } from "../component/Card";
+import { CardHandler, QuestionInputCard } from "../component/Card";
 import { DEFAULT_CARD_DATA } from "../constant";
-import { CardData, InputType } from "../model/cardData";
+import { CardData, InputType, rstCore } from "../model/cardData";
 import { formatDate, now } from "../util/date";
 import { pictureFromCamera, pictureFromGallery } from "../util/image";
+import { loadCardData, saveCardData } from "../util/storage";
 
 const Container = styled(View)`
 	flex: 1;
@@ -67,7 +69,24 @@ const ButtonRow = styled(View)`
 `;
 
 export const AddView = () => {
+
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
+
+	const nextPeriod = useRecoilValue(rstCore).period[0];
+	const nextDate = now().add(nextPeriod, 'day');
+
+	const initialize = () => {
+		setText('');
+		setData(DEFAULT_CARD_DATA);
+	};
+
+	const save = () => {
+		console.log('save');
+		loadCardData(nextDate).then((previous) => saveCardData(nextDate, [...previous, data]));
+		initialize();
+	};
+
+	const discard = initialize;
 
 	const setImage = (url: string) => {
 		setData({
@@ -94,7 +113,9 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<QuestionInputCard data={data} setData={setText} />
+				<CardHandler onSwipeLeft={discard} onSwipeRight={save}>
+					<QuestionInputCard data={data} setData={setText} />
+				</CardHandler>
 				<SpacerHeight size={40} />
 				<ButtonRow>
 					<CameraButton setImage={setImage} />
