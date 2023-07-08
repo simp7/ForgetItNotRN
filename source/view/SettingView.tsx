@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { SpacerHeight } from "../component/Basic";
 import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
-import { BOTTOM_SAFE_HEIGHT } from "../constant";
+import { APP_VERSION, BOTTOM_SAFE_HEIGHT } from "../constant";
 import { rstDarkMode, rstNotification, rstTargetRate } from "../model/setting";
 
 const Container = styled(View)`
@@ -29,7 +29,7 @@ export const SettingView = () => {
 			<SpacerHeight size={20} />
 			<SwitchListItem title={'알림'} value={notify} setValue={setNotify} />
 			<SpacerHeight size={20} />
-			<StandardListItem title={'버전'} content={'1.0.0'} />
+			<StandardListItem title={'버전'} content={APP_VERSION} />
 		</Container>
 	);
 };

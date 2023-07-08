@@ -38,3 +38,6 @@ export const DEFAULT_CARD_DATA: CardData = {
 	repeat: 0,
 	lastReviewed: '',
 };
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+export const APP_VERSION = require('../package.json').version;
