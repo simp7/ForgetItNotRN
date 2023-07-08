@@ -7,7 +7,7 @@ import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
 import { DEFAULT_CARD_DATA } from "../constant";
-import { CardData, InputType, rstCore } from "../model/cardData";
+import { CardData, InputType, rstPeriod } from "../model/cardData";
 import { formatDate, now } from "../util/date";
 import { pictureFromCamera, pictureFromGallery } from "../util/image";
 import { loadCardData, saveCardData } from "../util/storage";
@@ -72,7 +72,7 @@ export const AddView = () => {
 
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
 
-	const nextPeriod = useRecoilValue(rstCore).period[0];
+	const nextPeriod = useRecoilValue(rstPeriod)?.[0];
 	const nextDate = now().add(nextPeriod, 'day');
 
 	const initialize = () => {

@@ -26,7 +26,14 @@ const getCardKey = (date: Dayjs) => 'card' + formatDate(date);
 export const loadCardData = async (date: Dayjs) => load<CardData[]>(getCardKey(date), []);
 export const saveCardData = async (date: Dayjs, data: CardData[]) => save(getCardKey(date), data);
 
-export const loadCore = async () => load(StorageKey.core, DEFAULT_CORE);
+export const loadCore = async () => {
+	const lastOpened = await loadLastOpenedDate();
+	if (lastOpened !== formatDate(now())) {
+		// TODO: add logic for loading reiview for today.
+		saveLastOpenedDate();
+	}
+	return load(StorageKey.core, DEFAULT_CORE);
+};
 export const saveCore = async (core: Core) => save(StorageKey.core, core);
 
 export const loadSetting = async () => load(StorageKey.setting, DEFAULT_SETTING);

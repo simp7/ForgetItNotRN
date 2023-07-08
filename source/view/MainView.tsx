@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components";
 
@@ -8,6 +8,8 @@ import { BasicButton } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { CardData, InputType } from "../model/cardData";
+import { now } from "../util/date";
+import { loadCardData } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -27,19 +29,37 @@ const AddButtonContainer = styled(BasicButton)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-	const data: CardData = {
-		question: {
-			type: InputType.Text,
-			data: "ok",
-		},
-		repeat: 1,
-		lastReviewed: '',
+	const [cards, setCards] = useState<CardData[]>([]);
+	const [index, setIndex] = useState(0);
+
+	const success = () => {
+		setIndex(index + 1);
 	};
+
+	const fail = () => {
+		setIndex(index + 1);
+	};
+
+	useEffect(() => {
+		// TODO: uncomment next line when completing process.
+		// loadCardData(now()).then(setCards);
+		setCards([{
+			question: {
+				type: InputType.Text,
+				data: "ok",
+			},
+			repeat: 1,
+			lastReviewed: '',
+		}]);
+	}, []);
+
 	return (
 		<Container>
-			<CardHandler onSwipeRight={() => { }} onSwipeLeft={() => { }}>
-				<QuestionCard cardData={data} />
-			</CardHandler>
+			{!!cards.length && (
+				<CardHandler onSwipeRight={success} onSwipeLeft={fail}>
+					<QuestionCard cardData={cards[index]} />
+				</CardHandler>
+			)}
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
