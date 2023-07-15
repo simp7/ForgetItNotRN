@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
 import { DEFAULT_CARD_DATA } from "../constant";
-import { CardData, InputType, rstPeriod } from "../model/cardData";
+import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
 import { pictureFromCamera, pictureFromGallery } from "../util/image";
 import { loadCardData, saveCardData } from "../util/storage";
@@ -72,9 +71,6 @@ export const AddView = () => {
 
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
 
-	const nextPeriod = useRecoilValue(rstPeriod)?.[0];
-	const nextDate = now().add(nextPeriod, 'day');
-
 	const initialize = () => {
 		setText('');
 		setData(DEFAULT_CARD_DATA);
@@ -82,7 +78,7 @@ export const AddView = () => {
 
 	const save = () => {
 		console.log('save');
-		loadCardData(nextDate).then((previous) => saveCardData(nextDate, [...previous, data]));
+		loadCardData(0).then((previous) => saveCardData(0, [...previous, data]));
 		initialize();
 	};
 

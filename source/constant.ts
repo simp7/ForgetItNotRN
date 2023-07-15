@@ -1,6 +1,7 @@
 import { Dimensions, Platform } from "react-native";
 
-import { CardData, InputType,Period } from "./model/cardData";
+import { CardData, InputType } from "./model/cardData";
+import { Period } from "./model/period";
 import { Setting } from "./model/setting";
 
 export const isIOS = Platform.OS === 'ios';

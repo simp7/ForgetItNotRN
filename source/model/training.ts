@@ -18,6 +18,7 @@ enum key {
 	default = 'TrainingDefault',
 	object = 'Traning',
 	today = 'TrainingToday',
+	index = 'TrainingIndex',
 }
 
 const rstDefaultTraining = selector<Training>({
@@ -40,6 +41,18 @@ export const rstTrainingToday = selector<CardData[]>({
 		set(rstTraining, newValue instanceof DefaultValue ? training : {
 			...training,
 			today: newValue,
+		});
+	},
+});
+
+export const rstTrainingIndex = selector<number>({
+	key: key.today,
+	get: ({ get }) => get(rstTraining).index,
+	set: ({ get, set }, newValue) => {
+		const training = get(rstTraining);
+		set(rstTraining, newValue instanceof DefaultValue ? training : {
+			...training,
+			index: newValue,
 		});
 	},
 });

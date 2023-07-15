@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Dayjs } from "dayjs";
 
 import { DEFAULT_PERIOD, DEFAULT_SETTING } from "../constant";
-import { CardData, Period } from "../model/cardData";
+import { CardData } from "../model/cardData";
+import { Period } from "../model/period";
 import { Setting } from "../model/setting";
 import { formatDate, now } from "./date";
 
@@ -22,14 +22,14 @@ const save = async <T, > (key: string, data: T) => AsyncStorage.setItem(key, JSO
 export const loadLastOpenedDate = async () => load(StorageKey.lastOpened, "");
 export const saveLastOpenedDate = async () => save(StorageKey.lastOpened, formatDate(now()));
 
-const getCardKey = (date: Dayjs) => 'card' + formatDate(date);
-export const loadCardData = async (date: Dayjs) => load<CardData[]>(getCardKey(date), []);
-export const saveCardData = async (date: Dayjs, data: CardData[]) => save(getCardKey(date), data);
+const getCardKey = (index: number) => `Box_${index+1}`;
+export const loadCardData = async (index: number) => load<CardData[]>(getCardKey(index), []);
+export const saveCardData = async (index: number, data: CardData[]) => save(getCardKey(index), data);
 
 export const loadPeriod = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	if (lastOpened !== formatDate(now())) {
-		// TODO: add logic for loading reiview for today.
+		// TODO: add logic for loading and calculate period.
 		saveLastOpenedDate();
 	}
 	return load(StorageKey.period, DEFAULT_PERIOD);
