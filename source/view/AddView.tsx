@@ -77,7 +77,6 @@ export const AddView = () => {
 	};
 
 	const save = () => {
-		console.log('save');
 		loadCardData(0).then((previous) => saveCardData(0, [...previous, data]));
 		initialize();
 	};

@@ -49,12 +49,12 @@ const loadNewTrainingToday = async () => {
 };
 
 export const loadTrainingToday = async () => {
-	await checkAndUpdateLastOpendDated();
+	await keepUpdated();
 	return load(StorageKey.training, DEFAULT_TRAINING);
 };
 export const saveTmpTrainingToday = async (training: Training) => save(StorageKey.training, training);
 
-export const checkAndUpdateLastOpendDated = async () => {
+const keepUpdated = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	if (lastOpened !== formatDate(now())) {
 		saveLastOpenedDate();
