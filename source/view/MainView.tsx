@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
@@ -8,6 +9,7 @@ import { BasicButton } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { CardData, InputType } from "../model/cardData";
+import { rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -27,8 +29,11 @@ const AddButtonContainer = styled(BasicButton)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-	const [cards, setCards] = useState<CardData[]>([]);
-	const [index, setIndex] = useState(0);
+
+	const [index, setIndex] = useRecoilState(rstTrainingIndex);
+	const [cards, setCards] = useRecoilState(rstTrainingToday);
+
+	const current = cards[index];
 
 
 	const onFinish = () => {
@@ -44,11 +49,11 @@ export const MainView = (props: NavProps) => {
 		setIndex(index + 1);
 	};
 
-	const success = () => {
+	const success = (data: CardData) => {
 		next();
 	};
 
-	const fail = () => {
+	const fail = (data: CardData) => {
 		next();
 	};
 
@@ -68,8 +73,8 @@ export const MainView = (props: NavProps) => {
 	return (
 		<Container>
 			{!!cards.length && (
-				<CardHandler onSwipeRight={success} onSwipeLeft={fail}>
-					<QuestionCard cardData={cards[index]} />
+				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)}>
+					<QuestionCard cardData={current} />
 				</CardHandler>
 			)}
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>

@@ -36,19 +36,19 @@ export const evaluateAllPeriod = (result: TotalPeriodResult, previousPeriod: num
 	return result.map((resultData, index) => evaluatePeriod(resultData, previousPeriod[index], targetRate));
 };
 
-export type Period = number[];
+export type Periods = number[];
 
 enum key {
 	default = 'PeriodDefault',
 	object = 'Period',
 }
 
-const rstDefaultCore = selector<Period>({
+const rstDefaultPeriods = selector<Periods>({
 	key: key.default,
 	get: loadPeriod,
 });
 
-export const rstPeriod = atom<Period>({
+export const rstPeriod = atom<Periods>({
 	key: key.object,
-	default: rstDefaultCore,
+	default: rstDefaultPeriods,
 });

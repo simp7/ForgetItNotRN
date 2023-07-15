@@ -1,8 +1,9 @@
 import { Dimensions, Platform } from "react-native";
 
 import { CardData, InputType } from "./model/cardData";
-import { Period } from "./model/period";
+import { Periods } from "./model/period";
 import { Setting } from "./model/setting";
+import { Training } from "./model/training";
 
 export const isIOS = Platform.OS === 'ios';
 const { width, height } = Dimensions.get('window');
@@ -18,12 +19,17 @@ export const CARD_HEIGHT = 500;
 export const CARD_TILT_ANGLE = Math.PI / 12;
 export const CARD_A = CARD_HEIGHT * Math.sin(CARD_TILT_ANGLE) + CARD_WIDTH * Math.cos(CARD_TILT_ANGLE);
 
-export const DEFAULT_PERIOD: Period = [1, 3, 7, 16, 30];
+export const DEFAULT_PERIODS: Periods = [1, 3, 7, 16, 30];
 
 export const DEFAULT_SETTING: Setting = {
 	targetRate: 75,
 	darkMode: false,
 	notification: false,
+};
+
+export const DEFAULT_TRAINING: Training = {
+	target: [],
+	index: 0,
 };
 
 export const DEFAULT_CARD_DATA: CardData = {

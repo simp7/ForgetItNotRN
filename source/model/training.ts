@@ -1,5 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
+import { loadTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
 
 export interface Training {
@@ -23,14 +24,13 @@ enum key {
 
 const rstDefaultTraining = selector<Training>({
 	key: key.default,
-	get: ({ get }) => {
-		return initTraining([]);
-	},
+	get: loadTrainingToday,
 });
 
 const rstTraining = atom<Training>({
 	key: key.object,
 	default: rstDefaultTraining,
+	effects: [({ onSet }) => onSet(saveTmpTrainingToday)],
 });
 
 export const rstTrainingToday = selector<CardData[]>({
