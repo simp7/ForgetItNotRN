@@ -1,11 +1,11 @@
-export type Result = ResultData[];
+export type TotalPeriodResult = PeriodResult[];
 
-export interface ResultData {
+export interface PeriodResult {
 	all: number;
 	success: number;
 }
 
-const getRate = (unit: ResultData) => {
+const getRate = (unit: PeriodResult) => {
 	if (unit.all === 0) {
 		return 0;
 	}
@@ -18,7 +18,7 @@ const reCalculatePeriod = (previousPeriod: number, targetRate: number, actualRat
 	return previousPeriod * targetR / actualR;
 };
 
-const evaluatePeriod = (result: ResultData, previousPeriod: number, targetRate: number) => {
+const evaluatePeriod = (result: PeriodResult, previousPeriod: number, targetRate: number) => {
 	if (result.all <= 20) {
 		return previousPeriod;
 	}
@@ -28,6 +28,6 @@ const evaluatePeriod = (result: ResultData, previousPeriod: number, targetRate: 
 		: previousPeriod;
 };
 
-export const evaluateAllPeriod = (result: Result, previousPeriod: number[], targetRate: number) => {
+export const evaluateAllPeriod = (result: TotalPeriodResult, previousPeriod: number[], targetRate: number) => {
 	return result.map((resultData, index) => evaluatePeriod(resultData, previousPeriod[index], targetRate));
 };

@@ -20,7 +20,7 @@ export const CARD_A = CARD_HEIGHT * Math.sin(CARD_TILT_ANGLE) + CARD_WIDTH * Mat
 export const DEFAULT_PERIOD = [1, 3, 7, 16, 30];
 export const DEFAULT_CORE: Core = {
 	period: DEFAULT_PERIOD,
-	remained: [],
+	today: [],
 	wrong: [],
 };
 

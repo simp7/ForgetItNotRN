@@ -21,7 +21,8 @@ export interface CardData {
 
 export interface Core {
 	period: number[];
-	remained: CardData[];
+	today: CardData[];
+	index: number;
 	wrong: CardData[];
 }
 
@@ -29,7 +30,7 @@ enum key {
 	default = 'CoreDefault',
 	object = 'Core',
 	period = 'CorePeriod',
-	remained = 'CoreRemained',
+	today = 'CoreToday',
 	wrong = 'CoreWrong',
 }
 
@@ -46,16 +47,23 @@ const rstCore = atom<Core>({
 export const rstPeriod = selector<number[]>({
 	key: key.period,
 	get: ({ get }) => get(rstCore).period,
-});
-
-export const rstRemained = selector<CardData[]>({
-	key: key.remained,
-	get: ({ get }) => get(rstCore).remained,
 	set: ({ get, set }, newValue) => {
 		const core = get(rstCore);
 		set(rstCore, newValue instanceof DefaultValue ? core : {
 			...core,
-			remained: newValue,
+			period: newValue,
+		});
+	},
+});
+
+export const rstRemained = selector<CardData[]>({
+	key: key.today,
+	get: ({ get }) => get(rstCore).today,
+	set: ({ get, set }, newValue) => {
+		const core = get(rstCore);
+		set(rstCore, newValue instanceof DefaultValue ? core : {
+			...core,
+			today: newValue,
 		});
 	},
 });
