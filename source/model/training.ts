@@ -1,20 +1,15 @@
-import { atom, selector } from "recoil";
+import { atom, DefaultValue, selector } from "recoil";
 
 import { CardData } from "./cardData";
 
 export interface Training {
-	data: CardData[];
+	target: CardData[];
 	index: number;
 }
 
-export interface TrainingResult {
-	all: CardData[];
-	success: CardData[];
-}
-
-export const initTraining = (data: CardData[][]) => {
+export const initTraining = (data: CardData[][]): Training => {
 	return {
-		data: data.reduce((previous, current) => current.concat(previous)),
+		target: data.reduce((previous, current) => current.concat(previous)),
 		index: 0,
 	};
 };
@@ -22,16 +17,29 @@ export const initTraining = (data: CardData[][]) => {
 enum key {
 	default = 'TrainingDefault',
 	object = 'Traning',
+	today = 'TrainingToday',
 }
 
-const rstDefaultCore = selector<Training>({
+const rstDefaultTraining = selector<Training>({
 	key: key.default,
 	get: ({ get }) => {
 		return initTraining([]);
 	},
 });
 
-const rstCore = atom<Training>({
+const rstTraining = atom<Training>({
 	key: key.object,
-	default: rstDefaultCore,
+	default: rstDefaultTraining,
+});
+
+export const rstTrainingToday = selector<CardData[]>({
+	key: key.today,
+	get: ({ get }) => get(rstTraining).target,
+	set: ({ get, set }, newValue) => {
+		const training = get(rstTraining);
+		set(rstTraining, newValue instanceof DefaultValue ? training : {
+			...training,
+			today: newValue,
+		});
+	},
 });

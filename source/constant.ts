@@ -1,6 +1,6 @@
 import { Dimensions, Platform } from "react-native";
 
-import { CardData, Core, InputType } from "./model/cardData";
+import { CardData, InputType,Period } from "./model/cardData";
 import { Setting } from "./model/setting";
 
 export const isIOS = Platform.OS === 'ios';
@@ -17,12 +17,7 @@ export const CARD_HEIGHT = 500;
 export const CARD_TILT_ANGLE = Math.PI / 12;
 export const CARD_A = CARD_HEIGHT * Math.sin(CARD_TILT_ANGLE) + CARD_WIDTH * Math.cos(CARD_TILT_ANGLE);
 
-export const DEFAULT_PERIOD = [1, 3, 7, 16, 30];
-export const DEFAULT_CORE: Core = {
-	period: DEFAULT_PERIOD,
-	today: [],
-	wrong: [],
-};
+export const DEFAULT_PERIOD: Period = [1, 3, 7, 16, 30];
 
 export const DEFAULT_SETTING: Setting = {
 	targetRate: 75,

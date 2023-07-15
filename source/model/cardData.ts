@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
-import { loadCore } from "../util/storage";
+import { loadPeriod } from "../util/storage";
 
 export enum InputType {
 	Text = 'TEXT',
@@ -19,12 +19,7 @@ export interface CardData {
 	lastReviewed: string;
 }
 
-export interface Core {
-	period: number[];
-	today: CardData[];
-	index: number;
-	wrong: CardData[];
-}
+export type Period = number[];
 
 enum key {
 	default = 'CoreDefault',
@@ -34,48 +29,12 @@ enum key {
 	wrong = 'CoreWrong',
 }
 
-const rstDefaultCore = selector<Core>({
+const rstDefaultCore = selector<Period>({
 	key: key.default,
-	get: loadCore,
+	get: loadPeriod,
 });
 
-const rstCore = atom<Core>({
+export const rstPeriod = atom<Period>({
 	key: key.object,
 	default: rstDefaultCore,
-});
-
-export const rstPeriod = selector<number[]>({
-	key: key.period,
-	get: ({ get }) => get(rstCore).period,
-	set: ({ get, set }, newValue) => {
-		const core = get(rstCore);
-		set(rstCore, newValue instanceof DefaultValue ? core : {
-			...core,
-			period: newValue,
-		});
-	},
-});
-
-export const rstRemained = selector<CardData[]>({
-	key: key.today,
-	get: ({ get }) => get(rstCore).today,
-	set: ({ get, set }, newValue) => {
-		const core = get(rstCore);
-		set(rstCore, newValue instanceof DefaultValue ? core : {
-			...core,
-			today: newValue,
-		});
-	},
-});
-
-export const rstWrong = selector<CardData[]>({
-	key: key.wrong,
-	get: ({ get }) => get(rstCore).wrong,
-	set: ({ get, set }, newValue) => {
-		const core = get(rstCore);
-		set(rstCore, newValue instanceof DefaultValue ? core : {
-			...core,
-			wrong: newValue,
-		});
-	},
 });
