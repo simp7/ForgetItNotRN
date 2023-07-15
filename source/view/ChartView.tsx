@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { SpacerHeight } from "../component/Basic";
 import { StandardListItem } from "../component/List";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
-import { rstPeriod } from "../model/cardData";
+import { rstPeriod } from "../model/period";
 
 const Container = styled(View)`
 	padding-top: 130px;

@@ -46,7 +46,7 @@ export const rstTrainingToday = selector<CardData[]>({
 });
 
 export const rstTrainingIndex = selector<number>({
-	key: key.today,
+	key: key.index,
 	get: ({ get }) => get(rstTraining).index,
 	set: ({ get, set }, newValue) => {
 		const training = get(rstTraining);
