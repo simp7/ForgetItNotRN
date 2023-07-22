@@ -7,7 +7,6 @@
 		],
 		"types": [
 			"jest",
-			"@types/styled-components-react-native"
 		]
 	},
 }

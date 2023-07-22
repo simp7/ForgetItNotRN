@@ -25,6 +25,7 @@ const AddButtonContainer = styled(BasicButton)`
 	bottom: ${40 + BOTTOM_SAFE_HEIGHT}px;
 `;
 
+
 const EmptyContainer = styled(View)`
 	position: absolute;
 	top: 0;
