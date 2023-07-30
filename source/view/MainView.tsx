@@ -1,13 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
-import { BOTTOM_SAFE_HEIGHT } from "../constant";
+import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
+import { TotalDailyResult } from "../model/period";
 import { loadTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
@@ -42,19 +43,17 @@ export const MainView = (props: NavProps) => {
 
 	const [index, setIndex] = useState(0);
 	const [cards, setCards] = useState<CardData[]>([]);
+	const result = useRef<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
 
 	useEffect(() => {
 		loadTrainingToday().then(data => {
 			setIndex(data.index);
 			setCards(data.target);
+			result.current = data.result;
 		});
 	}, []);
 	// const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	// const [cards, setCards] = useRecoilState(rstTrainingToday);
-
-	useEffect(() => {
-		saveTmpTrainingToday({ target: cards, index });
-	}, [cards, index]);
 
 	const current = cards[index];
 
@@ -66,6 +65,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const next = () => {
+		saveTmpTrainingToday({ target: cards, index, result: result.current });
 		if (index === cards.length - 1) {
 			onFinish();
 			return;
@@ -74,10 +74,12 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const success = (data: CardData) => {
+		result.current[data.repeat].push(true);
 		next();
 	};
 
 	const fail = (data: CardData) => {
+		result.current[data.repeat].push(false);
 		next();
 	};
 

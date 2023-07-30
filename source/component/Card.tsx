@@ -1,10 +1,9 @@
 import React, { useRef } from "react";
-import { TextInput, TouchableWithoutFeedback, ViewProps, ViewStyle } from "react-native";
+import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
-	AnimatedStyleProp,
 	Easing,
 	Extrapolation,
 	interpolate,
@@ -93,7 +92,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 					multiline
 					textAlign={'center'}
 					verticalAlign={'middle'}
-					placeholder={'텍스트를 입력해주세요.'}
+					placeholder={'복습용 질문을 입력해주세요.'}
 				/>
 			) : <QuestionCard cardData={data} />
 			}
@@ -116,7 +115,7 @@ export const CardHandler = (props: HandlerProps) => {
 	const x = useSharedValue(0);
 	const opacity = useSharedValue(1);
 
-	const cardStyle = useAnimatedStyle<AnimatedStyleProp<ViewStyle>>(() => {
+	const cardStyle = useAnimatedStyle(() => {
 		const rotate = interpolate(x.value, [-100, 100], [-CARD_TILT_ANGLE, CARD_TILT_ANGLE], {
 			extrapolateLeft: Extrapolation.CLAMP,
 			extrapolateRight: Extrapolation.CLAMP,

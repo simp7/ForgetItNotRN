@@ -2,14 +2,28 @@ import { atom, selector } from "recoil";
 
 import { loadPeriod } from "../util/storage";
 
-export type TotalPeriodResult = PeriodResult[];
+export type DailyResult = boolean[];
+export type TotalDailyResult = DailyResult[];
 
-export interface PeriodResult {
+const totalSuccess = (resultArray: DailyResult) => (
+	resultArray.map((success): number => success ? 1 : 0).reduce((a, b) => a + b, 0)
+);
+
+export interface ResultByPeriod {
 	all: number;
 	success: number;
 }
 
-const getRate = (unit: PeriodResult) => {
+export const getResultByPeriod = (previous: DailyResult, today: DailyResult): ResultByPeriod => {
+	const total = previous.concat(today);
+	const target = total.slice(0, 50);
+	return {
+		all: target.length,
+		success: totalSuccess(target),
+	};
+};
+
+const getRate = (unit: ResultByPeriod) => {
 	if (unit.all === 0) {
 		return 0;
 	}
@@ -22,7 +36,7 @@ const reCalculatePeriod = (previousPeriod: number, targetRate: number, actualRat
 	return previousPeriod * targetR / actualR;
 };
 
-const evaluatePeriod = (result: PeriodResult, previousPeriod: number, targetRate: number) => {
+const evaluatePeriod = (result: ResultByPeriod, previousPeriod: number, targetRate: number) => {
 	if (result.all <= 20) {
 		return previousPeriod;
 	}
@@ -32,8 +46,11 @@ const evaluatePeriod = (result: PeriodResult, previousPeriod: number, targetRate
 		: previousPeriod;
 };
 
-export const evaluateAllPeriod = (result: TotalPeriodResult, previousPeriod: number[], targetRate: number) => {
-	return result.map((resultData, index) => evaluatePeriod(resultData, previousPeriod[index], targetRate));
+export const evaluateAllPeriod = (
+	previous: TotalDailyResult, today: TotalDailyResult, previousPeriod: number[], targetRate: number,
+) => {
+	const resultByPeriod = previous.map((data, index) => getResultByPeriod(data, today[index]));
+	return resultByPeriod.map((resultData, index) => evaluatePeriod(resultData, previousPeriod[index], targetRate));
 };
 
 export type Periods = number[];

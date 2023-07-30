@@ -2,16 +2,19 @@ import { atom, DefaultValue, selector } from "recoil";
 
 import { loadTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
+import { TotalDailyResult } from "./period";
 
 export interface Training {
 	target: CardData[];
 	index: number;
+	result: TotalDailyResult;
 }
 
 export const initTraining = (data: CardData[][]): Training => {
 	return {
 		target: data.reduce((previous, current) => current.concat(previous)),
 		index: 0,
+		result: [],
 	};
 };
 

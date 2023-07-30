@@ -1,8 +1,9 @@
 import { Dimensions, Platform } from "react-native";
 
 import { CardData, InputType } from "./model/cardData";
-import { Periods } from "./model/period";
+import { Periods, TotalDailyResult } from "./model/period";
 import { Setting } from "./model/setting";
+import { Stat } from "./model/stat";
 import { Training } from "./model/training";
 
 export const isIOS = Platform.OS === 'ios';
@@ -27,9 +28,12 @@ export const DEFAULT_SETTING: Setting = {
 	notification: false,
 };
 
+export const DEFAULT_TOTAL_RESULT: TotalDailyResult = [[], [], [], [], []];
+
 export const DEFAULT_TRAINING: Training = {
 	target: [],
 	index: 0,
+	result: DEFAULT_TOTAL_RESULT,
 };
 
 export const DEFAULT_CARD_DATA: CardData = {
@@ -39,6 +43,11 @@ export const DEFAULT_CARD_DATA: CardData = {
 	},
 	repeat: 0,
 	lastReviewed: '',
+};
+
+export const DEFAULT_STAT: Stat = {
+	maxStreak: 0,
+	currentStreak: 0,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from "dayjs";
 
 import { DEFAULT_PERIODS, DEFAULT_SETTING, DEFAULT_TRAINING } from "../constant";
 import { CardData } from "../model/cardData";
-import { Periods } from "../model/period";
+import { Periods, TotalDailyResult } from "../model/period";
 import { Setting } from "../model/setting";
 import { initTraining, Training } from "../model/training";
 import { formatDate, now } from "./date";
@@ -13,6 +13,8 @@ enum StorageKey {
 	period = 'PERIOD',
 	setting = 'SETTING',
 	training = 'TRAINING',
+	result = 'RESULT_DATA',
+	streak = 'STREAK',
 }
 
 const load = async <T, > (key: string, defaultValue: T) => {
@@ -49,15 +51,23 @@ const loadNewTrainingToday = async () => {
 };
 
 export const loadTrainingToday = async () => {
-	await keepUpdated();
 	return load(StorageKey.training, DEFAULT_TRAINING);
 };
 export const saveTmpTrainingToday = async (training: Training) => save(StorageKey.training, training);
 
-const keepUpdated = async () => {
+export const keepUpdated = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	if (lastOpened !== formatDate(now())) {
 		saveLastOpenedDate();
 		await saveTmpTrainingToday(initTraining(await loadNewTrainingToday()));
 	}
+};
+
+export const loadPreviousResult = async () => load<TotalDailyResult[]>(StorageKey.result, []);
+export const savePreviousResult = async (newResult: TotalDailyResult) => {
+	return save(StorageKey.result, newResult);
+};
+
+export const loadStat = () => {
+	
 };
