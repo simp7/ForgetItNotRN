@@ -44,7 +44,7 @@ export const loadStat = () => load(StorageKey.stat, DEFAULT_STAT);
 export const saveStat = (stat: Stat) => save(StorageKey.stat, stat);
 
 const loadCardDataByPeriod = async (index: number, limit: Dayjs) => {
-	return (await loadCardData(index)).filter(data => !dayjs(data.lastReviewed).isBefore(limit, 'date'));
+	return (await loadCardData(index)).filter(data => !dayjs(data.lastReviewed).isAfter(limit, 'date'));
 };
 
 const loadNewTrainingToday = async () => {
