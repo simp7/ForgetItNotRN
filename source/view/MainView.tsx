@@ -1,6 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
@@ -9,7 +11,8 @@ import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
-import { loadTrainingToday, saveTmpTrainingToday } from "../util/storage";
+import { rstAddStreak } from "../model/stat";
+import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -40,13 +43,15 @@ const EmptyContainer = styled(View)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-
 	const [index, setIndex] = useState(0);
 	const [cards, setCards] = useState<CardData[]>([]);
+	const addStreak = useSetRecoilState(rstAddStreak);
+
 	const result = useRef<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
+	const x = useSharedValue(0);
 
 	useEffect(() => {
-		loadTrainingToday().then(data => {
+		loadTmpTrainingToday().then(data => {
 			setIndex(data.index);
 			setCards(data.target);
 			result.current = data.result;
@@ -61,6 +66,7 @@ export const MainView = (props: NavProps) => {
 	const onFinish = () => {
 		setCards([]);
 		setIndex(0);
+		addStreak();
 		// evaluateAllPeriod();
 	};
 
@@ -86,7 +92,7 @@ export const MainView = (props: NavProps) => {
 	return (
 		<Container>
 			{!!cards.length ? (
-				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)}>
+				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)} x={x}>
 					<QuestionCard cardData={current} />
 				</CardHandler>
 			) : (

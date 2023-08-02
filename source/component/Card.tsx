@@ -7,6 +7,7 @@ import Animated, {
 	Easing,
 	Extrapolation,
 	interpolate,
+	SharedValue,
 	useAnimatedStyle,
 	useSharedValue,
 	useWorkletCallback,
@@ -107,12 +108,12 @@ const CardHandlerContainer = styled(Animated.View)`
 interface HandlerProps extends ViewProps {
 	onSwipeLeft: () => void;
 	onSwipeRight: () => void;
+	x: SharedValue<number>;
 }
 
 export const CardHandler = (props: HandlerProps) => {
-	const { onSwipeLeft, onSwipeRight, ...viewProps } = props;
+	const { onSwipeLeft, onSwipeRight, x, ...viewProps } = props;
 
-	const x = useSharedValue(0);
 	const opacity = useSharedValue(1);
 
 	const cardStyle = useAnimatedStyle(() => {

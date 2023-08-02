@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
-import { loadTrainingToday, saveTmpTrainingToday } from "../util/storage";
+import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
 import { TotalDailyResult } from "./period";
 
@@ -27,7 +27,7 @@ enum key {
 
 const rstDefaultTraining = selector<Training>({
 	key: key.default,
-	get: loadTrainingToday,
+	get: loadTmpTrainingToday,
 });
 
 const rstTraining = atom<Training>({

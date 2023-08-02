@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
@@ -68,8 +69,8 @@ const ButtonRow = styled(View)`
 `;
 
 export const AddView = () => {
-
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
+	const x = useSharedValue(0);
 
 	const initialize = () => {
 		setText('');
@@ -108,7 +109,7 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<CardHandler onSwipeLeft={discard} onSwipeRight={save}>
+				<CardHandler onSwipeLeft={discard} onSwipeRight={save} x={x}>
 					<QuestionInputCard data={data} setData={setText} />
 				</CardHandler>
 				<SpacerHeight size={40} />

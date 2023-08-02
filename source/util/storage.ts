@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs, { Dayjs } from "dayjs";
 
-import { DEFAULT_PERIODS, DEFAULT_SETTING, DEFAULT_TRAINING } from "../constant";
+import { DEFAULT_PERIODS, DEFAULT_SETTING, DEFAULT_STAT, DEFAULT_TRAINING } from "../constant";
 import { CardData } from "../model/cardData";
 import { Periods, TotalDailyResult } from "../model/period";
 import { Setting } from "../model/setting";
+import { isStreakValid, Stat } from "../model/stat";
 import { initTraining, Training } from "../model/training";
 import { formatDate, now } from "./date";
 
@@ -14,7 +15,7 @@ enum StorageKey {
 	setting = 'SETTING',
 	training = 'TRAINING',
 	result = 'RESULT_DATA',
-	streak = 'STREAK',
+	stat = 'STAT'
 }
 
 const load = async <T, > (key: string, defaultValue: T) => {
@@ -39,35 +40,41 @@ export const savePeriod = async (period: Periods) => save(StorageKey.period, per
 export const loadSetting = async () => load(StorageKey.setting, DEFAULT_SETTING);
 export const saveSetting = async (setting: Setting) => save(StorageKey.setting, setting);
 
+export const loadStat = () => load(StorageKey.stat, DEFAULT_STAT);
+export const saveStat = (stat: Stat) => save(StorageKey.stat, stat);
+
 const loadCardDataByPeriod = async (index: number, limit: Dayjs) => {
-	return (await loadCardData(index)).filter(data => dayjs(data.lastReviewed).isAfter(limit, 'date'));
+	return (await loadCardData(index)).filter(data => !dayjs(data.lastReviewed).isBefore(limit, 'date'));
 };
 
 const loadNewTrainingToday = async () => {
 	const period = await loadPeriod();
 	return Promise.all(period.map( async (period, index) => {
-		return await loadCardDataByPeriod(index, now().add(period, 'day'));
+		console.log(period, now().subtract(period, 'day'));
+		return await loadCardDataByPeriod(index, now().subtract(period, 'day'));
 	}));
 };
 
-export const loadTrainingToday = async () => {
+export const loadTmpTrainingToday = async () => {
 	return load(StorageKey.training, DEFAULT_TRAINING);
 };
 export const saveTmpTrainingToday = async (training: Training) => save(StorageKey.training, training);
 
 export const keepUpdated = async () => {
+	console.log('keepupdated');
 	const lastOpened = await loadLastOpenedDate();
 	if (lastOpened !== formatDate(now())) {
+		const training = await loadTmpTrainingToday();
+		if (!isStreakValid(lastOpened, training.result.length !== training.index)) {
+			loadStat().then(stat => saveStat({ ...stat, currentStreak: 0 }));
+		}
 		saveLastOpenedDate();
-		await saveTmpTrainingToday(initTraining(await loadNewTrainingToday()));
 	}
+	console.log('ok', JSON.stringify(await loadNewTrainingToday()));
+	await saveTmpTrainingToday(initTraining(await loadNewTrainingToday()));
 };
 
 export const loadPreviousResult = async () => load<TotalDailyResult[]>(StorageKey.result, []);
 export const savePreviousResult = async (newResult: TotalDailyResult) => {
 	return save(StorageKey.result, newResult);
-};
-
-export const loadStat = () => {
-	
 };

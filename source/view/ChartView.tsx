@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import { SpacerHeight } from "../component/Basic";
 import { StandardListItem } from "../component/List";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { rstPeriod } from "../model/period";
-import { Stat } from "../model/stat";
+import { rstStat } from "../model/stat";
 
 const Container = styled(View)`
 	padding-top: 130px;
@@ -19,12 +19,11 @@ const Container = styled(View)`
 
 export const ChartView = () => {
 	const period = useRecoilValue(rstPeriod);
-	const [status, setStatus] = useState<Stat>();
-	useEffect(() => {
-	}, []);
+	const status = useRecoilValue(rstStat);
+
 	return (
 		<Container>
-			<StandardListItem title={'현재 성취율'} content={`${status?.currentStreak}%`} />
+			<StandardListItem title={'현재 성취율'} content={`${status?.currentStreak ?? 0}%`} />
 			<SpacerHeight size={20} />
 			<StandardListItem title={'현재 연속 기록'} content={`${status?.currentStreak}일`} />
 			<SpacerHeight size={20} />
