@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useSetRecoilState } from "recoil";
@@ -8,11 +8,12 @@ import styled from "styled-components";
 import { IconAdd } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
+import { CardGradient } from "../component/Gradient";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
 import { rstAddStreak } from "../model/stat";
-import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
+import { loadTmpTrainingToday, moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -46,22 +47,22 @@ export const MainView = (props: NavProps) => {
 	const [index, setIndex] = useState(0);
 	const [cards, setCards] = useState<CardData[]>([]);
 	const addStreak = useSetRecoilState(rstAddStreak);
-
-	const result = useRef<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
-	const x = useSharedValue(0);
-
-	useEffect(() => {
-		loadTmpTrainingToday().then(data => {
-			setIndex(data.index);
-			setCards(data.target);
-			result.current = data.result;
-		});
-	}, []);
 	// const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	// const [cards, setCards] = useRecoilState(rstTrainingToday);
 
-	const current = cards[index];
+	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
+	const x = useSharedValue(0);
 
+	useEffect(() => {
+		loadTmpTrainingToday().then(async data => {
+			setIndex(data.index);
+			setCards(data.target);
+			setResult(data.result);
+		});
+	}, []);
+
+	const current = cards[index];
+	console.log('current', JSON.stringify(result));
 
 	const onFinish = () => {
 		setCards([]);
@@ -71,26 +72,35 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const next = () => {
-		saveTmpTrainingToday({ target: cards, index, result: result.current });
+		saveTmpTrainingToday({ target: cards, index, result: result });
 		if (index === cards.length - 1) {
 			onFinish();
 			return;
 		}
 		setIndex(index + 1);
+
 	};
 
-	const success = (data: CardData) => {
-		result.current[data.repeat].push(true);
+	const success = async (data: CardData) => {
+		const tmp = result;
+		tmp[data.repeat].push(true);
+		setResult(tmp);
+		await moveCardForward(data);
 		next();
 	};
 
-	const fail = (data: CardData) => {
-		result.current[data.repeat].push(false);
+	const fail = async (data: CardData) => {
+		const tmp = result;
+		console.log(tmp);
+		tmp[data.repeat].push(false);
+		setResult(tmp);
+		await moveCardBackward(data);
 		next();
 	};
 
 	return (
 		<Container>
+			<CardGradient x={x} />
 			{!!cards.length ? (
 				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)} x={x}>
 					<QuestionCard cardData={current} />

@@ -35,9 +35,11 @@ export const rstAddStreak = selector<void>({
 	get: () => {},
 	set: ({ get, set }) => {
 		const previous = get(rstStat);
+		const currentStreak = previous.currentStreak + 1;
+		const maxStreak = Math.max(previous.maxStreak, currentStreak);
 		set(rstStat, { 
-			...previous, 
-			currentStreak: previous.currentStreak + 1,
+			maxStreak,
+			currentStreak,
 		});
 	},
 });

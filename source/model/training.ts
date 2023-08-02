@@ -1,5 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
+import { DEFAULT_TOTAL_RESULT } from "../constant";
 import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
 import { TotalDailyResult } from "./period";
@@ -14,7 +15,7 @@ export const initTraining = (data: CardData[][]): Training => {
 	return {
 		target: data.reduce((previous, current) => current.concat(previous)),
 		index: 0,
-		result: [],
+		result: DEFAULT_TOTAL_RESULT,
 	};
 };
 

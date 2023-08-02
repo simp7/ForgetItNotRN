@@ -1,7 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs, { Dayjs } from "dayjs";
 
-import { DEFAULT_PERIODS, DEFAULT_SETTING, DEFAULT_STAT, DEFAULT_TRAINING } from "../constant";
+import {
+	DEFAULT_PERIODS,
+	DEFAULT_SETTING,
+	DEFAULT_STAT,
+	DEFAULT_TOTAL_RESULT,
+	DEFAULT_TRAINING,
+} from "../constant";
 import { CardData } from "../model/cardData";
 import { Periods, TotalDailyResult } from "../model/period";
 import { Setting } from "../model/setting";
@@ -69,12 +75,37 @@ export const keepUpdated = async () => {
 			loadStat().then(stat => saveStat({ ...stat, currentStreak: 0 }));
 		}
 		saveLastOpenedDate();
+		await saveTmpTrainingToday(initTraining(await loadNewTrainingToday()));
 	}
-	console.log('ok', JSON.stringify(await loadNewTrainingToday()));
-	await saveTmpTrainingToday(initTraining(await loadNewTrainingToday()));
 };
 
-export const loadPreviousResult = async () => load<TotalDailyResult[]>(StorageKey.result, []);
+export const loadPreviousResult = async () => load<TotalDailyResult>(StorageKey.result, DEFAULT_TOTAL_RESULT);
 export const savePreviousResult = async (newResult: TotalDailyResult) => {
 	return save(StorageKey.result, newResult);
+};
+
+const removeCard = (array: CardData[], data: CardData) => {
+	return array.splice(array.findIndex(element => element !== data), 1);
+};
+
+const moveCard = async (data: CardData, to_box: number) => {
+	const previous = data.repeat;
+	const previousArray = await loadCardData(previous);
+	await saveCardData(previous, removeCard(previousArray, data));
+
+	const nextArray = await loadCardData(to_box) ?? [];
+	const nextCard: CardData = {
+		...data,
+		repeat: to_box,
+		lastReviewed: formatDate(now()),
+	};
+	await saveCardData(to_box, nextArray.concat(nextCard));
+};
+
+export const moveCardForward = async (data: CardData) => {
+	return moveCard(data, data.repeat + 1);
+};
+
+export const moveCardBackward = async (data: CardData) => {
+	return moveCard(data, data.repeat === 1 ? 1 : data.repeat - 1);
 };
