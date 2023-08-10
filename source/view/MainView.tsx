@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { IconAdd } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
-import { CardGradient } from "../component/Gradient";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
@@ -100,7 +99,6 @@ export const MainView = (props: NavProps) => {
 
 	return (
 		<Container>
-			<CardGradient x={x} />
 			{!!cards.length ? (
 				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)} x={x}>
 					<QuestionCard cardData={current} />

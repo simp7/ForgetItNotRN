@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
-import { CardGradient } from "../component/Gradient";
 import { DEFAULT_CARD_DATA } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
@@ -110,7 +109,6 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<CardGradient x={x} />
 				<CardHandler onSwipeLeft={discard} onSwipeRight={save} x={x}>
 					<QuestionInputCard data={data} setData={setText} />
 				</CardHandler>

@@ -3,12 +3,15 @@ import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { trigger } from "react-native-haptic-feedback";
 import Animated, {
+	DerivedValue,
 	Easing,
 	Extrapolation,
 	interpolate,
 	SharedValue,
 	useAnimatedStyle,
+	useDerivedValue,
 	useSharedValue,
 	useWorkletCallback,
 	withTiming,
@@ -24,6 +27,23 @@ const CardImage = styled(FastImage)`
 	width: ${CARD_WIDTH}px;
 	height: ${CARD_HEIGHT}px;
 	border-radius: 10px;
+`;
+
+const CardCover = styled(Animated.View)`
+	width: ${CARD_WIDTH}px;
+	height: ${CARD_HEIGHT}px;
+	border-radius: 10px;
+	position: absolute;
+`;
+
+export const Remembered = styled(CardCover)`
+	background-color: ${p => p.theme.colors.lime};
+	opacity: 0;
+`;
+
+export const Forgot = styled(CardCover)`
+	background-color: ${p => p.theme.colors.grapefruit};
+	opacity: 0;
 `;
 
 interface CardContainerProps extends ViewProps {
@@ -60,6 +80,7 @@ const QuestionText = styled(CardText)`
 
 interface QuestionCardProps {
 	cardData: CardData;
+	x?: DerivedValue<number>;
 }
 
 export const QuestionCard = (props: QuestionCardProps) => {
@@ -70,6 +91,29 @@ export const QuestionCard = (props: QuestionCardProps) => {
 				<CardImage source={{ uri: data.question.data }} />
 			)}
 		</CardContainer>
+	);
+};
+
+interface CardGradientProps {
+	x: SharedValue<number>;
+}
+
+const CardGradient = (props: CardGradientProps) => {
+	const { x } = props;
+
+	const rememberOpacity = useDerivedValue(() => {
+		return interpolate(x.value, [0, 200], [0, 1], Extrapolation.CLAMP);
+	}, [x]);
+
+	const forgetOpacity = useDerivedValue(() => {
+		return interpolate(x.value, [-200, 0], [1, 0], Extrapolation.CLAMP);
+	}, [x]);
+
+	return (
+		<>
+			<Remembered style={[{ opacity: rememberOpacity }]} />
+			<Forgot style={[{ opacity: forgetOpacity }]} />
+		</>
 	);
 };
 
@@ -95,8 +139,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 					verticalAlign={'middle'}
 					placeholder={'복습용 질문을 입력해주세요.'}
 				/>
-			) : <QuestionCard cardData={data} />
-			}
+			) : <QuestionCard cardData={data} />}
 		</CardContainer>
 	);
 };
@@ -150,6 +193,7 @@ export const CardHandler = (props: HandlerProps) => {
 				duration: 300,
 				easing: Easing.cubic,
 			}, newCardAnimation);
+			trigger('notificationError');
 			onSwipeLeft();
 			return;
 		}
@@ -158,6 +202,7 @@ export const CardHandler = (props: HandlerProps) => {
 				duration: 300,
 				easing: Easing.cubic,
 			}, newCardAnimation);
+			trigger('notificationSuccess');
 			onSwipeRight();
 			return;
 		}
@@ -169,12 +214,17 @@ export const CardHandler = (props: HandlerProps) => {
 
 	return (
 		<GestureDetector gesture={gesture}>
-			<CardHandlerContainer
-				{...viewProps}
-				style={[
-					cardStyle,
-				]}
-			/>
+			<>
+				<CardHandlerContainer
+					{...viewProps}
+					style={[
+						cardStyle,
+					]}
+				>
+					{props.children}
+					<CardGradient x={x} />
+				</CardHandlerContainer>
+			</>
 		</GestureDetector>
 	);
 };
