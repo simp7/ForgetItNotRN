@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import { SpacerHeight } from "../component/Basic";
 import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
 import { APP_VERSION, BOTTOM_SAFE_HEIGHT } from "../constant";
 import { rstDarkMode, rstNotification, rstTargetRate } from "../model/setting";
+import notification from "../util/notification";
 
 const Container = styled(View)`
 	padding-top: 130px;
@@ -20,6 +21,13 @@ export const SettingView = () => {
 	const [rate, setRate] = useRecoilState(rstTargetRate);
 	const [dark, setDark] = useRecoilState(rstDarkMode);
 	const [notify, setNotify] = useRecoilState(rstNotification);
+	useEffect(() => {
+		if (notify) {
+			notification.register();
+			return;
+		}
+		notification.unregister();
+	}, [notify]);
 
 	return (
 		<Container>

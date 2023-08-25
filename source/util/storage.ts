@@ -107,5 +107,5 @@ export const moveCardForward = async (data: CardData) => {
 };
 
 export const moveCardBackward = async (data: CardData) => {
-	return moveCard(data, data.repeat === 1 ? 1 : data.repeat - 1);
+	return moveCard(data, data.repeat === 0 ? 0 : data.repeat - 1);
 };

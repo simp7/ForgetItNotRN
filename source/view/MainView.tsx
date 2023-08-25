@@ -45,6 +45,7 @@ type NavProps = StackScreenProps<ParamList, Route.Main>;
 export const MainView = (props: NavProps) => {
 	const [index, setIndex] = useState(0);
 	const [cards, setCards] = useState<CardData[]>([]);
+	// const a = useRecoilValue(rstStat);
 	const addStreak = useSetRecoilState(rstAddStreak);
 	// const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	// const [cards, setCards] = useRecoilState(rstTrainingToday);
@@ -90,7 +91,6 @@ export const MainView = (props: NavProps) => {
 
 	const fail = async (data: CardData) => {
 		const tmp = result;
-		console.log(tmp);
 		tmp[data.repeat].push(false);
 		setResult(tmp);
 		await moveCardBackward(data);
