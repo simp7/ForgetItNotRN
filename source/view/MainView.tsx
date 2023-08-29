@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
@@ -12,7 +12,8 @@ import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
 import { rstAddStreak } from "../model/stat";
-import { loadTmpTrainingToday, moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
+import { rstTrainingToday } from "../model/training";
+import { loadTmpTraining, moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -48,13 +49,13 @@ export const MainView = (props: NavProps) => {
 	// const a = useRecoilValue(rstStat);
 	const addStreak = useSetRecoilState(rstAddStreak);
 	// const [index, setIndex] = useRecoilState(rstTrainingIndex);
-	// const [cards, setCards] = useRecoilState(rstTrainingToday);
+	const [training, setTraining] = useRecoilState(rstTrainingToday);
 
 	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
 
 	useEffect(() => {
-		loadTmpTrainingToday().then(async data => {
+		loadTmpTraining().then(async data => {
 			setIndex(data.index);
 			setCards(data.target);
 			setResult(data.result);

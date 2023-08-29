@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 
 import { formatDate, now } from "../util/date";
-import { loadStat, saveStat } from "../util/storage";
+import { loadStatWhenOpened, saveStat } from "../util/storage";
 
 export interface Stat {
 	currentStreak: number;
@@ -10,7 +10,7 @@ export interface Stat {
 
 export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 	const yesterDay = now().subtract(1, 'day');
-	return lastOpened === formatDate(yesterDay) && completed;
+	return lastOpened === formatDate(now()) || (lastOpened === formatDate(yesterDay) && completed);
 };
 
 enum key {
@@ -21,7 +21,7 @@ enum key {
 
 const rstDefaultStat = selector<Stat>({
 	key: key.default,
-	get: loadStat,
+	get: loadStatWhenOpened,
 });
 
 export const rstStat = atom<Stat>({
