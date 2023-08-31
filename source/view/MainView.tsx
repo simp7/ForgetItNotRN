@@ -12,7 +12,7 @@ import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
 import { rstAddStreak } from "../model/stat";
-import { rstTrainingToday } from "../model/training";
+import { rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { loadTmpTraining, moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
@@ -22,6 +22,8 @@ const Container = styled(View)`
 	justify-content: center;
 	align-items: center;
 	padding-bottom: ${BOTTOM_SAFE_HEIGHT}px;
+	/* background-color: ${p => p.theme.colors.background}; */
+	background-color: 'blue';
 `;
 
 const AddButtonContainer = styled(BasicButton)`
@@ -44,11 +46,9 @@ const EmptyContainer = styled(View)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-	const [index, setIndex] = useState(0);
 	const [cards, setCards] = useState<CardData[]>([]);
-	// const a = useRecoilValue(rstStat);
 	const addStreak = useSetRecoilState(rstAddStreak);
-	// const [index, setIndex] = useRecoilState(rstTrainingIndex);
+	const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	const [training, setTraining] = useRecoilState(rstTrainingToday);
 
 	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
@@ -59,17 +59,16 @@ export const MainView = (props: NavProps) => {
 			setIndex(data.index);
 			setCards(data.target);
 			setResult(data.result);
+			console.log('got it');
 		});
 	}, []);
 
 	const current = cards[index];
-	console.log('current', JSON.stringify(result));
 
 	const onFinish = () => {
 		setCards([]);
 		setIndex(0);
 		addStreak();
-		// evaluateAllPeriod();
 	};
 
 	const next = () => {

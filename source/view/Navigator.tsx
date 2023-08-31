@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { Suspense } from "react";
 import { TouchableOpacityProps } from "react-native";
 import { useTheme } from "styled-components";
 
@@ -44,6 +44,7 @@ const Stack = createStackNavigator<ParamList>();
 
 export const Navigator = () => {
 	const { colors } = useTheme();
+	console.log(colors);
 
 	return (
 		<Stack.Navigator

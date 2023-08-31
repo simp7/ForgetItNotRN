@@ -16,7 +16,7 @@ const _registerLocalNotification = () => {
 
 
 	const time = new Date();
-	time.setHours(18);
+	time.setHours(18, 0, 0, 0);
 
 	PushNotification.localNotificationSchedule({
 		/* Android Only Properties */
