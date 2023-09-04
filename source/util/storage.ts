@@ -51,7 +51,8 @@ export const loadStatWhenOpened = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	const loaded = await loadStat();
 	const training = await loadTmpTraining();
-	if (!isStreakValid(lastOpened, training.result.length !== training.index)) {
+	const streakValidity = await isStreakValid(lastOpened, training.result.length === training.index);
+	if (!streakValidity) {
 		const result: Stat = { ...loaded, currentStreak: 0 };
 		saveStat(result);
 		return result;

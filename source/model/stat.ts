@@ -11,7 +11,9 @@ export interface Stat {
 
 export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 	const yesterDay = now().subtract(1, 'day');
-	return lastOpened === formatDate(now()) || (lastOpened === formatDate(yesterDay) && completed);
+	const result = lastOpened === formatDate(now()) || (lastOpened === formatDate(yesterDay) && completed);
+	console.log('is streak valid? : ', result);
+	return result;
 };
 
 enum key {
