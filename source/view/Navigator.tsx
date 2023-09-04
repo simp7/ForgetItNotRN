@@ -1,5 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { Suspense } from "react";
+import React from "react";
 import { TouchableOpacityProps } from "react-native";
 import { useTheme } from "styled-components";
 

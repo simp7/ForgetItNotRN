@@ -1,6 +1,7 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
 
-import { loadPeriod } from "../util/storage";
+import { DEFAULT_PERIODS } from "../constant";
+import { loadPeriod, savePeriod } from "../util/storage";
 
 export type DailyResult = boolean[];
 export type TotalDailyResult = DailyResult[];
@@ -56,16 +57,18 @@ export const evaluateAllPeriod = (
 export type Periods = number[];
 
 enum key {
-	default = 'PeriodDefault',
 	object = 'Period',
 }
 
-const rstDefaultPeriods = selector<Periods>({
-	key: key.default,
-	get: loadPeriod,
-});
-
 export const rstPeriod = atom<Periods>({
 	key: key.object,
-	default: rstDefaultPeriods,
+	default: DEFAULT_PERIODS,
+	effects: [({ setSelf, onSet }) => {
+		loadPeriod().then(value => {
+			if (value !== null) {
+				setSelf(value);
+			}
+		});
+		onSet(savePeriod);
+	}],
 });

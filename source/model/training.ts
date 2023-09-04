@@ -1,6 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
-import { DEFAULT_TOTAL_RESULT } from "../constant";
+import { DEFAULT_TOTAL_RESULT, DEFAULT_TRAINING } from "../constant";
 import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
 import { TotalDailyResult } from "./period";
@@ -20,21 +20,22 @@ export const initTraining = (data: CardData[][]): Training => {
 };
 
 enum key {
-	default = 'TrainingDefault',
 	object = 'Traning',
 	today = 'TrainingToday',
 	index = 'TrainingIndex',
 }
 
-const rstDefaultTraining = selector<Training>({
-	key: key.default,
-	get: loadTmpTrainingToday,
-});
-
 const rstTraining = atom<Training>({
 	key: key.object,
-	default: rstDefaultTraining,
-	effects: [({ onSet }) => onSet(saveTmpTrainingToday)],
+	default: DEFAULT_TRAINING,
+	effects: [({ setSelf, onSet }) => {
+		loadTmpTrainingToday().then(value => {
+			if (value !== null) {
+				setSelf(value);
+			}
+		});
+		onSet(saveTmpTrainingToday);
+	}],
 });
 
 export const rstTrainingToday = selector<CardData[]>({

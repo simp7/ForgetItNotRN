@@ -1,5 +1,6 @@
 import { atom, DefaultValue, selector } from "recoil";
 
+import { DEFAULT_SETTING } from "../constant";
 import { loadSetting, saveSetting } from "../util/storage";
 
 export interface Setting {
@@ -9,22 +10,23 @@ export interface Setting {
 }
 
 enum key {
-	default = 'SettingDefault',
 	object = 'Setting',
 	targetRate = 'SettingTargetRate',
 	darkMode = 'SettingDarkMode',
 	notification = 'SettingNotification',
 }
 
-const rstDefaultSetting = selector<Setting>({
-	key: key.default,
-	get: loadSetting,
-});
-
 const rstSetting = atom<Setting>({
 	key: key.object,
-	default: rstDefaultSetting,
-	effects: [({ onSet }) => onSet(saveSetting)],
+	default: DEFAULT_SETTING,
+	effects: [({ setSelf, onSet }) => {
+		loadSetting().then(value => {
+			if (value !== null) {
+				setSelf(value);
+			}
+		});
+		onSet(saveSetting);
+	}],
 });
 
 export const rstTargetRate = selector<number>({
@@ -34,7 +36,7 @@ export const rstTargetRate = selector<number>({
 		const previous = get(rstSetting);
 		set(rstSetting, { 
 			...previous, 
-			targetRate: newValue instanceof DefaultValue ? get(rstDefaultSetting).targetRate : newValue,
+			targetRate: newValue instanceof DefaultValue ? DEFAULT_SETTING.targetRate : newValue,
 		});
 	},
 });
@@ -46,7 +48,7 @@ export const rstDarkMode = selector<boolean>({
 		const previous = get(rstSetting);
 		set(rstSetting, { 
 			...previous, 
-			darkMode: newValue instanceof DefaultValue ? get(rstDefaultSetting).darkMode : newValue,
+			darkMode: newValue instanceof DefaultValue ? DEFAULT_SETTING.darkMode : newValue,
 		});
 	},
 });
@@ -58,7 +60,7 @@ export const rstNotification = selector<boolean>({
 		const previous = get(rstSetting);
 		set(rstSetting, { 
 			...previous,
-			notification: newValue instanceof DefaultValue ? get(rstDefaultSetting).notification : newValue,
+			notification: newValue instanceof DefaultValue ? DEFAULT_SETTING.notification : newValue,
 		});
 	},
 });

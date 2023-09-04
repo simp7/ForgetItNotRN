@@ -1,5 +1,6 @@
 import { atom, selector } from "recoil";
 
+import { DEFAULT_STAT } from "../constant";
 import { formatDate, now } from "../util/date";
 import { loadStatWhenOpened, saveStat } from "../util/storage";
 
@@ -14,20 +15,21 @@ export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 };
 
 enum key {
-	default = 'StatDefault',
 	object = 'Stat',
 	addStreak = 'StatAddStreak',
 }
 
-const rstDefaultStat = selector<Stat>({
-	key: key.default,
-	get: loadStatWhenOpened,
-});
-
 export const rstStat = atom<Stat>({
 	key: key.object,
-	default: rstDefaultStat,
-	effects: [({ onSet }) => onSet(saveStat)],
+	default: DEFAULT_STAT,
+	effects: [({ setSelf, onSet }) => {
+		loadStatWhenOpened().then(value => {
+			if (value !== null) {
+				setSelf(value);
+			}
+		});
+		onSet(saveStat);
+	}],
 });
 
 export const rstAddStreak = selector<void>({

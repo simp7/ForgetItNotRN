@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme as NavDark, DefaultTheme as NavLight, NavigationContainer, Theme } from '@react-navigation/native';
 import React, { Suspense, useEffect, useState } from 'react';
-import { AppState, StatusBar, View } from 'react-native';
-import { RecoilRoot, useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { AppState, StatusBar } from 'react-native';
+import { RecoilRoot, useRecoilValue } from 'recoil';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 
 import { rstDarkMode } from './source/model/setting';
