@@ -12,7 +12,6 @@ export interface Stat {
 export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 	const yesterDay = now().subtract(1, 'day');
 	const result = lastOpened === formatDate(now()) || (lastOpened === formatDate(yesterDay) && completed);
-	console.log('is streak valid? : ', result);
 	return result;
 };
 
@@ -34,9 +33,17 @@ export const rstStat = atom<Stat>({
 	}],
 });
 
+export const addStreak = (previous: Stat) => {
+	const currentStreak = previous.currentStreak + 1;
+	const maxStreak = Math.max(previous.maxStreak, currentStreak);
+	return { maxStreak, currentStreak };
+};
+
 export const rstAddStreak = selector<void>({
 	key: key.addStreak,
-	get: () => {},
+	get: ({ get }) => {
+		get(rstStat);
+	},
 	set: ({ get, set }) => {
 		const previous = get(rstStat);
 		const currentStreak = previous.currentStreak + 1;

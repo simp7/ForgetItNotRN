@@ -9,7 +9,8 @@ const getImageBy = (openner: (options: Options) => Promise<ImageOrVideo>) => {
 	return openner({ 
 		mediaType: 'any', 
 		cropping: true,
-		compressVideoPreset: 'MediumQuality',
+		compressVideoPreset: 'HighestQuality',
+		freeStyleCropEnabled: true,
 		width: IMAGE_QUALITY * CARD_WIDTH,
 		height: IMAGE_QUALITY * CARD_HEIGHT,
 	});

@@ -11,8 +11,8 @@ import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
-import { rstAddStreak } from "../model/stat";
-import { rstTrainingIndex, rstTrainingToday } from "../model/training";
+import { addStreak, rstAddStreak, rstStat } from "../model/stat";
+import { rstTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { loadTmpTraining, moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
@@ -46,29 +46,23 @@ const EmptyContainer = styled(View)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-	const [cards, setCards] = useState<CardData[]>([]);
-	const addStreak = useSetRecoilState(rstAddStreak);
+	const [streak, setStreak] = useRecoilState(rstStat);
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
-	const [training, setTraining] = useRecoilState(rstTrainingToday);
+	const [cards, setCards] = useRecoilState(rstTrainingToday);
 
 	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
 
-	useEffect(() => {
-		loadTmpTraining().then(async data => {
-			setIndex(data.index);
-			setCards(data.target);
-			setResult(data.result);
-			console.log('got it');
-		});
-	}, []);
+	const add = () => {
+		setStreak(addStreak(streak));
+	};
 
 	const current = cards[index];
 
 	const onFinish = () => {
 		setCards([]);
 		setIndex(0);
-		addStreak();
+		add();
 	};
 
 	const next = () => {
@@ -99,8 +93,13 @@ export const MainView = (props: NavProps) => {
 
 	return (
 		<Container>
-			{!!cards.length ? (
-				<CardHandler onSwipeRight={() => success(current)} onSwipeLeft={() => fail(current)} x={x}>
+			{!!cards.length && !!current ? (
+				<CardHandler
+					onSwipeRight={() => success(current)}
+					onSwipeLeft={() => fail(current)}
+					x={x}
+					onPress={() => { }}
+				>
 					<QuestionCard cardData={current} />
 				</CardHandler>
 			) : (

@@ -23,9 +23,10 @@ enum key {
 	object = 'Traning',
 	today = 'TrainingToday',
 	index = 'TrainingIndex',
+	result = 'TrainingResult',
 }
 
-const rstTraining = atom<Training>({
+export const rstTraining = atom<Training>({
 	key: key.object,
 	default: DEFAULT_TRAINING,
 	effects: [({ setSelf, onSet }) => {
@@ -58,6 +59,18 @@ export const rstTrainingIndex = selector<number>({
 		set(rstTraining, newValue instanceof DefaultValue ? training : {
 			...training,
 			index: newValue,
+		});
+	},
+});
+
+export const rstTrainingResult = selector<TotalDailyResult>({
+	key: key.result,
+	get: ({ get }) => get(rstTraining).result,
+	set: ({ get, set }, newValue) => {
+		const training = get(rstTraining);
+		set(rstTraining, newValue instanceof DefaultValue ? training : {
+			...training,
+			result: newValue,
 		});
 	},
 });

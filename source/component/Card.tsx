@@ -88,7 +88,7 @@ export const QuestionCard = (props: QuestionCardProps) => {
 	return (
 		<CardContainer>
 			{data.question.type === InputType.Text ? <QuestionText>{data.question.data}</QuestionText> : (
-				<CardImage source={{ uri: data.question.data }} />
+				<CardImage source={{ uri: data.question.data }} resizeMode={'contain'} />
 			)}
 		</CardContainer>
 	);
@@ -127,7 +127,11 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 	const ref = useRef<TextInput>(null);
 
 	return (
-		<CardContainer onPress={() => ref?.current?.focus()}>
+		<CardContainer onPress={() => {
+			console.log('ok');
+			ref?.current?.focus();
+		}}
+		>
 			{data.question.type === InputType.Text ? (
 				<CardTextInput
 					value={data.question.data}

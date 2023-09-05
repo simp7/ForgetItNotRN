@@ -48,11 +48,14 @@ export const saveSetting = async (setting: Setting) => save(StorageKey.setting, 
 
 export const loadStat = () => load(StorageKey.stat, DEFAULT_STAT);
 export const loadStatWhenOpened = async () => {
+	console.log('ok');
 	const lastOpened = await loadLastOpenedDate();
 	const loaded = await loadStat();
 	const training = await loadTmpTraining();
 	const streakValidity = await isStreakValid(lastOpened, training.result.length === training.index);
+	console.log('check streak');
 	if (!streakValidity) {
+		console.log('streak broken!');
 		const result: Stat = { ...loaded, currentStreak: 0 };
 		saveStat(result);
 		return result;
@@ -73,9 +76,7 @@ const loadNewTrainingToday = async () => {
 	}));
 };
 
-export const loadTmpTraining = async () => {
-	return load(StorageKey.training, DEFAULT_TRAINING);
-};
+export const loadTmpTraining = async () => load(StorageKey.training, DEFAULT_TRAINING);
 export const loadTmpTrainingToday = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	if (lastOpened === formatDate(now())) {
