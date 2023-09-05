@@ -98,6 +98,7 @@ export const MainView = (props: NavProps) => {
 					onSwipeRight={() => success(current)}
 					onSwipeLeft={() => fail(current)}
 					x={x}
+					addMode={false}
 				>
 					<QuestionCard cardData={current} />
 				</CardHandler>

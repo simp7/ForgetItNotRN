@@ -115,6 +115,7 @@ export const AddView = () => {
 					onSwipeRight={save}
 					onPress={() => ref.current?.focus()}
 					x={x}
+					addMode={true}
 				>
 					<QuestionInputCard data={data} setData={setText} ref={ref} />
 				</CardHandler>

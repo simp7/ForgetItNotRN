@@ -19,6 +19,8 @@ import Animated, {
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
+import { IconCheck } from "../asset/icon";
+import { IconTrash, IconX } from "../asset/image";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
@@ -39,11 +41,15 @@ const CardCover = styled(Animated.View)`
 export const Remembered = styled(CardCover)`
 	background-color: ${p => p.theme.colors.lime};
 	opacity: 0;
+	align-items: center;
+	justify-content: center;
 `;
 
 export const Forgot = styled(CardCover)`
 	background-color: ${p => p.theme.colors.grapefruit};
 	opacity: 0;
+	align-items: center;
+	justify-content: center;
 `;
 
 interface CardContainerProps extends ViewProps {
@@ -92,10 +98,11 @@ export const QuestionCard = (props: QuestionCardProps) => {
 
 interface CardGradientProps {
 	x: SharedValue<number>;
+	addMode: boolean;
 }
 
-const CardGradient = (props: CardGradientProps) => {
-	const { x } = props;
+const CardIndicator = (props: CardGradientProps) => {
+	const { x, addMode } = props;
 
 	const rememberOpacity = useDerivedValue(() => {
 		return interpolate(x.value, [0, 200], [0, 1], Extrapolation.CLAMP);
@@ -107,8 +114,12 @@ const CardGradient = (props: CardGradientProps) => {
 
 	return (
 		<>
-			<Remembered style={[{ opacity: rememberOpacity }]} />
-			<Forgot style={[{ opacity: forgetOpacity }]} />
+			<Remembered style={[{ opacity: rememberOpacity }]}>
+				<IconCheck size={128} />
+			</Remembered>
+			<Forgot style={[{ opacity: forgetOpacity }]}>
+				{addMode ? <IconTrash size={128} /> : <IconX size={128} />}
+			</Forgot>
 		</>
 	);
 };
@@ -148,10 +159,11 @@ interface HandlerProps extends ViewProps {
 	onSwipeRight: () => void;
 	onPress?: () => void;
 	x: SharedValue<number>;
+	addMode: boolean;
 }
 
 export const CardHandler = (props: HandlerProps) => {
-	const { onSwipeLeft, onSwipeRight, x, onPress, ...viewProps } = props;
+	const { onSwipeLeft, onSwipeRight, x, onPress, addMode, ...viewProps } = props;
 
 	const opacity = useSharedValue(1);
 
@@ -219,7 +231,7 @@ export const CardHandler = (props: HandlerProps) => {
 						]}
 					>
 						{props.children}
-						<CardGradient x={x} />
+						<CardIndicator x={x} addMode={addMode} />
 					</CardHandlerContainer>
 				</>
 			</BasicButton>

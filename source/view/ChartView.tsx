@@ -29,7 +29,7 @@ export const ChartView = () => {
 			<SpacerHeight size={20} />
 			<StandardListItem title={'최장 연속 기록'} content={`${status?.maxStreak}일`} />
 			<SpacerHeight size={20} />
-			<StandardListItem title={'주기'} content={period.join(', ')} />
+			<StandardListItem title={'주기(일)'} content={period.join(', ')} />
 		</Container>
 	);
 };
