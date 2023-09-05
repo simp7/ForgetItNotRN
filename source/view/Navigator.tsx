@@ -44,7 +44,6 @@ const Stack = createStackNavigator<ParamList>();
 
 export const Navigator = () => {
 	const { colors } = useTheme();
-	console.log(colors);
 
 	return (
 		<Stack.Navigator

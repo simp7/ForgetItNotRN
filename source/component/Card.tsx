@@ -195,7 +195,6 @@ export const CardHandler = (props: HandlerProps) => {
 	const gesture = Gesture.Pan().runOnJS(true).onChange((event) => {
 		x.value = event.translationX;
 	}).onEnd(() => {
-
 		if (x.value < -200) {
 			x.value = withTiming(-1000, {
 				duration: 300,

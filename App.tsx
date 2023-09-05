@@ -29,8 +29,8 @@ const AppUI = (props: AppUIProps) => {
 
 const ThemeLoader = () => {
 	const isDarkMode = useRecoilValue(rstDarkMode);
-	const [theme, setTheme] = useState<DefaultTheme>(LightTheme);
-	const [navTheme, setNavTheme] = useState<Theme>(NavLight);
+	const [theme, setTheme] = useState<DefaultTheme>(DarkTheme);
+	const [navTheme, setNavTheme] = useState<Theme>(NavDark);
 
 	useEffect(() => {
 		AsyncStorage.getAllKeys().then(keys => AsyncStorage.multiGet(keys)).then(result => {
@@ -38,7 +38,7 @@ const ThemeLoader = () => {
 		});
 		const update = AppState.addEventListener('change', nextState => {
 			if (nextState !== 'active') {
-				console.log('updateLastOpenedDate');
+				console.log('Update last_opened_date');
 				updateLastOpenedDate();
 			}
 		});
@@ -46,7 +46,6 @@ const ThemeLoader = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log('changed: ', isDarkMode);
 		setTheme(isDarkMode ? DarkTheme : LightTheme);
 		setNavTheme(isDarkMode ? NavDark : NavLight);
 	}, [isDarkMode]);

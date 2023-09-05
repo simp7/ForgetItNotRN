@@ -20,6 +20,7 @@ const StandardContainer = styled(ContainerBase)`
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 20px;
+	margin-bottom: 20px;
 `;
 
 interface ItemProps {
