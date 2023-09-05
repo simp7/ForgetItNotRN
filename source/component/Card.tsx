@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { TextInput, TouchableWithoutFeedback, ViewProps } from "react-native";
+import React, { forwardRef } from "react";
+import { TextInput, ViewProps } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -21,7 +21,7 @@ import styled from "styled-components";
 
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { CardData, InputType } from "../model/cardData";
-import { CardText, CardTextInput } from "./Basic";
+import { BasicButton, CardText, CardTextInput } from "./Basic";
 
 const CardImage = styled(FastImage)`
 	width: ${CARD_WIDTH}px;
@@ -48,7 +48,6 @@ export const Forgot = styled(CardCover)`
 
 interface CardContainerProps extends ViewProps {
 	wrong?: boolean;
-	onPress?: () => void;
 }
 
 const Container = styled(View) <CardContainerProps>`
@@ -61,15 +60,12 @@ const Container = styled(View) <CardContainerProps>`
 `;
 
 const CardContainer = (props: CardContainerProps) => {
-	const { onPress } = props;
 	return (
-		<TouchableWithoutFeedback disabled={!onPress} onPress={onPress}>
-			<View>
-				<Shadow distance={3} style={{ borderRadius: 10 }} offset={[0, 1]}>
-					<Container {...props} />
-				</Shadow>
-			</View>
-		</TouchableWithoutFeedback>
+		<View>
+			<Shadow distance={3} style={{ borderRadius: 10 }} offset={[0, 1]}>
+				<Container {...props} />
+			</Shadow>
+		</View>
 	);
 };
 
@@ -122,21 +118,16 @@ interface QuestionCardInputProps {
 	setData: (data: string) => void;
 }
 
-export const QuestionInputCard = (props: QuestionCardInputProps) => {
+export const QuestionInputCard = forwardRef<TextInput, QuestionCardInputProps>((props, ref) => {
 	const { data, setData } = props;
-	const ref = useRef<TextInput>(null);
 
 	return (
-		<CardContainer onPress={() => {
-			console.log('ok');
-			ref?.current?.focus();
-		}}
-		>
+		<CardContainer>
 			{data.question.type === InputType.Text ? (
 				<CardTextInput
 					value={data.question.data}
 					ref={ref}
-					size={17}
+					size={22}
 					onChangeText={setData}
 					multiline
 					textAlign={'center'}
@@ -146,7 +137,7 @@ export const QuestionInputCard = (props: QuestionCardInputProps) => {
 			) : <QuestionCard cardData={data} />}
 		</CardContainer>
 	);
-};
+});
 
 const CardHandlerContainer = styled(Animated.View)`
 	justify-content: center;
@@ -155,11 +146,12 @@ const CardHandlerContainer = styled(Animated.View)`
 interface HandlerProps extends ViewProps {
 	onSwipeLeft: () => void;
 	onSwipeRight: () => void;
+	onPress?: () => void;
 	x: SharedValue<number>;
 }
 
 export const CardHandler = (props: HandlerProps) => {
-	const { onSwipeLeft, onSwipeRight, x, ...viewProps } = props;
+	const { onSwipeLeft, onSwipeRight, x, onPress, ...viewProps } = props;
 
 	const opacity = useSharedValue(1);
 
@@ -218,17 +210,19 @@ export const CardHandler = (props: HandlerProps) => {
 
 	return (
 		<GestureDetector gesture={gesture}>
-			<>
-				<CardHandlerContainer
-					{...viewProps}
-					style={[
-						cardStyle,
-					]}
-				>
-					{props.children}
-					<CardGradient x={x} />
-				</CardHandlerContainer>
-			</>
+			<BasicButton onPress={() => onPress?.()} disabled={!onPress} activeOpacity={1} >
+				<>
+					<CardHandlerContainer
+						{...viewProps}
+						style={[
+							cardStyle,
+						]}
+					>
+						{props.children}
+						<CardGradient x={x} />
+					</CardHandlerContainer>
+				</>
+			</BasicButton>
 		</GestureDetector>
 	);
 };
