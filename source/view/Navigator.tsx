@@ -1,4 +1,4 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { TouchableOpacityProps } from "react-native";
 import { useTheme } from "styled-components";
@@ -83,6 +83,7 @@ export const Navigator = () => {
 				component={AddView}
 				options={{
 					gestureDirection: 'vertical',
+					cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
 				}}
 			/>
 		</Stack.Navigator>
