@@ -53,7 +53,7 @@ export const MainView = (props: NavProps) => {
 	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
 
-	const add = () => {
+	const increaseStreak = () => {
 		setStreak(addStreak(streak));
 	};
 
@@ -62,7 +62,7 @@ export const MainView = (props: NavProps) => {
 	const onFinish = () => {
 		setCards([]);
 		setIndex(0);
-		add();
+		increaseStreak();
 	};
 
 	const next = () => {
@@ -72,12 +72,11 @@ export const MainView = (props: NavProps) => {
 			return;
 		}
 		setIndex(index + 1);
-
 	};
 
 	const success = async (data: CardData) => {
 		const tmp = result;
-		tmp[data.repeat].push(true);
+		tmp[data.repeat].push(true); // update result
 		setResult(tmp);
 		await moveCardForward(data);
 		next();
@@ -85,7 +84,7 @@ export const MainView = (props: NavProps) => {
 
 	const fail = async (data: CardData) => {
 		const tmp = result;
-		tmp[data.repeat].push(false);
+		tmp[data.repeat].push(false); // update result;
 		setResult(tmp);
 		await moveCardBackward(data);
 		next();
