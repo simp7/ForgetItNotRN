@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { IconAdd } from "../asset/icon";
@@ -12,7 +12,7 @@ import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalDailyResult } from "../model/period";
 import { addStreak, rstStat } from "../model/stat";
-import { rstTrainingIndex, rstTrainingToday } from "../model/training";
+import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
@@ -48,7 +48,8 @@ type NavProps = StackScreenProps<ParamList, Route.Main>;
 export const MainView = (props: NavProps) => {
 	const [streak, setStreak] = useRecoilState(rstStat);
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
-	const [cards, setCards] = useRecoilState(rstTrainingToday);
+	const cards = useRecoilValue(rstTrainingToday);
+	const reset = useSetRecoilState(rstResetTraining);
 
 	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
@@ -60,8 +61,7 @@ export const MainView = (props: NavProps) => {
 	const current = cards[index];
 
 	const onFinish = () => {
-		setCards([]);
-		setIndex(0);
+		reset();
 		increaseStreak();
 	};
 
@@ -71,11 +71,12 @@ export const MainView = (props: NavProps) => {
 			onFinish();
 			return;
 		}
+		console.log(index);
 		setIndex(index + 1);
 	};
 
 	const success = async (data: CardData) => {
-		const tmp = result;
+		const tmp: TotalDailyResult = JSON.parse(JSON.stringify(result));
 		tmp[data.repeat].push(true); // update result
 		setResult(tmp);
 		await moveCardForward(data);
@@ -83,7 +84,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const fail = async (data: CardData) => {
-		const tmp = result;
+		const tmp: TotalDailyResult = JSON.parse(JSON.stringify(result));
 		tmp[data.repeat].push(false); // update result;
 		setResult(tmp);
 		await moveCardBackward(data);

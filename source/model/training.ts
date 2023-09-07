@@ -24,6 +24,7 @@ enum key {
 	today = 'TrainingToday',
 	index = 'TrainingIndex',
 	result = 'TrainingResult',
+	reset = 'TrainingReset'
 }
 
 export const rstTraining = atom<Training>({
@@ -35,7 +36,10 @@ export const rstTraining = atom<Training>({
 				setSelf(value);
 			}
 		});
-		onSet(saveTmpTrainingToday);
+		onSet((newValue) => {
+			saveTmpTrainingToday(newValue);
+			console.log(newValue);
+		});
 	}],
 });
 
@@ -71,6 +75,20 @@ export const rstTrainingResult = selector<TotalDailyResult>({
 		set(rstTraining, newValue instanceof DefaultValue ? training : {
 			...training,
 			result: newValue,
+		});
+	},
+});
+
+export const rstResetTraining = selector<void>({
+	key: key.reset,
+	get: () => {},
+	set: ({ set }) => {
+		set(rstTraining, (prev) => {
+			return {
+				target: [],
+				index: 0,
+				result: prev.result,
+			};
 		});
 	},
 });

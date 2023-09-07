@@ -29,7 +29,10 @@ export const rstStat = atom<Stat>({
 				setSelf(value);
 			}
 		});
-		onSet(saveStat);
+		onSet((newValue) => {
+			saveStat(newValue);
+			console.log(newValue);
+		});
 	}],
 });
 

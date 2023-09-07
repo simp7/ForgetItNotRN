@@ -69,6 +69,9 @@ export const rstPeriod = atom<Periods>({
 				setSelf(value);
 			}
 		});
-		onSet(savePeriod);
+		onSet((newValue) => {
+			savePeriod(newValue);
+			console.log(newValue);
+		});
 	}],
 });

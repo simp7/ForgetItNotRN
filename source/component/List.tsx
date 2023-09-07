@@ -67,6 +67,7 @@ const TargetRateContainer = styled(ContainerBase)`
 	padding-top: 27.5px;
 	padding-bottom: 12px;
 	justify-content: space-between;
+	margin-bottom: 20px;
 `;
 
 const SpaceAround = styled(View)`

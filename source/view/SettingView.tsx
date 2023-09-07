@@ -32,11 +32,8 @@ export const SettingView = () => {
 	return (
 		<Container>
 			<TargetRateListItem rate={rate} setRate={setRate} />
-			<SpacerHeight size={20} />
 			<SwitchListItem title={'다크 모드'} value={dark} setValue={setDark} />
-			<SpacerHeight size={20} />
 			<SwitchListItem title={'알림'} value={notify} setValue={setNotify} />
-			<SpacerHeight size={20} />
 			<StandardListItem title={'버전'} content={APP_VERSION} />
 		</Container>
 	);

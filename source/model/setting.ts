@@ -25,7 +25,10 @@ const rstSetting = atom<Setting>({
 				setSelf(value);
 			}
 		});
-		onSet(saveSetting);
+		onSet((newValue) => {
+			saveSetting(newValue);
+			console.log(newValue);
+		});
 	}],
 });
 
