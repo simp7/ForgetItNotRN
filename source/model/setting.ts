@@ -22,6 +22,7 @@ const rstSetting = atom<Setting>({
 	effects: [({ setSelf, onSet }) => {
 		loadSetting().then(value => {
 			if (value !== null) {
+				console.log(value);
 				setSelf(value);
 			}
 		});

@@ -26,6 +26,7 @@ export const rstStat = atom<Stat>({
 	effects: [({ setSelf, onSet }) => {
 		loadStatWhenOpened().then(value => {
 			if (value !== null) {
+				console.log(value);
 				setSelf(value);
 			}
 		});

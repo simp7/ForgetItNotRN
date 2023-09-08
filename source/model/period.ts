@@ -66,6 +66,7 @@ export const rstPeriod = atom<Periods>({
 	effects: [({ setSelf, onSet }) => {
 		loadPeriod().then(value => {
 			if (value !== null) {
+				console.log(value);
 				setSelf(value);
 			}
 		});

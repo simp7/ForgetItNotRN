@@ -33,6 +33,7 @@ export const rstTraining = atom<Training>({
 	effects: [({ setSelf, onSet }) => {
 		loadTmpTrainingToday().then(value => {
 			if (value !== null) {
+				console.log(value);
 				setSelf(value);
 			}
 		});
