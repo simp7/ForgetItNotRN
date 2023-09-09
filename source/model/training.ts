@@ -1,21 +1,18 @@
 import { atom, DefaultValue, selector } from "recoil";
 
-import { DEFAULT_TOTAL_RESULT, DEFAULT_TRAINING } from "../constant";
+import { DEFAULT_TRAINING } from "../constant";
 import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
-import { TotalResult } from "./period";
 
 export interface Training {
 	target: CardData[];
 	index: number;
-	result: TotalResult;
 }
 
 export const initTraining = (data: CardData[][]): Training => {
 	return {
 		target: data.reduce((previous, current) => current.concat(previous)),
 		index: 0,
-		result: DEFAULT_TOTAL_RESULT,
 	};
 };
 
@@ -72,12 +69,9 @@ export const rstResetTraining = selector<void>({
 	key: key.reset,
 	get: () => {},
 	set: ({ set }) => {
-		set(rstTraining, (prev) => {
-			return {
-				target: [],
-				index: 0,
-				result: prev.result,
-			};
-		});
+		set(rstTraining, ({
+			target: [],
+			index: 0,
+		}));
 	},
 });

@@ -1,12 +1,12 @@
 import { atom, selector } from "recoil";
 
-import { DEFAULT_STAT } from "../constant";
+import { DEFAULT_STREAKS } from "../constant";
 import { formatDate, now } from "../util/date";
 import { loadStatWhenOpened, saveStat } from "../util/storage";
 
-export interface Stat {
-	currentStreak: number;
-	maxStreak: number;
+export interface Streaks {
+	current: number;
+	max: number;
 }
 
 export const isStreakValid = async (lastOpened: string, completed: boolean) => {
@@ -20,9 +20,9 @@ enum key {
 	addStreak = 'StatAddStreak',
 }
 
-export const rstStat = atom<Stat>({
+export const rstStreaks = atom<Streaks>({
 	key: key.object,
-	default: DEFAULT_STAT,
+	default: DEFAULT_STREAKS,
 	effects: [({ setSelf, onSet }) => {
 		loadStatWhenOpened().then(value => {
 			if (value !== null) {
@@ -37,24 +37,24 @@ export const rstStat = atom<Stat>({
 	}],
 });
 
-export const addStreak = (previous: Stat) => {
-	const currentStreak = previous.currentStreak + 1;
-	const maxStreak = Math.max(previous.maxStreak, currentStreak);
-	return { maxStreak, currentStreak };
+export const addStreak = (previous: Streaks) => {
+	const currentStreak = previous.current + 1;
+	const maxStreak = Math.max(previous.max, currentStreak);
+	return { max: maxStreak, current: currentStreak };
 };
 
 export const rstAddStreak = selector<void>({
 	key: key.addStreak,
 	get: ({ get }) => {
-		get(rstStat);
+		get(rstStreaks);
 	},
 	set: ({ get, set }) => {
-		const previous = get(rstStat);
-		const currentStreak = previous.currentStreak + 1;
-		const maxStreak = Math.max(previous.maxStreak, currentStreak);
-		set(rstStat, { 
-			maxStreak,
-			currentStreak,
+		const previous = get(rstStreaks);
+		const currentStreak = previous.current + 1;
+		const maxStreak = Math.max(previous.max, currentStreak);
+		set(rstStreaks, { 
+			max: maxStreak,
+			current: currentStreak,
 		});
 	},
 });

@@ -4,14 +4,14 @@ import dayjs, { Dayjs } from "dayjs";
 import {
 	DEFAULT_PERIODS,
 	DEFAULT_SETTING,
-	DEFAULT_STAT,
+	DEFAULT_STREAKS,
 	DEFAULT_TOTAL_RESULT,
 	DEFAULT_TRAINING,
 } from "../constant";
 import { CardData } from "../model/cardData";
 import { Periods, TotalResult } from "../model/period";
 import { Setting } from "../model/setting";
-import { isStreakValid, Stat } from "../model/stat";
+import { isStreakValid, Streaks } from "../model/stat";
 import { initTraining, Training } from "../model/training";
 import { formatDate, now } from "./date";
 
@@ -46,22 +46,22 @@ export const savePeriod = async (period: Periods) => save(StorageKey.period, per
 export const loadSetting = async () => load(StorageKey.setting, DEFAULT_SETTING);
 export const saveSetting = async (setting: Setting) => save(StorageKey.setting, setting);
 
-export const loadStat = () => load(StorageKey.stat, DEFAULT_STAT);
+export const loadStat = () => load(StorageKey.stat, DEFAULT_STREAKS);
 export const loadStatWhenOpened = async () => {
 	const lastOpened = await loadLastOpenedDate();
 	const loaded = await loadStat();
 	const training = await loadTmpTraining();
-	const streakValidity = await isStreakValid(lastOpened, training.result.length === training.index);
+	const streakValidity = await isStreakValid(lastOpened, training.target.length === 0);
 	console.log('check streak...');
 	if (!streakValidity) {
 		console.log('streak broken!');
-		const result: Stat = { ...loaded, currentStreak: 0 };
+		const result: Streaks = { ...loaded, current: 0 };
 		saveStat(result);
 		return result;
 	}
 	return loaded;
 };
-export const saveStat = (stat: Stat) => save(StorageKey.stat, stat);
+export const saveStat = (stat: Streaks) => save(StorageKey.stat, stat);
 
 const loadCardDataByPeriod = async (index: number, limit: Dayjs) => {
 	return (await loadCardData(index)).filter(data => !dayjs(data.lastReviewed).isAfter(limit, 'date'));

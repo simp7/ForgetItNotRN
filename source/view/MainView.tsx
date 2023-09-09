@@ -11,7 +11,7 @@ import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalResult } from "../model/period";
-import { addStreak, rstStat } from "../model/stat";
+import { addStreak, rstStreaks } from "../model/stat";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
@@ -46,7 +46,7 @@ const EmptyContainer = styled(View)`
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
-	const [streak, setStreak] = useRecoilState(rstStat);
+	const [streak, setStreak] = useRecoilState(rstStreaks);
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
@@ -66,7 +66,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const next = () => {
-		saveTmpTrainingToday({ target: cards, index, result: result });
+		saveTmpTrainingToday({ target: cards, index });
 		if (index === cards.length - 1) {
 			onFinish();
 			return;
