@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 import { DEFAULT_STREAKS } from "../constant";
 import { formatDate, now } from "../util/date";
-import { loadStatWhenOpened, saveStat } from "../util/storage";
+import { loadStreaksWhenOpened, saveStreaks } from "../util/storage";
 
 export interface Streaks {
 	current: number;
@@ -24,14 +24,14 @@ export const rstStreaks = atom<Streaks>({
 	key: key.object,
 	default: DEFAULT_STREAKS,
 	effects: [({ setSelf, onSet }) => {
-		loadStatWhenOpened().then(value => {
+		loadStreaksWhenOpened().then(value => {
 			if (value !== null) {
 				console.log(value);
 				setSelf(value);
 			}
 		});
 		onSet((newValue) => {
-			saveStat(newValue);
+			saveStreaks(newValue);
 			console.log(newValue);
 		});
 	}],

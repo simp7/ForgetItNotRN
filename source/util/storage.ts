@@ -11,7 +11,7 @@ import {
 import { CardData } from "../model/cardData";
 import { Periods, TotalResult } from "../model/period";
 import { Setting } from "../model/setting";
-import { isStreakValid, Streaks } from "../model/stat";
+import { isStreakValid, Streaks } from "../model/streaks";
 import { initTraining, Training } from "../model/training";
 import { formatDate, now } from "./date";
 
@@ -21,7 +21,7 @@ enum StorageKey {
 	setting = 'SETTING',
 	training = 'TRAINING',
 	result = 'RESULT_DATA',
-	stat = 'STAT'
+	streaks = 'STREAK'
 }
 
 const load = async <T, > (key: string, defaultValue: T) => {
@@ -41,27 +41,30 @@ export const saveCardData = async (index: number, data: CardData[]) => save(getC
 export const loadPeriod = async () => {
 	return load(StorageKey.period, DEFAULT_PERIODS);
 };
+export const loadPeriodWhenOpened = async () => {
+	return loadPeriod(); // TODO: Add evaluate process when date changed.
+};
 export const savePeriod = async (period: Periods) => save(StorageKey.period, period);
 
 export const loadSetting = async () => load(StorageKey.setting, DEFAULT_SETTING);
 export const saveSetting = async (setting: Setting) => save(StorageKey.setting, setting);
 
-export const loadStat = () => load(StorageKey.stat, DEFAULT_STREAKS);
-export const loadStatWhenOpened = async () => {
+export const loadStreaks = () => load(StorageKey.streaks, DEFAULT_STREAKS);
+export const loadStreaksWhenOpened = async () => {
 	const lastOpened = await loadLastOpenedDate();
-	const loaded = await loadStat();
+	const loaded = await loadStreaks();
 	const training = await loadTmpTraining();
 	const streakValidity = await isStreakValid(lastOpened, training.target.length === 0);
 	console.log('check streak...');
 	if (!streakValidity) {
 		console.log('streak broken!');
 		const result: Streaks = { ...loaded, current: 0 };
-		saveStat(result);
+		saveStreaks(result);
 		return result;
 	}
 	return loaded;
 };
-export const saveStat = (stat: Streaks) => save(StorageKey.stat, stat);
+export const saveStreaks = (stat: Streaks) => save(StorageKey.streaks, stat);
 
 const loadCardDataByPeriod = async (index: number, limit: Dayjs) => {
 	return (await loadCardData(index)).filter(data => !dayjs(data.lastReviewed).isAfter(limit, 'date'));

@@ -3,7 +3,7 @@ import { Dimensions, Platform } from "react-native";
 import { CardData, InputType } from "./model/cardData";
 import { Periods, TotalResult } from "./model/period";
 import { Setting } from "./model/setting";
-import { Streaks } from "./model/stat";
+import { Streaks } from "./model/streaks";
 import { Training } from "./model/training";
 
 export const isIOS = Platform.OS === 'ios';

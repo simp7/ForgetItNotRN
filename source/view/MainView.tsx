@@ -11,7 +11,7 @@ import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
 import { TotalResult } from "../model/period";
-import { addStreak, rstStreaks } from "../model/stat";
+import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
