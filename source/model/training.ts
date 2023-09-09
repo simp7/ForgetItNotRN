@@ -3,12 +3,12 @@ import { atom, DefaultValue, selector } from "recoil";
 import { DEFAULT_TOTAL_RESULT, DEFAULT_TRAINING } from "../constant";
 import { loadTmpTrainingToday, saveTmpTrainingToday } from "../util/storage";
 import { CardData } from "./cardData";
-import { TotalDailyResult } from "./period";
+import { TotalResult } from "./period";
 
 export interface Training {
 	target: CardData[];
 	index: number;
-	result: TotalDailyResult;
+	result: TotalResult;
 }
 
 export const initTraining = (data: CardData[][]): Training => {
@@ -64,18 +64,6 @@ export const rstTrainingIndex = selector<number>({
 		set(rstTraining, newValue instanceof DefaultValue ? training : {
 			...training,
 			index: newValue,
-		});
-	},
-});
-
-export const rstTrainingResult = selector<TotalDailyResult>({
-	key: key.result,
-	get: ({ get }) => get(rstTraining).result,
-	set: ({ get, set }, newValue) => {
-		const training = get(rstTraining);
-		set(rstTraining, newValue instanceof DefaultValue ? training : {
-			...training,
-			result: newValue,
 		});
 	},
 });

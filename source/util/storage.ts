@@ -9,7 +9,7 @@ import {
 	DEFAULT_TRAINING,
 } from "../constant";
 import { CardData } from "../model/cardData";
-import { Periods, TotalDailyResult } from "../model/period";
+import { Periods, TotalResult } from "../model/period";
 import { Setting } from "../model/setting";
 import { isStreakValid, Stat } from "../model/stat";
 import { initTraining, Training } from "../model/training";
@@ -88,8 +88,8 @@ export const loadTmpTrainingToday = async () => {
 };
 export const saveTmpTrainingToday = async (training: Training) => save(StorageKey.training, training);
 
-export const loadPreviousResult = async () => load<TotalDailyResult>(StorageKey.result, DEFAULT_TOTAL_RESULT);
-export const savePreviousResult = async (newResult: TotalDailyResult) => {
+export const loadPreviousResult = async () => load<TotalResult>(StorageKey.result, DEFAULT_TOTAL_RESULT);
+export const savePreviousResult = async (newResult: TotalResult) => {
 	return save(StorageKey.result, newResult);
 };
 

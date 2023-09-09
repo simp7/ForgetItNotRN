@@ -1,7 +1,7 @@
 import { Dimensions, Platform } from "react-native";
 
 import { CardData, InputType } from "./model/cardData";
-import { Periods, TotalDailyResult } from "./model/period";
+import { Periods, TotalResult } from "./model/period";
 import { Setting } from "./model/setting";
 import { Stat } from "./model/stat";
 import { Training } from "./model/training";
@@ -28,7 +28,7 @@ export const DEFAULT_SETTING: Setting = {
 	notification: false,
 };
 
-export const DEFAULT_TOTAL_RESULT: TotalDailyResult = [[], [], [], [], []];
+export const DEFAULT_TOTAL_RESULT: TotalResult = [[], [], [], [], []];
 
 export const DEFAULT_TRAINING: Training = {
 	target: [],

@@ -10,7 +10,7 @@ import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
-import { TotalDailyResult } from "../model/period";
+import { TotalResult } from "../model/period";
 import { addStreak, rstStat } from "../model/stat";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
@@ -51,7 +51,7 @@ export const MainView = (props: NavProps) => {
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
 
-	const [result, setResult] = useState<TotalDailyResult>(DEFAULT_TOTAL_RESULT);
+	const [result, setResult] = useState<TotalResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
 
 	const increaseStreak = () => {
@@ -76,7 +76,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const success = async (data: CardData) => {
-		const tmp: TotalDailyResult = JSON.parse(JSON.stringify(result));
+		const tmp: TotalResult = JSON.parse(JSON.stringify(result));
 		tmp[data.repeat].push(true); // update result
 		setResult(tmp);
 		await moveCardForward(data);
@@ -84,7 +84,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const fail = async (data: CardData) => {
-		const tmp: TotalDailyResult = JSON.parse(JSON.stringify(result));
+		const tmp: TotalResult = JSON.parse(JSON.stringify(result));
 		tmp[data.repeat].push(false); // update result;
 		setResult(tmp);
 		await moveCardBackward(data);
