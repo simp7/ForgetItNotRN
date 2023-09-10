@@ -41,9 +41,6 @@ export const saveCardData = async (index: number, data: CardData[]) => save(getC
 export const loadPeriod = async () => {
 	return load(StorageKey.period, DEFAULT_PERIODS);
 };
-export const loadPeriodWhenOpened = async () => {
-	return loadPeriod(); // TODO: Add evaluate process when date changed.
-};
 export const savePeriod = async (period: Periods) => save(StorageKey.period, period);
 
 export const loadSetting = async () => load(StorageKey.setting, DEFAULT_SETTING);

@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { StandardListItem } from "../component/List";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
-import { rstPeriod } from "../model/period";
+import { rstPeriods } from "../model/period";
 import { rstStreaks } from "../model/streaks";
 
 const Container = styled(View)`
@@ -17,7 +17,7 @@ const Container = styled(View)`
 `;
 
 export const ChartView = () => {
-	const period = useRecoilValue(rstPeriod);
+	const period = useRecoilValue(rstPeriods);
 	const streaks = useRecoilValue(rstStreaks);
 
 	return (

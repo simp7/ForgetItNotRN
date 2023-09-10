@@ -10,7 +10,7 @@ import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
 import { CardData } from "../model/cardData";
-import { TotalResult } from "../model/period";
+import { rstResultByIndex, TotalResult } from "../model/period";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
@@ -50,8 +50,8 @@ export const MainView = (props: NavProps) => {
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
+	const setResult = useSetRecoilState(rstResultByIndex(cards[index]?.repeat ?? 0));
 
-	const [result, setResult] = useState<TotalResult>(DEFAULT_TOTAL_RESULT);
 	const x = useSharedValue(0);
 
 	const increaseStreak = () => {
@@ -76,17 +76,13 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const success = async (data: CardData) => {
-		const tmp: TotalResult = JSON.parse(JSON.stringify(result));
-		tmp[data.repeat].push(true); // update result
-		setResult(tmp);
+		setResult(prev => prev.concat(true));
 		await moveCardForward(data);
 		next();
 	};
 
 	const fail = async (data: CardData) => {
-		const tmp: TotalResult = JSON.parse(JSON.stringify(result));
-		tmp[data.repeat].push(false); // update result;
-		setResult(tmp);
+		setResult(prev => prev.concat(false));
 		await moveCardBackward(data);
 		next();
 	};
