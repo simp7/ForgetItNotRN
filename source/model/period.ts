@@ -60,13 +60,13 @@ export const rstPeriods = atom<Periods>({
 	effects: [({ setSelf, onSet }) => {
 		loadPeriod().then(value => {
 			if (value !== null) {
-				console.log(value);
+				console.log(key.object, value);
 				setSelf(value);
 			}
 		});
 		onSet((newValue) => {
 			savePeriod(newValue);
-			console.log(newValue);
+			console.log(key.object, newValue);
 		});
 	}],
 });
@@ -93,13 +93,13 @@ const rstTotalResult = atom<TotalResult>({
 	effects: [({ setSelf, onSet }) => {
 		loadPreviousResult().then(value => {
 			if (value !== null) {
-				console.log(key, value);
+				console.log(key.result, value);
 				setSelf(value);
 			}
 		});
 		onSet((newValue) => {
 			savePreviousResult(newValue);
-			console.log(newValue);
+			console.log(key.result, newValue);
 		});
 	}],
 });

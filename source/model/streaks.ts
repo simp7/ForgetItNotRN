@@ -16,7 +16,7 @@ export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 };
 
 enum key {
-	object = 'Stat',
+	object = 'Streaks',
 	addStreak = 'StatAddStreak',
 }
 
@@ -26,13 +26,13 @@ export const rstStreaks = atom<Streaks>({
 	effects: [({ setSelf, onSet }) => {
 		loadStreaksWhenOpened().then(value => {
 			if (value !== null) {
-				console.log(value);
+				console.log(key.object, value);
 				setSelf(value);
 			}
 		});
 		onSet((newValue) => {
 			saveStreaks(newValue);
-			console.log(newValue);
+			console.log(key.object, newValue);
 		});
 	}],
 });

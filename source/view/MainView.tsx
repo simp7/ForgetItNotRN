@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -8,9 +8,9 @@ import styled from "styled-components";
 import { IconAdd } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
-import { BOTTOM_SAFE_HEIGHT, DEFAULT_TOTAL_RESULT } from "../constant";
+import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { CardData } from "../model/cardData";
-import { rstResultByIndex, TotalResult } from "../model/period";
+import { rstResultByIndex } from "../model/period";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";

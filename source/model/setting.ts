@@ -22,13 +22,13 @@ const rstSetting = atom<Setting>({
 	effects: [({ setSelf, onSet }) => {
 		loadSetting().then(value => {
 			if (value !== null) {
-				console.log(value);
+				console.log(key.object, value);
 				setSelf(value);
 			}
 		});
 		onSet((newValue) => {
 			saveSetting(newValue);
-			console.log(newValue);
+			console.log(key.object, newValue);
 		});
 	}],
 });
