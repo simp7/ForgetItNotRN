@@ -5,7 +5,6 @@ import FastImage from "react-native-fast-image";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { trigger } from "react-native-haptic-feedback";
 import Animated, {
-	DerivedValue,
 	Easing,
 	Extrapolation,
 	interpolate,
@@ -22,6 +21,7 @@ import styled from "styled-components";
 import { IconCheck, IconX } from "../asset/icon";
 import { IconTrash } from "../asset/image";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
+import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
 
@@ -82,15 +82,16 @@ const QuestionText = styled(CardText)`
 
 interface QuestionCardProps {
 	cardData: CardData;
-	x?: DerivedValue<number>;
+	mode: dataType;
 }
 
 export const QuestionCard = (props: QuestionCardProps) => {
-	const { cardData: data } = props;
+	const { cardData, mode } = props;
+	const data = mode === 'QUESTION' ? cardData.question : cardData.answer;
 	return (
 		<CardContainer>
-			{data.question.type === InputType.Text ? <QuestionText>{data.question.data}</QuestionText> : (
-				<CardImage source={{ uri: data.question.data }} resizeMode={'contain'} />
+			{data?.type === InputType.Text ? <QuestionText>{data?.data}</QuestionText> : (
+				<CardImage source={{ uri: data?.data }} resizeMode={'contain'} />
 			)}
 		</CardContainer>
 	);
@@ -127,25 +128,29 @@ const CardIndicator = (props: CardGradientProps) => {
 interface QuestionCardInputProps {
 	data: CardData;
 	setData: (data: string) => void;
+	mode: dataType;
 }
 
 export const QuestionInputCard = forwardRef<TextInput, QuestionCardInputProps>((props, ref) => {
-	const { data, setData } = props;
+	const { data, setData, mode } = props;
+
+	const placeholder = mode === 'QUESTION' ? '복습용 질문을 입력해주세요.' : '해당 질문에 대한 답을 입력해주세요.';
+	const value = mode === 'QUESTION' ? data.question.data : data.answer?.data ?? '';
 
 	return (
 		<CardContainer>
 			{data.question.type === InputType.Text ? (
 				<CardTextInput
-					value={data.question.data}
+					value={value}
 					ref={ref}
 					size={22}
 					onChangeText={setData}
 					multiline
 					textAlign={'center'}
 					verticalAlign={'middle'}
-					placeholder={'복습용 질문을 입력해주세요.'}
+					placeholder={placeholder}
 				/>
-			) : <QuestionCard cardData={data} />}
+			) : <QuestionCard cardData={data} mode={mode} />}
 		</CardContainer>
 	);
 });

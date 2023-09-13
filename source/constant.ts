@@ -40,8 +40,8 @@ export const DEFAULT_CARD_DATA: CardData = {
 		type: InputType.Text,
 		data: '',
 	},
-	repeat: 0,
 	lastReviewed: '',
+	repeat: 0,
 };
 
 export const DEFAULT_STREAKS: Streaks = {

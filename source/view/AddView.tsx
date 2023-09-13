@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
@@ -74,9 +74,10 @@ export const AddView = () => {
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
 	const x = useSharedValue(0);
 	const ref = useRef<TextInput>(null);
-	const mode = useRecoilValue(rstAddMode);
+	const [mode, setMode] = useRecoilState(rstAddMode);
 
 	const initialize = () => {
+		setMode('QUESTION');
 		setText('');
 		setData(DEFAULT_CARD_DATA);
 	};
@@ -89,25 +90,63 @@ export const AddView = () => {
 	const discard = initialize;
 
 	const setImage = (url: string) => {
-		setData({
-			repeat: 0,
+		if (mode === 'QUESTION') {
+			setQuestionImage(url);
+			return;
+		}
+		setAnswerImage(url);
+	};
+
+	const setQuestionImage = (url: string) => {
+		setData(prev => ({
+			...prev,
 			lastReviewed: formatDate(now()),
 			question: {
 				type: InputType.Image,
 				data: url,
 			},
-		});
+		}));
+	};
+
+	const setAnswerImage = (url: string) => {
+		setData(prev => ({
+			...prev,
+			lastReviewed: formatDate(now()),
+			answer: {
+				type: InputType.Image,
+				data: url,
+			},
+		}));
 	};
 
 	const setText = (text: string) => {
-		setData({
-			repeat: 0,
+		if (mode === 'QUESTION') {
+			setQuestionText(text);
+			return;
+		}
+		setAnswerText(text);
+	};
+
+	const setQuestionText = (text: string) => {
+		setData(prev => ({
+			...prev,
 			lastReviewed: formatDate(now()),
 			question: {
 				type: InputType.Text,
 				data: text,
 			},
-		});
+		}));
+	};
+
+	const setAnswerText = (text: string) => {
+		setData(prev => ({
+			...prev,
+			lastReviewed: formatDate(now()),
+			answer: {
+				type: InputType.Text,
+				data: text,
+			},
+		}));
 	};
 
 	return (
@@ -118,9 +157,14 @@ export const AddView = () => {
 					onSwipeRight={save}
 					onPress={() => ref.current?.focus()}
 					x={x}
-					addMode={true}
+					addMode
 				>
-					<QuestionInputCard data={data} setData={setText} ref={ref} />
+					<QuestionInputCard
+						mode={mode}
+						data={data}
+						setData={setText}
+						ref={ref}
+					/>
 				</CardHandler>
 				<SpacerHeight size={40} />
 				<ButtonRow>

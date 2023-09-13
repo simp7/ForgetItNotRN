@@ -23,7 +23,7 @@ export type ParamList = {
 	[Route.Main]: undefined;
 	[Route.Setting]: undefined;
 	[Route.Chart]: undefined;
-	[Route.Add]: { questionMode: boolean };
+	[Route.Add]: undefined;
 }
 
 const SettingButton = (props: TouchableOpacityProps) => {
@@ -92,7 +92,6 @@ export const Navigator = () => {
 						</BasicButton>
 					),
 				}}
-				initialParams={{ questionMode: false }}
 			/>
 		</Stack.Navigator>
 	);

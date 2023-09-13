@@ -96,7 +96,7 @@ export const MainView = (props: NavProps) => {
 					x={x}
 					addMode={false}
 				>
-					<QuestionCard cardData={current} />
+					<QuestionCard cardData={current} mode={'QUESTION'} />
 				</CardHandler>
 			) : (
 				<EmptyContainer>

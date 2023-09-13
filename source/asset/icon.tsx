@@ -10,7 +10,7 @@ import Svg, {
 import { useTheme } from "styled-components";
 
 import { CardText, IconText } from "../component/Basic";
-import { addMode } from "../model/addMode";
+import { dataType } from "../model/addMode";
 
 interface IconProps {
 	size?: number;
@@ -200,7 +200,7 @@ export const IconX = (props: IconProps) => {
 };
 
 interface SwapProps extends IconProps {
-	mode: addMode;
+	mode: dataType;
 }
 
 export const IconSwap = (props: SwapProps) => {
