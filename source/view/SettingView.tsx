@@ -3,7 +3,6 @@ import { View } from "react-native";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { SpacerHeight } from "../component/Basic";
 import { StandardListItem, SwitchListItem, TargetRateListItem } from "../component/List";
 import { APP_VERSION, BOTTOM_SAFE_HEIGHT } from "../constant";
 import { rstDarkMode, rstNotification, rstTargetRate } from "../model/setting";

@@ -126,31 +126,34 @@ const CardIndicator = (props: CardGradientProps) => {
 };
 
 interface QuestionCardInputProps {
-	data: CardData;
+	cardData: CardData;
 	setData: (data: string) => void;
 	mode: dataType;
 }
 
 export const QuestionInputCard = forwardRef<TextInput, QuestionCardInputProps>((props, ref) => {
-	const { data, setData, mode } = props;
+	const { cardData, setData, mode } = props;
 
+	const target = mode === 'QUESTION' ? cardData.question : cardData.answer;
 	const placeholder = mode === 'QUESTION' ? '복습용 질문을 입력해주세요.' : '해당 질문에 대한 답을 입력해주세요.';
-	const value = mode === 'QUESTION' ? data.question.data : data.answer?.data ?? '';
+	const value = target?.data ?? '';
 
 	return (
 		<CardContainer>
-			{data.question.type === InputType.Text ? (
-				<CardTextInput
-					value={value}
-					ref={ref}
-					size={22}
-					onChangeText={setData}
-					multiline
-					textAlign={'center'}
-					verticalAlign={'middle'}
-					placeholder={placeholder}
-				/>
-			) : <QuestionCard cardData={data} mode={mode} />}
+			<CardTextInput
+				value={value}
+				ref={ref}
+				size={22}
+				onChangeText={setData}
+				multiline
+				textAlign={'center'}
+				verticalAlign={'middle'}
+				placeholder={placeholder}
+				hide={target?.type === InputType.Image}
+			/>
+			{target?.type === InputType.Image && (
+				<QuestionCard cardData={cardData} mode={mode} />
+			)}
 		</CardContainer>
 	);
 });

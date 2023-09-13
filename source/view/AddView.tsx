@@ -133,7 +133,7 @@ export const AddView = () => {
 			lastReviewed: formatDate(now()),
 			question: {
 				type: InputType.Text,
-				data: text,
+				data: prev.question.type === InputType.Image ? '' : text,
 			},
 		}));
 	};
@@ -144,7 +144,7 @@ export const AddView = () => {
 			lastReviewed: formatDate(now()),
 			answer: {
 				type: InputType.Text,
-				data: text,
+				data: prev.answer?.type === InputType.Image ? '' : text,
 			},
 		}));
 	};
@@ -161,7 +161,7 @@ export const AddView = () => {
 				>
 					<QuestionInputCard
 						mode={mode}
-						data={data}
+						cardData={data}
 						setData={setText}
 						ref={ref}
 					/>

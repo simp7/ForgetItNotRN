@@ -32,14 +32,18 @@ export const IconText = styled(TextBase)`
 	color: ${p => p.theme.colors.tint};
 `;
 
+interface TextInputProps extends TextProps {
+	hide: boolean;
+}
 export const CardTextInput = styled(TextInput).attrs(p => ({
 	placeholderTextColor: p.theme.colors.placeHolder,
-})) <TextProps>`
+})) <TextInputProps>`
 	font-size: ${p => p.size ?? 17}px;
 	font-family: 'NanumGothic';
 	font-weight: ${p => p.bold ? 'bold' : 'normal'};
 	color: ${p => p.theme.colors.cardText};
 	padding: 0;
+	height: ${p => p.hide ? 0 : 'auto'};
 `;
 
 export const BasicButton = (props: TouchableOpacityProps) => {
