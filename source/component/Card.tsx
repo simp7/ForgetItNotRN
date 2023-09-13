@@ -19,8 +19,8 @@ import Animated, {
 import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
-import { IconCheck } from "../asset/icon";
-import { IconTrash, IconX } from "../asset/image";
+import { IconCheck, IconX } from "../asset/icon";
+import { IconTrash } from "../asset/image";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";

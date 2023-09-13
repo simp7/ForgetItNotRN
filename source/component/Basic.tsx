@@ -27,6 +27,11 @@ export const BlockText = styled(TextBase)`
 	color: ${p => p.theme.colors.blockText};
 `;
 
+export const IconText = styled(TextBase)`
+	font-weight: 800;
+	color: ${p => p.theme.colors.tint};
+`;
+
 export const CardTextInput = styled(TextInput).attrs(p => ({
 	placeholderTextColor: p.theme.colors.placeHolder,
 })) <TextProps>`

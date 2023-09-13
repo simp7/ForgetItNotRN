@@ -20,8 +20,3 @@ export const IconTrash = (props: ImageProps) => {
 	const { size = 32 } = props;
 	return <Img source={Images.trash} size={size} />;
 };
-
-export const IconX = (props: ImageProps) => {
-	const { size = 32 } = props;
-	return <Img source={Images.x} size={size} />;
-};

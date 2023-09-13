@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton, SpacerHeight } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
 import { DEFAULT_CARD_DATA } from "../constant";
+import { rstAddMode } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
 import { pictureFromCamera, pictureFromGallery } from "../util/image";
@@ -72,6 +74,7 @@ export const AddView = () => {
 	const [data, setData] = useState<CardData>(DEFAULT_CARD_DATA);
 	const x = useSharedValue(0);
 	const ref = useRef<TextInput>(null);
+	const mode = useRecoilValue(rstAddMode);
 
 	const initialize = () => {
 		setText('');
