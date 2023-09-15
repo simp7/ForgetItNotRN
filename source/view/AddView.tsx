@@ -77,6 +77,7 @@ export const AddView = () => {
 	const [mode, setMode] = useRecoilState(rstAddMode);
 
 	const initialize = () => {
+		console.log('initialize');
 		setMode('QUESTION');
 		setText('');
 		setData(DEFAULT_CARD_DATA);
@@ -90,6 +91,7 @@ export const AddView = () => {
 	const discard = initialize;
 
 	const setImage = (url: string) => {
+		console.log('setImage', mode);
 		if (mode === 'QUESTION') {
 			setQuestionImage(url);
 			return;
@@ -120,6 +122,7 @@ export const AddView = () => {
 	};
 
 	const setText = (text: string) => {
+		console.log('setText', mode);
 		if (mode === 'QUESTION') {
 			setQuestionText(text);
 			return;
@@ -148,6 +151,7 @@ export const AddView = () => {
 			},
 		}));
 	};
+	// TODO: Make setImage not to effect on setText
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
