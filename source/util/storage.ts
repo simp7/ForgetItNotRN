@@ -32,6 +32,7 @@ const load = async <T, > (key: string, defaultValue: T) => {
 const save = async <T, > (key: string, data: T) => AsyncStorage.setItem(key, JSON.stringify(data));
 
 export const loadLastOpenedDate = async () => load(StorageKey.lastOpened, "");
+// export const loadLastOpenedDate = async () => formatDate(now().add(-1, 'days'));
 export const updateLastOpenedDate = async () => save(StorageKey.lastOpened, formatDate(now()));
 
 const getCardKey = (index: number) => `Box_${index+1}`;

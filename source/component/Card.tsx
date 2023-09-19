@@ -16,10 +16,9 @@ import Animated, {
 	withTiming,
 } from "react-native-reanimated";
 import { Shadow } from 'react-native-shadow-2';
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-import { IconCheck, IconX } from "../asset/icon";
-import { IconTrash } from "../asset/image";
+import { IconCheck, IconTrash, IconX } from "../asset/icon";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
@@ -80,19 +79,34 @@ const QuestionText = styled(CardText)`
 	font-size: 25px;
 `;
 
+const DeleteButton = styled(BasicButton)`
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+`;
+
 interface QuestionCardProps {
 	cardData: CardData;
 	mode: dataType;
 }
 
 export const QuestionCard = (props: QuestionCardProps) => {
+	console.log('loaded');
 	const { cardData, mode } = props;
+	const { colors } = useTheme();
 	const data = mode === 'QUESTION' ? cardData.question : cardData.answer;
+
+	console.log(colors.redGray);
 	return (
 		<CardContainer>
 			{data?.type === InputType.Text ? <QuestionText>{data?.data}</QuestionText> : (
 				<CardImage source={{ uri: data?.data }} resizeMode={'contain'} />
 			)}
+			<DeleteButton
+				onPress={() => console.log('delete')}
+			>
+				<IconTrash size={32} tint={colors.grapefruit} />
+			</DeleteButton>
 		</CardContainer>
 	);
 };
