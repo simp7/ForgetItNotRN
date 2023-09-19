@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
-import { IconAdd } from "../asset/icon";
+import { IconAdd, IconTrash } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
@@ -23,8 +23,14 @@ const Container = styled(View)`
 	justify-content: center;
 	align-items: center;
 	padding-bottom: ${BOTTOM_SAFE_HEIGHT}px;
-	/* background-color: ${p => p.theme.colors.background}; */
 	background-color: 'blue';
+`;
+
+const DeleteButtonContainer = styled(BasicButton)`
+	align-items: center;
+	position: absolute;
+	left: 40px;
+	bottom: ${40 + BOTTOM_SAFE_HEIGHT}px;
 `;
 
 const AddButtonContainer = styled(BasicButton)`
@@ -32,7 +38,6 @@ const AddButtonContainer = styled(BasicButton)`
 	right: 40px;
 	bottom: ${40 + BOTTOM_SAFE_HEIGHT}px;
 `;
-
 
 const EmptyContainer = styled(View)`
 	position: absolute;
@@ -44,6 +49,12 @@ const EmptyContainer = styled(View)`
 	justify-content: center;
 `;
 
+const ConfirmDeleteContainer = styled(View)`
+	position: absolute;
+	bottom: ${BOTTOM_SAFE_HEIGHT + 120}px;
+	align-self: center;
+`;
+
 type NavProps = StackScreenProps<ParamList, Route.Main>;
 
 export const MainView = (props: NavProps) => {
@@ -52,7 +63,11 @@ export const MainView = (props: NavProps) => {
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
 	const setResult = useSetRecoilState(rstResultByIndex(cards[index]?.repeat ?? 0));
+
 	const [mode, setMode] = useState<dataType>('QUESTION');
+	const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+
+	const { colors } = useTheme();
 
 	const x = useSharedValue(0);
 
@@ -75,6 +90,7 @@ export const MainView = (props: NavProps) => {
 		}
 
 		setIndex(index + 1);
+		setConfirmDelete(false);
 	};
 
 	const success = async (data: CardData) => {
@@ -96,6 +112,15 @@ export const MainView = (props: NavProps) => {
 		setMode(mode => mode === 'QUESTION' ? 'ANSWER' : 'QUESTION');
 	};
 
+	const onDeleteButtonPressed = () => {
+		if (!confirmDelete) {
+			setConfirmDelete(true);
+			return;
+		}
+		//TODO: Implement delete process
+		setConfirmDelete(false);
+	};
+
 	return (
 		<Container>
 			{!!cards.length && !!current ? (
@@ -113,6 +138,14 @@ export const MainView = (props: NavProps) => {
 					<CardText size={22} bold>{'오늘 복습할 내용이 없습니다.'}</CardText>
 				</EmptyContainer>
 			)}
+			{confirmDelete && (
+				<ConfirmDeleteContainer>
+					<CardText>{'삭제하려면 한번 더 터치하세요'}</CardText>
+				</ConfirmDeleteContainer>
+			)}
+			<DeleteButtonContainer onPress={onDeleteButtonPressed}>
+				<IconTrash size={60} tint={confirmDelete ? colors.grapefruit : colors.tint} />
+			</DeleteButtonContainer>
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
