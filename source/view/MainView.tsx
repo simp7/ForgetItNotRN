@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -9,6 +9,7 @@ import { IconAdd } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
+import { dataType } from "../model/addMode";
 import { CardData } from "../model/cardData";
 import { rstResultByIndex } from "../model/period";
 import { addStreak, rstStreaks } from "../model/streaks";
@@ -51,6 +52,7 @@ export const MainView = (props: NavProps) => {
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
 	const setResult = useSetRecoilState(rstResultByIndex(cards[index]?.repeat ?? 0));
+	const [mode, setMode] = useState<dataType>('QUESTION');
 
 	const x = useSharedValue(0);
 
@@ -71,7 +73,7 @@ export const MainView = (props: NavProps) => {
 			onFinish();
 			return;
 		}
-		console.log(index);
+
 		setIndex(index + 1);
 	};
 
@@ -87,6 +89,13 @@ export const MainView = (props: NavProps) => {
 		next();
 	};
 
+	const swapMode = () => {
+		if (!current.answer) {
+			return;
+		}
+		setMode(mode => mode === 'QUESTION' ? 'ANSWER' : 'QUESTION');
+	};
+
 	return (
 		<Container>
 			{!!cards.length && !!current ? (
@@ -95,12 +104,13 @@ export const MainView = (props: NavProps) => {
 					onSwipeLeft={() => fail(current)}
 					x={x}
 					addMode={false}
+					onPress={() => swapMode()}
 				>
-					<QuestionCard cardData={current} mode={'QUESTION'} />
+					<QuestionCard cardData={current} mode={mode} />
 				</CardHandler>
 			) : (
 				<EmptyContainer>
-					<CardText size={22} bold>{'오늘 리뷰할 내용이 없습니다.'}</CardText>
+					<CardText size={22} bold>{'오늘 복습할 내용이 없습니다.'}</CardText>
 				</EmptyContainer>
 			)}
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>

@@ -133,7 +133,6 @@ interface QuestionCardInputProps {
 
 export const QuestionInputCard = forwardRef<TextInput, QuestionCardInputProps>((props, ref) => {
 	const { cardData, setData, mode } = props;
-	console.log(cardData);
 
 	const target = mode === 'QUESTION' ? cardData.question : cardData.answer;
 	const placeholder = mode === 'QUESTION' ? '복습용 질문을 입력해주세요.' : '해당 질문에 대한 답을 입력해주세요.';

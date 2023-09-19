@@ -79,7 +79,6 @@ export const AddView = () => {
 	const initialize = () => {
 		console.log('initialize');
 		setMode('QUESTION');
-		setText('');
 		setData(DEFAULT_CARD_DATA);
 	};
 
@@ -136,7 +135,7 @@ export const AddView = () => {
 			lastReviewed: formatDate(now()),
 			question: {
 				type: InputType.Text,
-				data: prev.question.type === InputType.Image ? '' : text,
+				data: text,
 			},
 		}));
 	};
@@ -147,11 +146,28 @@ export const AddView = () => {
 			lastReviewed: formatDate(now()),
 			answer: {
 				type: InputType.Text,
-				data: prev.answer?.type === InputType.Image ? '' : text,
+				data: text,
 			},
 		}));
 	};
-	// TODO: Make setImage not to effect on setText
+
+	const handlerPressed = () => {
+		if (mode === 'ANSWER' && data.answer?.type === InputType.Image) {
+			setAnswerText('');
+		}
+		if (mode === 'QUESTION' && data.question.type === InputType.Image) {
+			setQuestionText('');
+		}
+		ref.current?.focus();
+	};
+
+	const setInput = (text: string) => {
+		if (mode === 'ANSWER' && data.answer?.type === InputType.Image
+			|| mode === 'QUESTION' && data.question.type === InputType.Image) {
+			return;
+		}
+		setText(text);
+	};
 
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -159,14 +175,14 @@ export const AddView = () => {
 				<CardHandler
 					onSwipeLeft={discard}
 					onSwipeRight={save}
-					onPress={() => ref.current?.focus()}
+					onPress={() => handlerPressed()}
 					x={x}
 					addMode
 				>
 					<QuestionInputCard
 						mode={mode}
 						cardData={data}
-						setData={setText}
+						setData={setInput}
 						ref={ref}
 					/>
 				</CardHandler>
