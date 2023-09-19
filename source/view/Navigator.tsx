@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { useTheme } from "styled-components";
 
 import { IconBack, IconChart, IconCog, IconSwap } from "../asset/icon";
-import { BasicButton } from "../component/Basic";
+import { BasicButton, CardText } from "../component/Basic";
 import { rstAddMode, swapAddMode } from "../model/addMode";
 import { AddView } from "./AddView";
 import { ChartView } from "./ChartView";
@@ -86,9 +86,12 @@ export const Navigator = () => {
 				options={{
 					gestureDirection: 'vertical',
 					cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+					headerTitle: () => (
+						<CardText size={24} bold>{addMode === 'QUESTION' ? 'Question' : 'Answer'}</CardText>
+					),
 					headerRight: () => (
 						<BasicButton onPress={() => setAddMode(swapAddMode)}>
-							<IconSwap size={40} mode={addMode} />
+							<IconSwap />
 						</BasicButton>
 					),
 				}}

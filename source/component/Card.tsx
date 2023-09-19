@@ -91,7 +91,6 @@ interface QuestionCardProps {
 }
 
 export const QuestionCard = (props: QuestionCardProps) => {
-	console.log('loaded');
 	const { cardData, mode } = props;
 	const { colors } = useTheme();
 	const data = mode === 'QUESTION' ? cardData.question : cardData.answer;
