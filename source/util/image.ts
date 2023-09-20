@@ -27,10 +27,11 @@ const getImageFromGallery = async () => {
 };
 
 export const saveLocalFs = async (image: ImageOrVideo) => {
-	const path = `${RNFS.DocumentDirectoryPath}/${now().unix()}.jpg`.replace(/:/g, '-');
+	const fileName = `${now().unix()}.jpg`;
+	const path = `${RNFS.DocumentDirectoryPath}/${fileName}`.replace(/:/g, '-');
 	try {
 		await RNFS.moveFile(image.path, path);
-		return path;
+		return fileName;
 	} catch {
 		console.error('error in file system');
 	}

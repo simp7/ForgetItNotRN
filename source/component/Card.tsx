@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import { TextInput, ViewProps } from "react-native";
 import { View } from "react-native";
 import FastImage from "react-native-fast-image";
+import RNFS from "react-native-fs";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { trigger } from "react-native-haptic-feedback";
 import Animated, {
@@ -91,7 +92,7 @@ export const QuestionCard = (props: QuestionCardProps) => {
 	return (
 		<CardContainer>
 			{data?.type === InputType.Text ? <QuestionText>{data?.data}</QuestionText> : (
-				<CardImage source={{ uri: data?.data }} resizeMode={'contain'} />
+				<CardImage source={{ uri: `${RNFS.DocumentDirectoryPath}/${data?.data}` }} resizeMode={'contain'} />
 			)}
 		</CardContainer>
 	);

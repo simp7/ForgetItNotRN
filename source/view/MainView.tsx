@@ -14,7 +14,7 @@ import { CardData } from "../model/cardData";
 import { rstResultByIndex } from "../model/period";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
-import { moveCardBackward, moveCardForward, saveTmpTrainingToday } from "../util/storage";
+import { moveCardBackward, moveCardForward, removeCardFromStorage } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
 const Container = styled(View)`
@@ -76,6 +76,7 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const current = cards[index];
+	console.log(current);
 
 	const onFinish = () => {
 		reset();
@@ -83,7 +84,6 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const next = () => {
-		saveTmpTrainingToday({ target: cards, index });
 		if (index === cards.length - 1) {
 			onFinish();
 			return;
@@ -112,13 +112,15 @@ export const MainView = (props: NavProps) => {
 		setMode(mode => mode === 'QUESTION' ? 'ANSWER' : 'QUESTION');
 	};
 
-	const onDeleteButtonPressed = () => {
+	const onDeleteButtonPressed = async () => {
 		if (!confirmDelete) {
 			setConfirmDelete(true);
 			return;
 		}
-		//TODO: Implement delete process
+
+		await removeCardFromStorage(current);
 		setConfirmDelete(false);
+		next();
 	};
 
 	return (

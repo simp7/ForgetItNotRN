@@ -98,6 +98,12 @@ const removeCard = (array: CardData[], data: CardData) => {
 	return array.splice(array.findIndex(element => element !== data), 1);
 };
 
+export const removeCardFromStorage = async (data: CardData) => {
+	const index = data.repeat;
+	const previousArray = await loadCardData(index);
+	return saveCardData(index, removeCard(previousArray, data));
+};
+
 const moveCard = async (data: CardData, to_box: number) => {
 	const previous = data.repeat;
 	const previousArray = await loadCardData(previous);
