@@ -71,7 +71,6 @@ const loadCardDataByPeriod = async (index: number, limit: Dayjs) => {
 const loadNewTrainingToday = async () => {
 	const period = await loadPeriod();
 	return Promise.all(period.map( async (period, index) => {
-		console.log(period, now().subtract(period, 'day'));
 		return await loadCardDataByPeriod(index, now().subtract(period, 'day'));
 	}));
 };

@@ -34,7 +34,7 @@ const ThemeLoader = () => {
 
 	useEffect(() => {
 		AsyncStorage.getAllKeys().then(keys => AsyncStorage.multiGet(keys)).then(result => {
-			console.log(JSON.stringify(result));
+			console.log('All Data:\t', JSON.stringify(result));
 		});
 		const update = AppState.addEventListener('change', nextState => {
 			if (nextState !== 'active') {

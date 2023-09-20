@@ -76,7 +76,6 @@ export const MainView = (props: NavProps) => {
 	};
 
 	const current = cards[index];
-	console.log(current);
 
 	const onFinish = () => {
 		reset();
@@ -145,9 +144,11 @@ export const MainView = (props: NavProps) => {
 					<CardText>{'삭제하려면 한번 더 터치하세요'}</CardText>
 				</ConfirmDeleteContainer>
 			)}
-			<DeleteButtonContainer onPress={onDeleteButtonPressed}>
-				<IconTrash size={60} tint={confirmDelete ? colors.grapefruit : colors.tint} />
-			</DeleteButtonContainer>
+			{!!current && (
+				<DeleteButtonContainer onPress={onDeleteButtonPressed}>
+					<IconTrash size={60} tint={confirmDelete ? colors.grapefruit : colors.tint} />
+				</DeleteButtonContainer>
+			)}
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
