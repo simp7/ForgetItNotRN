@@ -116,7 +116,6 @@ const moveCard = async (data: CardData, to_box: number) => {
 	};
 	await saveCardData(to_box, nextArray.concat(nextCard));
 };
-
 export const moveCardForward = async (data: CardData) => {
 	return moveCard(data, data.repeat + 1);
 };

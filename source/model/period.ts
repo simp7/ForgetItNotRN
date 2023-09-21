@@ -1,8 +1,7 @@
-import { atom, DefaultValue, selectorFamily } from "recoil";
+import { atom } from "recoil";
 
 import { DEFAULT_PERIODS, DEFAULT_TOTAL_RESULT } from "../constant";
 import { loadPeriod, loadPreviousResult, savePeriod, savePreviousResult } from "../util/storage";
-import { rstTargetRate } from "./setting";
 
 export type Result = boolean[];
 export type TotalResult = Result[];
@@ -47,6 +46,24 @@ export const evaluatePeriod = (result: Result, previousPeriod: number, targetRat
 		: previousPeriod;
 };
 
+export const changePeriod = (previous: Periods, index: number, calculated: number) => {
+	const copied: Periods = JSON.parse(JSON.stringify(previous));
+	copied[index] = calculated;
+	return copied;
+};
+
+export const addResultByIndex = (previous: TotalResult, index: number, result: boolean) => {
+	const copied: TotalResult = JSON.parse(JSON.stringify(previous));
+	copied[index].push(result);
+	return copied.slice(-50);
+};
+
+export const clearResultByIndex = (previous: TotalResult, index: number) => {
+	const copied: TotalResult = JSON.parse(JSON.stringify(previous));
+	copied[index] = [];
+	return copied;
+};
+
 enum key {
 	object = 'Periods',
 	selected = 'PeriodsSelected',
@@ -71,23 +88,7 @@ export const rstPeriods = atom<Periods>({
 	}],
 });
 
-const rstSelectedPeriod = selectorFamily<number, number>({
-	key: key.selected,
-	get: (index: number) => ({ get }) => {
-		return get(rstPeriods)[index];
-	},
-
-	set: (index: number) => ({ get, set }, newValue) => {
-		const periods = get(rstPeriods);
-		const tmp: Periods = JSON.parse(JSON.stringify(periods));
-		if (!(newValue instanceof DefaultValue)) {
-			tmp[index] = newValue;
-		}
-		set(rstPeriods, tmp);
-	},
-});
-
-const rstTotalResult = atom<TotalResult>({
+export const rstTotalResult = atom<TotalResult>({
 	key: key.result,
 	default: DEFAULT_TOTAL_RESULT,
 	effects: [({ setSelf, onSet }) => {
@@ -102,29 +103,4 @@ const rstTotalResult = atom<TotalResult>({
 			console.log(key.result, newValue);
 		});
 	}],
-});
-
-export const rstResultByIndex = selectorFamily<Result, number>({
-	key: key.result,
-	get: (index) => ({ get }) => {
-		return get(rstTotalResult)[index];
-	},
-	set: (index) => ({ get, set }, newValue) => {
-		const result = get(rstTotalResult);
-		const tmp: TotalResult = JSON.parse(JSON.stringify(result));
-		if (!(newValue instanceof DefaultValue)) {
-			tmp[index] = newValue.slice(-50);
-		}
-
-		const period = get(rstSelectedPeriod(index));
-		const targetRate = get(rstTargetRate);
-		const evaluated = evaluatePeriod(tmp[index], period, targetRate);
-		if (evaluated !== period) {
-			set(rstSelectedPeriod(index), evaluated);
-			set(rstTotalResult, []);
-			return;
-		}
-
-		set(rstTotalResult, tmp);
-	},
 });

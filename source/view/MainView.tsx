@@ -11,7 +11,15 @@ import { CardHandler, QuestionCard } from "../component/Card";
 import { BOTTOM_SAFE_HEIGHT } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData } from "../model/cardData";
-import { rstResultByIndex } from "../model/period";
+import {
+	addResultByIndex,
+	changePeriod,
+	clearResultByIndex,
+	evaluatePeriod,
+	rstPeriods,
+	rstTotalResult,
+} from "../model/period";
+import { rstTargetRate } from "../model/setting";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { moveCardBackward, moveCardForward, removeCardFromStorage } from "../util/storage";
@@ -62,7 +70,10 @@ export const MainView = (props: NavProps) => {
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
 	const cards = useRecoilValue(rstTrainingToday);
 	const reset = useSetRecoilState(rstResetTraining);
-	const setResult = useSetRecoilState(rstResultByIndex(cards[index]?.repeat ?? 0));
+	const [period, setPeriod] = useRecoilState(rstPeriods);
+	const targetRate = useRecoilValue(rstTargetRate);
+
+	const [result, setResult] = useRecoilState(rstTotalResult);
 
 	const [mode, setMode] = useState<dataType>('QUESTION');
 	const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -92,14 +103,26 @@ export const MainView = (props: NavProps) => {
 		setConfirmDelete(false);
 	};
 
+	const evaluate = (boxIndex: number) => {
+		const added = addResultByIndex(result, boxIndex, true);
+		const newPeriod = evaluatePeriod(added[boxIndex], period[boxIndex], targetRate);
+
+		if (period[boxIndex] !== newPeriod) {
+			setPeriod(changePeriod(period, boxIndex, newPeriod));
+			setResult(clearResultByIndex(result, boxIndex));
+		}
+
+		setResult(added);
+	};
+
 	const success = async (data: CardData) => {
-		setResult(prev => prev.concat(true));
+		evaluate(data.repeat);
 		await moveCardForward(data);
 		next();
 	};
 
 	const fail = async (data: CardData) => {
-		setResult(prev => prev.concat(false));
+		evaluate(data.repeat);
 		await moveCardBackward(data);
 		next();
 	};
