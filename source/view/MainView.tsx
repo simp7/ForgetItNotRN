@@ -1,10 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useState } from "react";
+import LottieView from "lottie-react-native";
+import React, { useRef, useState } from "react";
 import { View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled, { useTheme } from "styled-components";
 
+import { CompleteReviewAnimation } from "../asset/animation";
 import { IconAdd, IconTrash } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
 import { CardHandler, QuestionCard } from "../component/Card";
@@ -72,8 +74,9 @@ export const MainView = (props: NavProps) => {
 	const reset = useSetRecoilState(rstResetTraining);
 	const [period, setPeriod] = useRecoilState(rstPeriods);
 	const targetRate = useRecoilValue(rstTargetRate);
-
 	const [result, setResult] = useRecoilState(rstTotalResult);
+
+	const completeRef = useRef<LottieView>(null);
 
 	const [mode, setMode] = useState<dataType>('QUESTION');
 	const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
@@ -89,6 +92,7 @@ export const MainView = (props: NavProps) => {
 	const current = cards[index];
 
 	const onFinish = () => {
+		completeRef.current?.play();
 		reset();
 		increaseStreak();
 	};
@@ -175,6 +179,7 @@ export const MainView = (props: NavProps) => {
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
+			<CompleteReviewAnimation ref={completeRef} />
 		</Container>
 	);
 };
