@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DarkTheme as NavDark, DefaultTheme as NavLight, NavigationContainer, Theme } from '@react-navigation/native';
 import React, { Suspense, useEffect, useState } from 'react';
 import { AppState, StatusBar } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { RecoilRoot, useRecoilValue } from 'recoil';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 
@@ -56,6 +57,12 @@ const ThemeLoader = () => {
 };
 
 const App = () => {
+	useEffect(() => {
+		setTimeout(() => {
+			SplashScreen.hide();
+		}, 3 * 1000);
+	}, []);
+
 	return (
 		<RecoilRoot>
 			<Suspense>
