@@ -1,0 +1,786 @@
+diff --git a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotification.java b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotification.java
+index d162680..f85d4d2 100644
+--- a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotification.java
++++ b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotification.java
+@@ -39,304 +39,309 @@ import com.google.android.gms.tasks.Task;
+ import com.google.firebase.messaging.FirebaseMessaging;
+ 
+ public class RNPushNotification extends ReactContextBaseJavaModule implements ActivityEventListener {
+-    public static final String LOG_TAG = "RNPushNotification";// all logging should use this tag
+-    public static final String KEY_TEXT_REPLY = "key_text_reply";
+-
+-    public interface RNIntentHandler {
+-        void onNewIntent(Intent intent);
+-  
+-        @Nullable
+-        Bundle getBundleFromIntent(Intent intent);
+-    }
+-  
+-    public static ArrayList<RNIntentHandler> IntentHandlers = new ArrayList();
+-
+-    private RNPushNotificationHelper mRNPushNotificationHelper;
+-    private final SecureRandom mRandomNumberGenerator = new SecureRandom();
+-    private RNPushNotificationJsDelivery mJsDelivery;
+-
+-    public RNPushNotification(ReactApplicationContext reactContext) {
+-        super(reactContext);
+-
+-        reactContext.addActivityEventListener(this);
+-
+-        Application applicationContext = (Application) reactContext.getApplicationContext();
+-
+-        // The @ReactNative methods use this
+-        mRNPushNotificationHelper = new RNPushNotificationHelper(applicationContext);
+-        // This is used to delivery callbacks to JS
+-        mJsDelivery = new RNPushNotificationJsDelivery(reactContext);
+-    }
+-
+-    @Override
+-    public String getName() {
+-        return "ReactNativePushNotification";
+-    }
+-
+-    @Override
+-    public Map<String, Object> getConstants() {
+-        final Map<String, Object> constants = new HashMap<>();
+-
+-        return constants;
+-    }
+-
+-    private Bundle getBundleFromIntent(Intent intent) {
+-        Bundle bundle = null;
+-        if (intent.hasExtra("notification")) {
+-            bundle = intent.getBundleExtra("notification");
+-        } else if (intent.hasExtra("google.message_id")) {
+-            bundle = new Bundle();
+-
+-            bundle.putBundle("data", intent.getExtras());
+-        }
+-
+-        if (bundle == null) {
+-            for (RNIntentHandler handler : IntentHandlers) {
+-                bundle = handler.getBundleFromIntent(intent);
+-            }
+-        }
+-
+-        if(null != bundle && !bundle.getBoolean("foreground", false) && !bundle.containsKey("userInteraction")) {
+-          bundle.putBoolean("userInteraction", true);
+-        }
+-
+-        return bundle;
+-    }
+-
+-    @Override
+-    public void onNewIntent(Intent intent) {
+-        for (RNIntentHandler handler : IntentHandlers) {
+-            handler.onNewIntent(intent);
+-        }
+-        
+-        Bundle bundle = this.getBundleFromIntent(intent);
+-        if (bundle != null) {
+-            mJsDelivery.notifyNotification(bundle);
+-        }
+-    }
+-
+-    @ReactMethod
+-    public void invokeApp(ReadableMap data) {
+-        Bundle bundle = null;
+-
+-        if (data != null) {
+-            bundle = Arguments.toBundle(data);
+-        }
+-
+-        mRNPushNotificationHelper.invokeApp(bundle);
+-    }
+-
+-    @ReactMethod
+-    public void checkPermissions(Promise promise) {
+-        ReactContext reactContext = getReactApplicationContext();
+-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(reactContext);
+-        promise.resolve(managerCompat.areNotificationsEnabled());
+-    }
+-
+-    @ReactMethod
+-    public void requestPermissions() {
+-      final RNPushNotificationJsDelivery fMjsDelivery = mJsDelivery;
+-      
+-      FirebaseMessaging.getInstance().getToken()
+-              .addOnCompleteListener(new OnCompleteListener<String>() {
+-                  @Override
+-                  public void onComplete(@NonNull Task<String> task) {
+-                      if (!task.isSuccessful()) {
+-                          Log.e(LOG_TAG, "exception", task.getException());
+-                          return;
+-                      }
+-
+-                      WritableMap params = Arguments.createMap();
+-                      params.putString("deviceToken", task.getResult());
+-                      fMjsDelivery.sendEvent("remoteNotificationsRegistered", params);
+-                  }
+-              });
+-    }
+-
+-    @ReactMethod
+-    public void subscribeToTopic(String topic) {
+-        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+-    }
+-    
+-    @ReactMethod
+-    public void unsubscribeFromTopic(String topic) {
+-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+-    }
+-
+-    @ReactMethod
+-    public void presentLocalNotification(ReadableMap details) {
+-        Bundle bundle = Arguments.toBundle(details);
+-        // If notification ID is not provided by the user, generate one at random
+-        if (bundle.getString("id") == null) {
+-            bundle.putString("id", String.valueOf(mRandomNumberGenerator.nextInt()));
+-        }
+-        mRNPushNotificationHelper.sendToNotificationCentre(bundle);
+-    }
+-
+-    @ReactMethod
+-    public void scheduleLocalNotification(ReadableMap details) {
+-        Bundle bundle = Arguments.toBundle(details);
+-        // If notification ID is not provided by the user, generate one at random
+-        if (bundle.getString("id") == null) {
+-            bundle.putString("id", String.valueOf(mRandomNumberGenerator.nextInt()));
+-        }
+-        mRNPushNotificationHelper.sendNotificationScheduled(bundle);
+-    }
+-
+-    @ReactMethod
+-    public void getInitialNotification(Promise promise) {
+-        WritableMap params = Arguments.createMap();
+-        Activity activity = getCurrentActivity();
+-        if (activity != null) {
+-            Bundle bundle = this.getBundleFromIntent(activity.getIntent());
+-            if (bundle != null) {
+-                bundle.putBoolean("foreground", false);
+-                String bundleString = mJsDelivery.convertJSON(bundle);
+-                params.putString("dataJSON", bundleString);
+-            }
+-        }
+-        promise.resolve(params);
+-    }
+-
+-    @ReactMethod
+-    public void setApplicationIconBadgeNumber(int number) {
+-        ApplicationBadgeHelper.INSTANCE.setApplicationIconBadgeNumber(getReactApplicationContext(), number);
+-    }
+-
+-    // removed @Override temporarily just to get it working on different versions of RN
+-    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+-        onActivityResult(requestCode, resultCode, data);
+-    }
+-
+-    // removed @Override temporarily just to get it working on different versions of RN
+-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+-        // Ignored, required to implement ActivityEventListener for RN 0.33
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Cancels all scheduled local notifications, and removes all entries from the notification
+-     * centre.
+-     *
+-     */
+-    public void cancelAllLocalNotifications() {
+-        mRNPushNotificationHelper.cancelAllScheduledNotifications();
+-        mRNPushNotificationHelper.clearNotifications();
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Cancel scheduled notification, and remove notification from the notification centre.
+-     *
+-     */
+-    public void cancelLocalNotification(String notification_id) {
+-        mRNPushNotificationHelper.cancelScheduledNotification(notification_id);
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Clear notification from the notification centre.
+-     */
+-    public void clearLocalNotification(String tag, int notificationID) {
+-        mRNPushNotificationHelper.clearNotification(tag, notificationID);
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Clears all notifications from the notification center
+-     *
+-     */
+-    public void removeAllDeliveredNotifications() {
+-      mRNPushNotificationHelper.clearNotifications();
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Returns a list of all notifications currently in the Notification Center
+-     */
+-    public void getDeliveredNotifications(Callback callback) {
+-        callback.invoke(mRNPushNotificationHelper.getDeliveredNotifications());
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Returns a list of all currently scheduled notifications
+-     */
+-    public void getScheduledLocalNotifications(Callback callback) {
+-        callback.invoke(mRNPushNotificationHelper.getScheduledLocalNotifications());
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Removes notifications from the Notification Center, whose id matches
+-     * an element in the provided array
+-     */
+-    public void removeDeliveredNotifications(ReadableArray identifiers) {
+-      mRNPushNotificationHelper.clearDeliveredNotifications(identifiers);
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Unregister for all remote notifications received
+-     */
+-    public void abandonPermissions() {
+-      FirebaseMessaging.getInstance().deleteToken();
+-      Log.i(LOG_TAG, "InstanceID deleted");
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * List all channels id
+-     */
+-    public void getChannels(Callback callback) {
+-      WritableArray array = Arguments.fromList(mRNPushNotificationHelper.listChannels());
+-      
+-      if(callback != null) {
+-        callback.invoke(array);
+-      }
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Check if channel exists with a given id
+-     */
+-    public void channelExists(String channel_id, Callback callback) {
+-      boolean exists = mRNPushNotificationHelper.channelExists(channel_id);
+-
+-      if(callback != null) {
+-        callback.invoke(exists);
+-      }
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Creates a channel if it does not already exist. Returns whether the channel was created.
+-     */
+-    public void createChannel(ReadableMap channelInfo, Callback callback) {
+-      boolean created = mRNPushNotificationHelper.createChannel(channelInfo);
+-
+-      if(callback != null) {
+-        callback.invoke(created);
+-      }
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Check if channel is blocked with a given id
+-     */
+-    public void channelBlocked(String channel_id, Callback callback) {
+-      boolean blocked = mRNPushNotificationHelper.channelBlocked(channel_id);
+-
+-      if(callback != null) {
+-        callback.invoke(blocked);
+-      }
+-    }
+-
+-    @ReactMethod
+-    /**
+-     * Delete channel with a given id
+-     */
+-    public void deleteChannel(String channel_id) {
+-      mRNPushNotificationHelper.deleteChannel(channel_id);
+-    }
++	public static final String LOG_TAG = "RNPushNotification";// all logging should use this tag
++	public static final String KEY_TEXT_REPLY = "key_text_reply";
++
++	public interface RNIntentHandler {
++		void onNewIntent(Intent intent);
++
++		@Nullable
++		Bundle getBundleFromIntent(Intent intent);
++	}
++
++	public static ArrayList<RNIntentHandler> IntentHandlers = new ArrayList();
++
++	private RNPushNotificationHelper mRNPushNotificationHelper;
++	private final SecureRandom mRandomNumberGenerator = new SecureRandom();
++	private RNPushNotificationJsDelivery mJsDelivery;
++
++	public RNPushNotification(ReactApplicationContext reactContext) {
++		super(reactContext);
++
++		reactContext.addActivityEventListener(this);
++
++		Application applicationContext = (Application) reactContext.getApplicationContext();
++
++		// The @ReactNative methods use this
++		mRNPushNotificationHelper = new RNPushNotificationHelper(applicationContext);
++		// This is used to delivery callbacks to JS
++		mJsDelivery = new RNPushNotificationJsDelivery(reactContext);
++	}
++
++	@Override
++	public String getName() {
++		return "ReactNativePushNotification";
++	}
++
++	@Override
++	public Map<String, Object> getConstants() {
++		final Map<String, Object> constants = new HashMap<>();
++
++		return constants;
++	}
++
++	private Bundle getBundleFromIntent(Intent intent) {
++		Bundle bundle = null;
++		if (intent.hasExtra("notification")) {
++			bundle = intent.getBundleExtra("notification");
++		} else if (intent.hasExtra("google.message_id")) {
++			bundle = new Bundle();
++
++			bundle.putBundle("data", intent.getExtras());
++		}
++
++		if (bundle == null) {
++			for (RNIntentHandler handler : IntentHandlers) {
++				bundle = handler.getBundleFromIntent(intent);
++			}
++		}
++
++		if (null != bundle && !bundle.getBoolean("foreground", false) && !bundle.containsKey("userInteraction")) {
++			bundle.putBoolean("userInteraction", true);
++		}
++
++		return bundle;
++	}
++
++	@Override
++	public void onNewIntent(Intent intent) {
++		for (RNIntentHandler handler : IntentHandlers) {
++			handler.onNewIntent(intent);
++		}
++
++		Bundle bundle = this.getBundleFromIntent(intent);
++		if (bundle != null) {
++			mJsDelivery.notifyNotification(bundle);
++		}
++	}
++
++	@ReactMethod
++	public void invokeApp(ReadableMap data) {
++		Bundle bundle = null;
++
++		if (data != null) {
++			bundle = Arguments.toBundle(data);
++		}
++
++		mRNPushNotificationHelper.invokeApp(bundle);
++	}
++
++	@ReactMethod
++	public void checkPermissions(Promise promise) {
++		ReactContext reactContext = getReactApplicationContext();
++		NotificationManagerCompat managerCompat = NotificationManagerCompat.from(reactContext);
++		promise.resolve(managerCompat.areNotificationsEnabled());
++	}
++
++	@ReactMethod
++	public void requestPermissions() {
++		final RNPushNotificationJsDelivery fMjsDelivery = mJsDelivery;
++
++		FirebaseMessaging.getInstance().getToken()
++				.addOnCompleteListener(new OnCompleteListener<String>() {
++					@Override
++					public void onComplete(@NonNull Task<String> task) {
++						if (!task.isSuccessful()) {
++							Log.e(LOG_TAG, "exception", task.getException());
++							return;
++						}
++
++						WritableMap params = Arguments.createMap();
++						params.putString("deviceToken", task.getResult());
++						fMjsDelivery.sendEvent("remoteNotificationsRegistered", params);
++					}
++				});
++	}
++
++	@ReactMethod
++	public void subscribeToTopic(String topic) {
++		FirebaseMessaging.getInstance().subscribeToTopic(topic);
++	}
++
++	@ReactMethod
++	public void unsubscribeFromTopic(String topic) {
++		FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
++	}
++
++	@ReactMethod
++	public void presentLocalNotification(ReadableMap details) {
++		Bundle bundle = Arguments.toBundle(details);
++		// If notification ID is not provided by the user, generate one at random
++		if (bundle.getString("id") == null) {
++			bundle.putString("id", String.valueOf(mRandomNumberGenerator.nextInt()));
++		}
++		mRNPushNotificationHelper.sendToNotificationCentre(bundle);
++	}
++
++	@ReactMethod
++	public void scheduleLocalNotification(ReadableMap details) {
++		Bundle bundle = Arguments.toBundle(details);
++		// If notification ID is not provided by the user, generate one at random
++		if (bundle.getString("id") == null) {
++			bundle.putString("id", String.valueOf(mRandomNumberGenerator.nextInt()));
++		}
++		mRNPushNotificationHelper.sendNotificationScheduled(bundle);
++	}
++
++	@ReactMethod
++	public void getInitialNotification(Promise promise) {
++		WritableMap params = Arguments.createMap();
++		Activity activity = getCurrentActivity();
++		if (activity != null) {
++			Bundle bundle = this.getBundleFromIntent(activity.getIntent());
++			if (bundle != null) {
++				bundle.putBoolean("foreground", false);
++				String bundleString = mJsDelivery.convertJSON(bundle);
++				params.putString("dataJSON", bundleString);
++			}
++		}
++		promise.resolve(params);
++	}
++
++	@ReactMethod
++	public void setApplicationIconBadgeNumber(int number) {
++		ApplicationBadgeHelper.INSTANCE.setApplicationIconBadgeNumber(getReactApplicationContext(), number);
++	}
++
++	// removed @Override temporarily just to get it working on different versions of
++	// RN
++	public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
++		onActivityResult(requestCode, resultCode, data);
++	}
++
++	// removed @Override temporarily just to get it working on different versions of
++	// RN
++	public void onActivityResult(int requestCode, int resultCode, Intent data) {
++		// Ignored, required to implement ActivityEventListener for RN 0.33
++	}
++
++	@ReactMethod
++	/**
++	 * Cancels all scheduled local notifications, and removes all entries from the
++	 * notification
++	 * centre.
++	 *
++	 */
++	public void cancelAllLocalNotifications() {
++		mRNPushNotificationHelper.cancelAllScheduledNotifications();
++		mRNPushNotificationHelper.clearNotifications();
++	}
++
++	@ReactMethod
++	/**
++	 * Cancel scheduled notification, and remove notification from the notification
++	 * centre.
++	 *
++	 */
++	public void cancelLocalNotification(String notification_id) {
++		mRNPushNotificationHelper.cancelScheduledNotification(notification_id);
++	}
++
++	@ReactMethod
++	/**
++	 * Clear notification from the notification centre.
++	 */
++	public void clearLocalNotification(String tag, int notificationID) {
++		mRNPushNotificationHelper.clearNotification(tag, notificationID);
++	}
++
++	@ReactMethod
++	/**
++	 * Clears all notifications from the notification center
++	 *
++	 */
++	public void removeAllDeliveredNotifications() {
++		mRNPushNotificationHelper.clearNotifications();
++	}
++
++	@ReactMethod
++	/**
++	 * Returns a list of all notifications currently in the Notification Center
++	 */
++	public void getDeliveredNotifications(Callback callback) {
++		callback.invoke(mRNPushNotificationHelper.getDeliveredNotifications());
++	}
++
++	@ReactMethod
++	/**
++	 * Returns a list of all currently scheduled notifications
++	 */
++	public void getScheduledLocalNotifications(Callback callback) {
++		callback.invoke(mRNPushNotificationHelper.getScheduledLocalNotifications());
++	}
++
++	@ReactMethod
++	/**
++	 * Removes notifications from the Notification Center, whose id matches
++	 * an element in the provided array
++	 */
++	public void removeDeliveredNotifications(ReadableArray identifiers) {
++		mRNPushNotificationHelper.clearDeliveredNotifications(identifiers);
++	}
++
++	@ReactMethod
++	/**
++	 * Unregister for all remote notifications received
++	 */
++	public void abandonPermissions() {
++		FirebaseMessaging.getInstance().deleteToken();
++		Log.i(LOG_TAG, "InstanceID deleted");
++	}
++
++	@ReactMethod
++	/**
++	 * List all channels id
++	 */
++	public void getChannels(Callback callback) {
++		WritableArray array = Arguments.fromList(mRNPushNotificationHelper.listChannels());
++
++		if (callback != null) {
++			callback.invoke(array);
++		}
++	}
++
++	@ReactMethod
++	/**
++	 * Check if channel exists with a given id
++	 */
++	public void channelExists(String channel_id, Callback callback) {
++		boolean exists = mRNPushNotificationHelper.channelExists(channel_id);
++
++		if (callback != null) {
++			callback.invoke(exists);
++		}
++	}
++
++	@ReactMethod
++	/**
++	 * Creates a channel if it does not already exist. Returns whether the channel
++	 * was created.
++	 */
++	public void createChannel(ReadableMap channelInfo, Callback callback) {
++		boolean created = mRNPushNotificationHelper.createChannel(channelInfo);
++
++		if (callback != null) {
++			callback.invoke(created);
++		}
++	}
++
++	@ReactMethod
++	/**
++	 * Check if channel is blocked with a given id
++	 */
++	public void channelBlocked(String channel_id, Callback callback) {
++		boolean blocked = mRNPushNotificationHelper.channelBlocked(channel_id);
++
++		if (callback != null) {
++			callback.invoke(blocked);
++		}
++	}
++
++	@ReactMethod
++	/**
++	 * Delete channel with a given id
++	 */
++	public void deleteChannel(String channel_id) {
++		mRNPushNotificationHelper.deleteChannel(channel_id);
++	}
+ }
+diff --git a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationActions.java b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationActions.java
+index ada9603..6a0624e 100644
+--- a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationActions.java
++++ b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationActions.java
+@@ -19,84 +19,87 @@ import static com.dieam.reactnativepushnotification.modules.RNPushNotification.L
+ import static com.dieam.reactnativepushnotification.modules.RNPushNotification.KEY_TEXT_REPLY;
+ 
+ public class RNPushNotificationActions extends BroadcastReceiver {
+-    @Override
+-    public void onReceive(final Context context, Intent intent) {
+-      String intentActionPrefix = context.getPackageName() + ".ACTION_";
+-
+-      Log.i(LOG_TAG, "RNPushNotificationBootEventReceiver loading scheduled notifications");
+-
+-      if (null == intent.getAction() || !intent.getAction().startsWith(intentActionPrefix)) {
+-        return;
+-      }
+-
+-      final Bundle bundle = intent.getBundleExtra("notification");
+-      Bundle remoteInput = null;
+-
+-      if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH){
+-          remoteInput = RemoteInput.getResultsFromIntent(intent);
+-      }
+-      if (remoteInput != null) {
+-          // Add to reply_text the text written by the user in the notification
+-          bundle.putCharSequence("reply_text", remoteInput.getCharSequence(KEY_TEXT_REPLY));
+-      }
+-      // Dismiss the notification popup.
+-      NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+-      int notificationID = Integer.parseInt(bundle.getString("id"));
+-
+-      boolean autoCancel = bundle.getBoolean("autoCancel", true);
+-
+-      if(autoCancel) {
+-        if (bundle.containsKey("tag")) {
+-            String tag = bundle.getString("tag");
+-            manager.cancel(tag, notificationID);
+-        } else {
+-            manager.cancel(notificationID);
+-        }
+-      }
+-
+-      boolean invokeApp = bundle.getBoolean("invokeApp", true);
+-
+-      // Notify the action.
+-      if(invokeApp) {
+-          RNPushNotificationHelper helper = new RNPushNotificationHelper((Application) context.getApplicationContext());
+-
+-          helper.invokeApp(bundle);
+-
+-          context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+-      } else {
+-
+-        // We need to run this on the main thread, as the React code assumes that is true.
+-        // Namely, DevServerHelper constructs a Handler() without a Looper, which triggers:
+-        // "Can't create handler inside thread that has not called Looper.prepare()"
+-        Handler handler = new Handler(Looper.getMainLooper());
+-        handler.post(new Runnable() {
+-            public void run() {
+-                // Construct and load our normal React JS code bundle
+-                final ReactInstanceManager mReactInstanceManager = ((ReactApplication) context.getApplicationContext()).getReactNativeHost().getReactInstanceManager();
+-                ReactContext context = mReactInstanceManager.getCurrentReactContext();
+-                // If it's constructed, send a notification
+-                if (context != null) {
+-                    RNPushNotificationJsDelivery mJsDelivery = new RNPushNotificationJsDelivery(context);
+-
+-                    mJsDelivery.notifyNotificationAction(bundle);
+-                } else {
+-                    // Otherwise wait for construction, then send the notification
+-                    mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+-                        public void onReactContextInitialized(ReactContext context) {
+-                            RNPushNotificationJsDelivery mJsDelivery = new RNPushNotificationJsDelivery(context);
+-
+-                            mJsDelivery.notifyNotificationAction(bundle);
+- 
+-                            mReactInstanceManager.removeReactInstanceEventListener(this);
+-                        }
+-                    });
+-                    if (!mReactInstanceManager.hasStartedCreatingInitialContext()) {
+-                        // Construct it in the background
+-                        mReactInstanceManager.createReactContextInBackground();
+-                    }
+-                }
+-            }
+-        });
+-      }
+-    }
++	@Override
++	public void onReceive(final Context context, Intent intent) {
++		String intentActionPrefix = context.getPackageName() + ".ACTION_";
++
++		Log.i(LOG_TAG, "RNPushNotificationBootEventReceiver loading scheduled notifications");
++
++		if (null == intent.getAction() || !intent.getAction().startsWith(intentActionPrefix)) {
++			return;
++		}
++
++		final Bundle bundle = intent.getBundleExtra("notification");
++		Bundle remoteInput = null;
++
++		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT_WATCH) {
++			remoteInput = RemoteInput.getResultsFromIntent(intent);
++		}
++		if (remoteInput != null) {
++			// Add to reply_text the text written by the user in the notification
++			bundle.putCharSequence("reply_text", remoteInput.getCharSequence(KEY_TEXT_REPLY));
++		}
++		// Dismiss the notification popup.
++		NotificationManager manager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
++		int notificationID = Integer.parseInt(bundle.getString("id"));
++
++		boolean autoCancel = bundle.getBoolean("autoCancel", true);
++
++		if (autoCancel) {
++			if (bundle.containsKey("tag")) {
++				String tag = bundle.getString("tag");
++				manager.cancel(tag, notificationID);
++			} else {
++				manager.cancel(notificationID);
++			}
++		}
++
++		boolean invokeApp = bundle.getBoolean("invokeApp", true);
++
++		// Notify the action.
++		if (invokeApp) {
++			RNPushNotificationHelper helper = new RNPushNotificationHelper((Application) context.getApplicationContext());
++
++			helper.invokeApp(bundle);
++
++			context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
++		} else {
++
++			// We need to run this on the main thread, as the React code assumes that is
++			// true.
++			// Namely, DevServerHelper constructs a Handler() without a Looper, which
++			// triggers:
++			// "Can't create handler inside thread that has not called Looper.prepare()"
++			Handler handler = new Handler(Looper.getMainLooper());
++			handler.post(new Runnable() {
++				public void run() {
++					// Construct and load our normal React JS code bundle
++					final ReactInstanceManager mReactInstanceManager = ((ReactApplication) context.getApplicationContext())
++							.getReactNativeHost().getReactInstanceManager();
++					ReactContext context = mReactInstanceManager.getCurrentReactContext();
++					// If it's constructed, send a notification
++					if (context != null) {
++						RNPushNotificationJsDelivery mJsDelivery = new RNPushNotificationJsDelivery(context);
++
++						mJsDelivery.notifyNotificationAction(bundle);
++					} else {
++						// Otherwise wait for construction, then send the notification
++						mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
++							public void onReactContextInitialized(ReactContext context) {
++								RNPushNotificationJsDelivery mJsDelivery = new RNPushNotificationJsDelivery(context);
++
++								mJsDelivery.notifyNotificationAction(bundle);
++
++								mReactInstanceManager.removeReactInstanceEventListener(this);
++							}
++						});
++						if (!mReactInstanceManager.hasStartedCreatingInitialContext()) {
++							// Construct it in the background
++							mReactInstanceManager.createReactContextInBackground();
++						}
++					}
++				}
++			});
++		}
++	}
+ }

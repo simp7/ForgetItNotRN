@@ -2,6 +2,8 @@ import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { AppState, NativeEventSubscription } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
+import { isIOS } from '../constant';
+
 let subscription: NativeEventSubscription;
 
 const _handleAppStateChange = (nextAppState: string) => {
@@ -44,10 +46,10 @@ export default {
 				notification.finish(PushNotificationIOS.FetchResult.NoData);
 			},
 			popInitialNotification: true,
+			requestPermissions: isIOS,
 		});
 
 		_registerLocalNotification();
-
 		subscription = AppState.addEventListener('change', _handleAppStateChange);
 	},
 	unregister: () => {

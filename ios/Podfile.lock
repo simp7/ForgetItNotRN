@@ -523,7 +523,7 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNPermissions (3.8.4):
+  - RNPermissions (3.9.2):
     - React-Core
   - RNReactNativeHapticFeedback (2.0.3):
     - React-Core
@@ -845,7 +845,7 @@ SPEC CHECKSUMS:
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNImageCropPicker: 486e2f7e2b0461ce24321f751410dce1b3b49e6d
-  RNPermissions: 1109bd02961caf5275b3172eb68caf29e2d2737c
+  RNPermissions: 5042f96409e3b0850eaed1072e889003dea24c2a
   RNReactNativeHapticFeedback: afa5bf2794aecbb2dba2525329253da0d66656df
   RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
   RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
@@ -857,6 +857,6 @@ SPEC CHECKSUMS:
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 14d9eba0601a41b89ffd042e8fd2c84ef67be8a2
+PODFILE CHECKSUM: bed62cd71f5655c6d0cb891f5be44b84bcb6a064
 
 COCOAPODS: 1.12.1
