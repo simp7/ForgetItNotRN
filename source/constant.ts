@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from "react-native";
+import { Dimensions, Platform, StatusBar } from "react-native";
 
 import { CardData, InputType } from "./model/cardData";
 import { Periods, TotalResult } from "./model/period";
@@ -11,12 +11,14 @@ const { width, height } = Dimensions.get('window');
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
+
+export const STATUSBAR_HEIGHT = isIOS ? (StatusBar.currentHeight ?? 0) : 30; 
 export const BOTTOM_SAFE_HEIGHT = isIOS ? 34 : 0;
 
 export const IMAGE_QUALITY = 4;
 
-export const CARD_WIDTH = 330;
-export const CARD_HEIGHT = 500;
+export const CARD_WIDTH = SCREEN_WIDTH - 2 * 30;
+export const CARD_HEIGHT = SCREEN_HEIGHT - STATUSBAR_HEIGHT - BOTTOM_SAFE_HEIGHT - 280;
 export const CARD_TILT_ANGLE = Math.PI / 12;
 export const CARD_A = CARD_HEIGHT * Math.sin(CARD_TILT_ANGLE) + CARD_WIDTH * Math.cos(CARD_TILT_ANGLE);
 

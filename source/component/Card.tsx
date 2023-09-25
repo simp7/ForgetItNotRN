@@ -20,7 +20,7 @@ import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { IconCheck, IconTrash, IconX } from "../asset/icon";
-import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
+import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH, isIOS } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
@@ -31,25 +31,25 @@ const CardImage = styled(FastImage)`
 	border-radius: 10px;
 `;
 
-const CardCover = styled(Animated.View)`
+const CardCover = styled(View)`
 	width: ${CARD_WIDTH}px;
 	height: ${CARD_HEIGHT}px;
+	align-items: center;
+	justify-content: center;
 	border-radius: 10px;
-	position: absolute;
 `;
 
 export const Remembered = styled(CardCover)`
 	background-color: ${p => p.theme.colors.lime};
-	opacity: 0;
-	align-items: center;
-	justify-content: center;
 `;
 
 export const Forgot = styled(CardCover)`
 	background-color: ${p => p.theme.colors.grapefruit};
+`;
+
+export const CardCoverContainer = styled(Animated.View)`
+	position: absolute;
 	opacity: 0;
-	align-items: center;
-	justify-content: center;
 `;
 
 interface CardContainerProps extends ViewProps {
@@ -116,12 +116,16 @@ const CardIndicator = (props: CardGradientProps) => {
 
 	return (
 		<>
-			<Remembered style={[{ opacity: rememberOpacity }]}>
-				<IconCheck size={128} />
-			</Remembered>
-			<Forgot style={[{ opacity: forgetOpacity }]}>
-				{addMode ? <IconTrash size={128} /> : <IconX size={128} />}
-			</Forgot>
+			<CardCoverContainer style={[{ opacity: rememberOpacity }]}>
+				<Remembered >
+					<IconCheck size={128} />
+				</Remembered>
+			</CardCoverContainer>
+			<CardCoverContainer style={[{ opacity: forgetOpacity }]}>
+				<Forgot >
+					{addMode ? <IconTrash size={128} /> : <IconX size={128} />}
+				</Forgot>
+			</CardCoverContainer>
 		</>
 	);
 };
@@ -184,7 +188,7 @@ export const CardHandler = (props: HandlerProps) => {
 
 		return {
 			transform: [{
-				rotateZ: `${rotate}(deg)`,
+				rotateZ: `${rotate}rad`,
 			}, {
 				translateX: x.value,
 			}],

@@ -6,6 +6,7 @@ import { useTheme } from "styled-components";
 
 import { IconBack, IconChart, IconCog, IconSwap } from "../asset/icon";
 import { BasicButton, CardText } from "../component/Basic";
+import { isIOS } from "../constant";
 import { rstAddMode, swapAddMode } from "../model/addMode";
 import { AddView } from "./AddView";
 import { ChartView } from "./ChartView";
@@ -53,7 +54,7 @@ export const Navigator = () => {
 			initialRouteName={Route.Main}
 			screenOptions={{
 				cardStyle: { backgroundColor: colors.background },
-				headerStyle: { backgroundColor: colors.background },
+				headerStatusBarHeight: isIOS ? 40 : 30,
 				headerLeftContainerStyle: { paddingHorizontal: 35 },
 				headerRightContainerStyle: { paddingHorizontal: 35 },
 				headerTransparent: true,
