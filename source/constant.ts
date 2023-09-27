@@ -15,9 +15,6 @@ export const SCREEN_HEIGHT = height;
 export const STATUSBAR_HEIGHT = isIOS ? 40 : 30;
 export const HEADER_HEIGHT = STATUSBAR_HEIGHT + 70;
 export const BOTTOM_SAFE_HEIGHT = isIOS ? 34 : 0;
-console.log(isIOS ? 'ios' : 'android');
-console.log('Status bar height: ', STATUSBAR_HEIGHT);
-console.log('Header height: ', HEADER_HEIGHT);
 
 export const IMAGE_QUALITY = 4;
 

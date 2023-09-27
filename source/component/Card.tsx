@@ -20,7 +20,7 @@ import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { IconCheck, IconTrash, IconX } from "../asset/icon";
-import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
+import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH, isIOS } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
@@ -188,7 +188,7 @@ export const CardHandler = (props: HandlerProps) => {
 
 		return {
 			transform: [{
-				rotateZ: `${rotate}rad`,
+				rotateZ: isIOS ? `${rotate}rad` : '0rad',	//FIXME: Fix rotate animation correctly on android.
 			}, {
 				translateX: x.value,
 			}],
@@ -235,17 +235,15 @@ export const CardHandler = (props: HandlerProps) => {
 	return (
 		<GestureDetector gesture={gesture}>
 			<BasicButton onPress={() => onPress?.()} disabled={!onPress} activeOpacity={1} >
-				<>
-					<CardHandlerContainer
-						{...viewProps}
-						style={[
-							cardStyle,
-						]}
-					>
-						{props.children}
-						<CardIndicator x={x} addMode={addMode} />
-					</CardHandlerContainer>
-				</>
+				<CardHandlerContainer
+					{...viewProps}
+					style={[
+						cardStyle,
+					]}
+				>
+					{props.children}
+					<CardIndicator x={x} addMode={addMode} />
+				</CardHandlerContainer>
 			</BasicButton>
 		</GestureDetector>
 	);
