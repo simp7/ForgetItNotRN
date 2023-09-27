@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { CameraIcon, GalleryIcon } from "../asset/icon";
 import { BasicButton } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
-import { BOTTOM_SAFE_HEIGHT, DEFAULT_CARD_DATA, HEADER_HEIGHT } from "../constant";
+import { BOTTOM_SAFE_HEIGHT, DEFAULT_CARD_DATA, HEADER_HEIGHT, SCREEN_WIDTH } from "../constant";
 import { rstAddMode } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
@@ -27,7 +27,7 @@ const Button = styled(BasicButton) <{ height?: number }>`
 	justify-content: center;
 	align-items: center;
 	height: 80px;
-	width: 140px;
+	width: ${SCREEN_WIDTH / 2.5}px;
 	border-radius: 10px;
 `;
 

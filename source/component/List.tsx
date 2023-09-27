@@ -106,7 +106,7 @@ export const TargetRateListItem = (props: TargetRateListItemProps) => {
 					thumbTintColor={colors.white}
 					maximumTrackTintColor={colors.gray}
 					minimumTrackTintColor={colors.subTint}
-					trackStyle={{ width: 250, height: 9, borderRadius: 4 }}
+					trackStyle={{ width: SCREEN_WIDTH - 140, height: 9, borderRadius: 4 }}
 					thumbStyle={{ width: 30, height: 30, borderRadius: 15 }}
 				/>
 				<BasicButton onPress={() => setRate(tmp)} disabled={disabled} style={{ paddingRight: 5 }}>
