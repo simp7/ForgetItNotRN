@@ -5,9 +5,9 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { CameraIcon, GalleryIcon } from "../asset/icon";
-import { BasicButton, SpacerHeight } from "../component/Basic";
+import { BasicButton } from "../component/Basic";
 import { CardHandler, QuestionInputCard } from "../component/Card";
-import { DEFAULT_CARD_DATA } from "../constant";
+import { BOTTOM_SAFE_HEIGHT, DEFAULT_CARD_DATA, HEADER_HEIGHT } from "../constant";
 import { rstAddMode } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { formatDate, now } from "../util/date";
@@ -19,6 +19,7 @@ const Container = styled(View)`
 	align-self: stretch;
 	justify-content: center;
 	align-items: center;
+	padding: ${HEADER_HEIGHT - 20}px 0 ${BOTTOM_SAFE_HEIGHT + 29}px;
 `;
 
 const Button = styled(BasicButton) <{ height?: number }>`
@@ -169,21 +170,22 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<CardHandler
-					onSwipeLeft={discard}
-					onSwipeRight={save}
-					onPress={() => handlerPressed()}
-					x={x}
-					addMode
-				>
-					<QuestionInputCard
-						mode={mode}
-						cardData={data}
-						setData={setInput}
-						ref={ref}
-					/>
-				</CardHandler>
-				<SpacerHeight size={40} />
+				<View style={{ flex: 1, justifyContent: 'center' }}>
+					<CardHandler
+						onSwipeLeft={discard}
+						onSwipeRight={save}
+						onPress={() => handlerPressed()}
+						x={x}
+						addMode
+					>
+						<QuestionInputCard
+							mode={mode}
+							cardData={data}
+							setData={setInput}
+							ref={ref}
+						/>
+					</CardHandler>
+				</View>
 				<ButtonRow>
 					<CameraButton setImage={setImage} />
 					<GalleryButton setImage={setImage} />

@@ -20,7 +20,7 @@ import { Shadow } from 'react-native-shadow-2';
 import styled from "styled-components";
 
 import { IconCheck, IconTrash, IconX } from "../asset/icon";
-import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH, isIOS } from "../constant";
+import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
@@ -117,12 +117,12 @@ const CardIndicator = (props: CardGradientProps) => {
 	return (
 		<>
 			<CardCoverContainer style={[{ opacity: rememberOpacity }]}>
-				<Remembered >
+				<Remembered>
 					<IconCheck size={128} />
 				</Remembered>
 			</CardCoverContainer>
 			<CardCoverContainer style={[{ opacity: forgetOpacity }]}>
-				<Forgot >
+				<Forgot>
 					{addMode ? <IconTrash size={128} /> : <IconX size={128} />}
 				</Forgot>
 			</CardCoverContainer>
