@@ -179,7 +179,7 @@ export const MainView = (props: NavProps) => {
 			<AddButtonContainer onPress={() => props.navigation.navigate(Route.Add)}>
 				<IconAdd />
 			</AddButtonContainer>
-			<CompleteReviewAnimation ref={completeRef} />
+			<CompleteReviewAnimation ref={completeRef} loop={false} />
 		</Container>
 	);
 };
