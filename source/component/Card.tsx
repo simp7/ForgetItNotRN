@@ -23,6 +23,7 @@ import { IconCheck, IconTrash, IconX } from "../asset/icon";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH, isIOS } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
+import { palyWrongSound, playCorrectSound, playDeleteSound } from "../util/sound";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
 
 const CardImage = styled(FastImage)`
@@ -214,6 +215,7 @@ export const CardHandler = (props: HandlerProps) => {
 				easing: Easing.cubic,
 			}, newCardAnimation);
 			trigger('notificationError');
+			addMode ? playDeleteSound() : palyWrongSound();
 			onSwipeLeft();
 			return;
 		}
@@ -223,6 +225,7 @@ export const CardHandler = (props: HandlerProps) => {
 				easing: Easing.cubic,
 			}, newCardAnimation);
 			trigger('notificationSuccess');
+			playCorrectSound();
 			onSwipeRight();
 			return;
 		}

@@ -24,6 +24,7 @@ import {
 import { rstTargetRate } from "../model/setting";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
+import { playCompleteSound, playDeleteSound } from "../util/sound";
 import { moveCardBackward, moveCardForward, removeCardFromStorage } from "../util/storage";
 import { ParamList, Route } from "./Navigator";
 
@@ -93,6 +94,7 @@ export const MainView = (props: NavProps) => {
 
 	const onFinish = () => {
 		completeRef.current?.play();
+		playCompleteSound();
 		reset();
 		increaseStreak();
 	};
@@ -146,6 +148,7 @@ export const MainView = (props: NavProps) => {
 
 		await removeCardFromStorage(current);
 		setConfirmDelete(false);
+		playDeleteSound();
 		next();
 	};
 
