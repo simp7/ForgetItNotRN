@@ -29,6 +29,7 @@ export const DEFAULT_SETTING: Setting = {
 	targetRate: 75,
 	darkMode: false,
 	notification: false,
+	volume: 1,
 };
 
 export const DEFAULT_TOTAL_RESULT: TotalResult = [[], [], [], [], []];

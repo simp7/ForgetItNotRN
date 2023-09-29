@@ -7,6 +7,7 @@ export interface Setting {
 	targetRate: number;
 	darkMode: boolean;
 	notification: boolean;
+	volume: number;
 }
 
 enum key {
@@ -65,6 +66,18 @@ export const rstNotification = selector<boolean>({
 		set(rstSetting, { 
 			...previous,
 			notification: newValue instanceof DefaultValue ? DEFAULT_SETTING.notification : newValue,
+		});
+	},
+});
+
+export const rstVolume = selector<number>({
+	key: key.notification,
+	get: ({ get }) => get(rstSetting).volume,
+	set: ({ get, set }, newValue) => {
+		const previous = get(rstSetting);
+		set(rstSetting, { 
+			...previous,
+			volume: newValue instanceof DefaultValue ? DEFAULT_SETTING.volume : newValue,
 		});
 	},
 });
