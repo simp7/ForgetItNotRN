@@ -15,6 +15,7 @@ enum key {
 	targetRate = 'SettingTargetRate',
 	darkMode = 'SettingDarkMode',
 	notification = 'SettingNotification',
+	volume = 'SettingVolume',
 }
 
 const rstSetting = atom<Setting>({
@@ -71,7 +72,7 @@ export const rstNotification = selector<boolean>({
 });
 
 export const rstVolume = selector<number>({
-	key: key.notification,
+	key: key.volume,
 	get: ({ get }) => get(rstSetting).volume,
 	set: ({ get, set }, newValue) => {
 		const previous = get(rstSetting);

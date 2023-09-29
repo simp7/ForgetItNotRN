@@ -21,7 +21,7 @@ import {
 	rstPeriods,
 	rstTotalResult,
 } from "../model/period";
-import { rstTargetRate } from "../model/setting";
+import { rstTargetRate, rstVolume } from "../model/setting";
 import { addStreak, rstStreaks } from "../model/streaks";
 import { rstResetTraining, rstTrainingIndex, rstTrainingToday } from "../model/training";
 import { playCompleteSound, playDeleteSound } from "../util/sound";
@@ -71,11 +71,14 @@ type NavProps = StackScreenProps<ParamList, Route.Main>;
 export const MainView = (props: NavProps) => {
 	const [streak, setStreak] = useRecoilState(rstStreaks);
 	const [index, setIndex] = useRecoilState(rstTrainingIndex);
-	const cards = useRecoilValue(rstTrainingToday);
-	const reset = useSetRecoilState(rstResetTraining);
 	const [period, setPeriod] = useRecoilState(rstPeriods);
-	const targetRate = useRecoilValue(rstTargetRate);
 	const [result, setResult] = useRecoilState(rstTotalResult);
+
+	const reset = useSetRecoilState(rstResetTraining);
+
+	const cards = useRecoilValue(rstTrainingToday);
+	const targetRate = useRecoilValue(rstTargetRate);
+	const volume = useRecoilValue(rstVolume);
 
 	const completeRef = useRef<LottieView>(null);
 
@@ -94,7 +97,7 @@ export const MainView = (props: NavProps) => {
 
 	const onFinish = () => {
 		completeRef.current?.play();
-		playCompleteSound();
+		playCompleteSound(volume);
 		reset();
 		increaseStreak();
 	};
@@ -148,7 +151,7 @@ export const MainView = (props: NavProps) => {
 
 		await removeCardFromStorage(current);
 		setConfirmDelete(false);
-		playDeleteSound();
+		playDeleteSound(volume);
 		next();
 	};
 

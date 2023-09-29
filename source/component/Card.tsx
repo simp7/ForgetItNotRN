@@ -17,12 +17,14 @@ import Animated, {
 	withTiming,
 } from "react-native-reanimated";
 import { Shadow } from 'react-native-shadow-2';
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { IconCheck, IconTrash, IconX } from "../asset/icon";
 import { CARD_HEIGHT, CARD_TILT_ANGLE, CARD_WIDTH, isIOS } from "../constant";
 import { dataType } from "../model/addMode";
 import { CardData, InputType } from "../model/cardData";
+import { rstVolume } from "../model/setting";
 import { palyWrongSound, playCorrectSound, playDeleteSound } from "../util/sound";
 import { BasicButton, CardText, CardTextInput } from "./Basic";
 
@@ -180,6 +182,7 @@ export const CardHandler = (props: HandlerProps) => {
 	const { onSwipeLeft, onSwipeRight, x, onPress, addMode, ...viewProps } = props;
 
 	const opacity = useSharedValue(1);
+	const volume = useRecoilValue(rstVolume);
 
 	const cardStyle = useAnimatedStyle(() => {
 		const rotate = interpolate(x.value, [-100, 100], [-CARD_TILT_ANGLE, CARD_TILT_ANGLE], {
@@ -215,7 +218,7 @@ export const CardHandler = (props: HandlerProps) => {
 				easing: Easing.cubic,
 			}, newCardAnimation);
 			trigger('notificationError');
-			addMode ? playDeleteSound() : palyWrongSound();
+			addMode ? playDeleteSound(volume) : palyWrongSound(volume);
 			onSwipeLeft();
 			return;
 		}
@@ -225,7 +228,7 @@ export const CardHandler = (props: HandlerProps) => {
 				easing: Easing.cubic,
 			}, newCardAnimation);
 			trigger('notificationSuccess');
-			playCorrectSound();
+			playCorrectSound(volume);
 			onSwipeRight();
 			return;
 		}

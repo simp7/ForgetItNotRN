@@ -19,7 +19,7 @@ const wrongSound = newSound(source.wrong);
 const deleteSound = newSound(source.trash);
 const completeSound = newSound(source.complete);
 
-const playSound = (sound: Sound) => () => sound.stop().play();
+const playSound = (sound: Sound) => (volume: number) => sound.stop().setVolume(volume).play();
 
 export const playCorrectSound = playSound(correctSound);
 export const palyWrongSound = playSound(wrongSound);
