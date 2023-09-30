@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 

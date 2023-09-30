@@ -6,6 +6,7 @@ enum source {
 	trash = 'trash.mp3',
 	wrong = 'wrong.mp3',
 }
+Sound.setCategory('Ambient', true);
 
 const newSound = (source: source) => new Sound(source, Sound.MAIN_BUNDLE, err => {
 	if (err) {
