@@ -1,5 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Keyboard, TextInput, TouchableWithoutFeedback, View } from "react-native";
+import {
+	Keyboard,
+	ScrollView,
+	TextInput,
+	TouchableWithoutFeedback,
+	View,
+} from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -170,22 +176,24 @@ export const AddView = () => {
 	return (
 		<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			<Container>
-				<View style={{ flex: 1, justifyContent: 'center' }}>
-					<CardHandler
-						onSwipeLeft={discard}
-						onSwipeRight={save}
-						onPress={() => handlerPressed()}
-						x={x}
-						addMode
-					>
-						<QuestionInputCard
-							mode={mode}
-							cardData={data}
-							setData={setInput}
-							ref={ref}
-						/>
-					</CardHandler>
-				</View>
+				<View style={{ flex: 1 }} />
+				<CardHandler
+					onSwipeLeft={discard}
+					onSwipeRight={save}
+					onPress={() => handlerPressed()}
+					x={x}
+					addMode
+				>
+					<QuestionInputCard
+						mode={mode}
+						cardData={data}
+						setData={setInput}
+						ref={ref}
+					/>
+				</CardHandler>
+				<ScrollView horizontal showsHorizontalScrollIndicator>
+
+				</ScrollView>
 				<ButtonRow>
 					<CameraButton setImage={setImage} />
 					<GalleryButton setImage={setImage} />

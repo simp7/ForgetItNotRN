@@ -1,11 +1,11 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { FlatList, FlatListProps, View } from "react-native";
 import styled, { useTheme } from "styled-components";
 
 import { IconCheck } from "../asset/icon";
 import { SCREEN_WIDTH } from "../constant";
-import { BasicButton, BlockText } from "./Basic";
+import { BasicButton, BlockText, TagText } from "./Basic";
 import { Switch } from "./Switch";
 
 const ContainerBase = styled(View) <{ height?: number }>`
@@ -114,5 +114,43 @@ export const TargetRateListItem = (props: TargetRateListItemProps) => {
 				</BasicButton>
 			</SpaceAround>
 		</TargetRateContainer>
+	);
+};
+
+const TagBox = styled(View)`
+	background-color: ${p => p.theme.colors.tint};
+	padding: 0 12px;
+	height: 30px;
+	border-radius: 15px;
+	align-items: center;
+	justify-content: center;
+	margin-right: 15px;
+`;
+
+interface TagProps {
+	tag: string;
+}
+
+const Tag = (props: TagProps) => {
+	const { tag } = props;
+	return (
+		<TagBox>
+			<TagText size={16}>{tag}</TagText>
+		</TagBox>
+	);
+};
+
+type TagListProps = Omit<FlatListProps<string>, 'renderItem'>
+
+export const TagList = (props: TagListProps) => {
+	return (
+		<FlatList
+			contentContainerStyle={{
+				marginVertical: 20,
+			}}
+			renderItem={(props) => <Tag tag={props.item} key={props.index} />}
+			horizontal
+			{...props}
+		/>
 	);
 };

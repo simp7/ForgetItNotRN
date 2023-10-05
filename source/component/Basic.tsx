@@ -27,9 +27,9 @@ export const BlockText = styled(TextBase)`
 	color: ${p => p.theme.colors.blockText};
 `;
 
-export const IconText = styled(TextBase)`
-	font-weight: 800;
-	color: ${p => p.theme.colors.tint};
+export const TagText = styled(TextBase)`
+	font-weight: bold;
+	color: ${p => p.theme.colors.white};
 `;
 
 interface TextInputProps extends TextProps {
