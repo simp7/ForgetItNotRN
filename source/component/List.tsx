@@ -117,7 +117,7 @@ export const TargetRateListItem = (props: TargetRateListItemProps) => {
 	);
 };
 
-const TagBox = styled(View)`
+const TagBox = styled(View) <{ selected?: boolean }>`
 	background-color: ${p => p.theme.colors.tint};
 	padding: 0 12px;
 	height: 30px;
@@ -125,6 +125,8 @@ const TagBox = styled(View)`
 	align-items: center;
 	justify-content: center;
 	margin-right: 15px;
+	border-color: ${p => p.theme.colors.cardText};
+	border-radius: ${p => p.selected ? '2px' : 0};
 `;
 
 interface TagProps {

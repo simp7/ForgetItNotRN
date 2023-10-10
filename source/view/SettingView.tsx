@@ -39,8 +39,8 @@ export const SettingView = () => {
 		>
 			<TargetRateListItem rate={rate} setRate={setRate} />
 			<SwitchListItem title={'다크 모드'} value={dark} setValue={setDark} />
+			<SwitchListItem title={'효과음'} value={volume === 1} setValue={value => setVolume(value ? 1 : 0)} />
 			<SwitchListItem title={'알림'} value={notify} setValue={setNotify} />
-			<SwitchListItem title={'소리'} value={volume === 1} setValue={value => setVolume(value ? 1 : 0)} />
 			<StandardListItem title={'버전'} content={APP_VERSION} />
 		</Container>
 	);
