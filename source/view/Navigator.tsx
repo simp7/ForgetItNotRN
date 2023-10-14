@@ -18,6 +18,7 @@ export enum Route {
 	Setting = 'Setting',
 	Chart = 'Chart',
 	Add = 'Add',
+	Tag = 'Tag',
 }
 
 export type ParamList = {
@@ -25,6 +26,7 @@ export type ParamList = {
 	[Route.Setting]: undefined;
 	[Route.Chart]: undefined;
 	[Route.Add]: undefined;
+	[Route.Tag]: undefined;
 }
 
 const SettingButton = (props: TouchableOpacityProps) => {
@@ -119,6 +121,13 @@ export const Navigator = () => {
 					cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
 					headerTitle: addMode === 'QUESTION' ? 'Question' : 'Answer',
 					headerRight: () => <SwapButton onPress={() => setAddMode(swapAddMode)} />,
+					headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
+				})}
+			/>
+			<Stack.Screen
+				name={Route.Tag}
+				component={AddView}
+				options={({ navigation }: StackScreenProps<ParamList, Route.Tag>) => ({
 					headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
 				})}
 			/>

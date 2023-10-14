@@ -17,7 +17,7 @@ export const isStreakValid = async (lastOpened: string, completed: boolean) => {
 
 enum key {
 	object = 'Streaks',
-	addStreak = 'StatAddStreak',
+	addStreak = 'StatAddStreaks',
 }
 
 export const rstStreaks = atom<Streaks>({

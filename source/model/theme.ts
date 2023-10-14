@@ -18,7 +18,6 @@ const CommonColors = {
 	...color,
 	tint: color.forgetMeNot,
 	subTint: color.forgetMeNotDark,
-	highlight: color.forgetMeNotDark,
 };
 
 const LightColors = {

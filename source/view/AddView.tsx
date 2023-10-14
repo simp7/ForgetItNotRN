@@ -191,7 +191,7 @@ export const AddView = () => {
 						ref={ref}
 					/>
 				</CardHandler>
-				<ScrollView horizontal showsHorizontalScrollIndicator>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 
 				</ScrollView>
 				<ButtonRow>

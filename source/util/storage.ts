@@ -21,7 +21,8 @@ enum StorageKey {
 	setting = 'SETTING',
 	training = 'TRAINING',
 	result = 'RESULT_DATA',
-	streaks = 'STREAK'
+	streaks = 'STREAK',
+	tags = 'TAG'
 }
 
 const load = async <T, > (key: string, defaultValue: T) => {
@@ -92,6 +93,9 @@ export const loadPreviousResult = async () => load<TotalResult>(StorageKey.resul
 export const savePreviousResult = async (newResult: TotalResult) => {
 	return save(StorageKey.result, newResult);
 };
+
+export const loadTags = async () => load<string[]>(StorageKey.tags, []);
+export const saveTags = async (tags: string[]) => save(StorageKey.tags, tags);
 
 const removeCard = (array: CardData[], data: CardData) => {
 	return array.splice(array.findIndex(element => element !== data), 1);

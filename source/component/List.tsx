@@ -1,6 +1,6 @@
 import { Slider } from "@miblanchard/react-native-slider";
 import React, { useState } from "react";
-import { FlatList, FlatListProps, View } from "react-native";
+import { FlatList, FlatListProps, TouchableWithoutFeedback, View } from "react-native";
 import styled, { useTheme } from "styled-components";
 
 import { IconCheck } from "../asset/icon";
@@ -28,20 +28,23 @@ interface ItemProps {
 }
 
 interface StandardListItemProps extends ItemProps {
-	content: string;
+	content?: string;
+	onPress?: () => void;
 }
 
 export const StandardListItem = (props: StandardListItemProps) => {
-	const { title, content } = props;
+	const { title, content, onPress } = props;
 	return (
-		<StandardContainer>
-			<BlockText size={20} bold>
-				{title}
-			</BlockText>
-			<BlockText size={20} bold>
-				{content}
-			</BlockText>
-		</StandardContainer>
+		<TouchableWithoutFeedback onPress={onPress}>
+			<StandardContainer>
+				<BlockText size={20} bold>
+					{title}
+				</BlockText>
+				<BlockText size={20} bold>
+					{content}
+				</BlockText>
+			</StandardContainer>
+		</TouchableWithoutFeedback>
 	);
 };
 
@@ -124,8 +127,8 @@ const TagBox = styled(View) <{ selected?: boolean }>`
 	border-radius: 15px;
 	align-items: center;
 	justify-content: center;
-	margin-right: 15px;
-	border-color: ${p => p.theme.colors.cardText};
+	margin: 15px;
+	border-color: ${p => p.theme.colors.subTint};
 	border-radius: ${p => p.selected ? '2px' : 0};
 `;
 
@@ -133,7 +136,7 @@ interface TagProps {
 	tag: string;
 }
 
-const Tag = (props: TagProps) => {
+export const Tag = (props: TagProps) => {
 	const { tag } = props;
 	return (
 		<TagBox>
