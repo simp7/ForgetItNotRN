@@ -45,7 +45,8 @@ export const deleteTag = selector<string>({
 		if (!(newValue instanceof DefaultValue)) {
 			const tmp: string[] = JSON.parse(JSON.stringify(get(rstTags)));
 			const index = tmp.findIndex((value) => value === newValue);
-			set(rstTags, tmp.splice(index));
+			tmp.splice(index);
+			set(rstTags, tmp);
 		}
 	},
 });
