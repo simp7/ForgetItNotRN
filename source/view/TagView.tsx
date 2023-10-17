@@ -66,7 +66,6 @@ export const TagView = () => {
 					alignSelf: 'stretch',
 					flexWrap: 'wrap',
 					flexDirection: 'row',
-					backgroundColor: 'navy',
 					paddingHorizontal: 30,
 				}}
 			>

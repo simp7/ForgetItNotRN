@@ -2,8 +2,6 @@ import { atom, DefaultValue, selector } from "recoil";
 
 import { loadTags, saveTags } from "../util/storage";
 
-let Taglist = new Set<string>();
-
 enum key {
 	object = 'Tag',
 	add = 'addTag',
@@ -17,7 +15,6 @@ export const rstTags = atom<string[]>({
 		loadTags().then(value => {
 			if (value !== null) {
 				setSelf(value);
-				Taglist = new Set<string>(value);
 			}
 		});
 		onSet((newValue) => {
@@ -31,8 +28,7 @@ export const rstAddTag = selector<string>({
 	key: key.add,
 	get: () => '',
 	set: ({ get, set }, newValue) => {
-		console.log('rstAddTag');
-		if (!(newValue instanceof DefaultValue) && !Taglist.has(newValue)) {
+		if (!(newValue instanceof DefaultValue) && get(rstTags).every(v => v !== newValue)) {
 			set(rstTags, [...get(rstTags), newValue]);
 		}
 	},
