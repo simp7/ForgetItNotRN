@@ -1,11 +1,18 @@
 import { Slider } from "@miblanchard/react-native-slider";
-import React, { useState } from "react";
-import { FlatList, FlatListProps, TouchableWithoutFeedback, View } from "react-native";
+import React, { forwardRef, useState } from "react";
+import {
+	FlatList,
+	FlatListProps,
+	TextInput,
+	TextInputProps,
+	TouchableWithoutFeedback,
+	View,
+} from "react-native";
 import styled, { useTheme } from "styled-components";
 
 import { IconCheck } from "../asset/icon";
 import { SCREEN_WIDTH } from "../constant";
-import { BasicButton, BlockText, TagText } from "./Basic";
+import { BasicButton, BlockText, CardTextInput, TagText } from "./Basic";
 import { Switch } from "./Switch";
 
 const ContainerBase = styled(View) <{ height?: number }>`
@@ -127,19 +134,20 @@ const TagBox = styled(View) <{ selected?: boolean }>`
 	border-radius: 15px;
 	align-items: center;
 	justify-content: center;
-	margin: 15px;
+	margin: 7.5px;
 	border-color: ${p => p.theme.colors.subTint};
-	border-radius: ${p => p.selected ? '2px' : 0};
+	border-width: ${p => p.selected ? '2px' : 0};
 `;
 
 interface TagProps {
 	tag: string;
+	selected?: boolean;
 }
 
 export const Tag = (props: TagProps) => {
-	const { tag } = props;
+	const { tag, selected } = props;
 	return (
-		<TagBox>
+		<TagBox selected={selected}>
 			<TagText size={16}>{tag}</TagText>
 		</TagBox>
 	);
@@ -159,3 +167,20 @@ export const TagList = (props: TagListProps) => {
 		/>
 	);
 };
+
+const TagTextInput = styled(CardTextInput)`
+	color: ${p => p.theme.colors.white};
+`;
+
+export const TagInput = forwardRef<TextInput, TextInputProps>((props, ref) => {
+	return (
+		<TagBox>
+			<TagTextInput
+				{...props}
+				ref={ref}
+				bold
+				hide={false}
+			/>
+		</TagBox>
+	);
+});

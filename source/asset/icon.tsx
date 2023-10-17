@@ -80,9 +80,9 @@ export const IconAdd = (props: IconProps) => {
 			fill="none"
 		>
 			<Circle
-				cx={size / 2}
-				cy={size / 2}
-				r={size / 2}
+				cx={30}
+				cy={30}
+				r={30}
 				fill={tint}
 			/>
 			<Path
@@ -217,7 +217,7 @@ export const IconSwap = (props: IconProps) => {
 
 export const IconTrash = (props: IconProps) => {
 	const { colors } = useTheme();
-	const { size = 40, tint = colors.white } = props;
+	const { size = 60, tint = colors.white } = props;
 	return (
 		<Svg
 			viewBox="0 0 512 512"

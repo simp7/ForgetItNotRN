@@ -16,7 +16,6 @@ export const rstTags = atom<string[]>({
 	effects: [({ setSelf, onSet }) => {
 		loadTags().then(value => {
 			if (value !== null) {
-				console.log(key.object, value);
 				setSelf(value);
 				Taglist = new Set<string>(value);
 			}
@@ -28,17 +27,18 @@ export const rstTags = atom<string[]>({
 	}],
 });
 
-export const addTag = selector<string>({
+export const rstAddTag = selector<string>({
 	key: key.add,
 	get: () => '',
 	set: ({ get, set }, newValue) => {
+		console.log('rstAddTag');
 		if (!(newValue instanceof DefaultValue) && !Taglist.has(newValue)) {
 			set(rstTags, [...get(rstTags), newValue]);
 		}
 	},
 });
 
-export const deleteTag = selector<string>({
+export const rstDeleteTag = selector<string>({
 	key: key.delete,
 	get: () => '',
 	set: ({ get, set }, newValue) => {

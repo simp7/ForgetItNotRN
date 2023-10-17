@@ -12,6 +12,7 @@ import { AddView } from "./AddView";
 import { ChartView } from "./ChartView";
 import { MainView } from "./MainView";
 import { SettingView } from "./SettingView";
+import { TagView } from "./TagView";
 
 export enum Route {
 	Main = 'Main',
@@ -126,7 +127,7 @@ export const Navigator = () => {
 			/>
 			<Stack.Screen
 				name={Route.Tag}
-				component={AddView}
+				component={TagView}
 				options={({ navigation }: StackScreenProps<ParamList, Route.Tag>) => ({
 					headerLeft: () => <BackButton onPress={() => navigation.goBack()} />,
 				})}
