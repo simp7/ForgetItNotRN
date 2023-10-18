@@ -44,7 +44,7 @@ export const SettingView = (props: NavProps) => {
 			}}
 		>
 			<TargetRateListItem rate={rate} setRate={setRate} />
-			<StandardListItem title={'태그'} onPress={() => navigation.navigate(Route.Tag)} />
+			{/* <StandardListItem title={'태그'} onPress={() => navigation.navigate(Route.Tag)} /> */}
 			<SwitchListItem title={'다크 모드'} value={dark} setValue={setDark} />
 			<SwitchListItem title={'효과음'} value={volume === 1} setValue={value => setVolume(value ? 1 : 0)} />
 			<SwitchListItem title={'알림'} value={notify} setValue={setNotify} />
